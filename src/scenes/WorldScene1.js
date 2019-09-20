@@ -1,9 +1,11 @@
 /*global Phaser*/
 import * as ChangeScene from "./ChangeScene.js";
 
-//This tutorial and assets are from https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+export default class WorldScene1 extends Phaser.Scene {
+  constructor () {
+    super('WorldScene1');
+  }
 
-export default class scene1 extends Phaser.Scene {
   preload() {
     this.load.image("tiles", "./assets/tilesets/tuxmon-sample-32px-extruded.png");
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
@@ -32,18 +34,13 @@ export default class scene1 extends Phaser.Scene {
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
-    const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
-    const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
+    //const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
+    //const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
 
-    worldLayer.setCollisionByProperty({ collides: true });
+    // worldLayer.setCollisionByProperty({ collides: true });
 
-    // By default, everything gets depth sorted on the screen in the order we created things. Here, we
-    // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
-    // Higher depths will sit on top of lower depth objects.
-    aboveLayer.setDepth(10);
+    //aboveLayer.setDepth(10);
 
-    // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
-    // collision shapes. In the tmx file, there's an object layer with a point named "Spawn Point"
     const spawnPoint = map.findObject(
       "Objects",
       obj => obj.name === "Spawn Point"
