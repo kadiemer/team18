@@ -60,6 +60,11 @@ export default class WorldScene1 extends Phaser.Scene {
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player, worldLayer);
 
+    this.zombie = this.physics.add
+      .sprite(300, 300, "atlas", "misa-front")
+      .setSize(30, 40)
+      .setOffset(0, 24);
+
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
     const anims = this.anims;
@@ -151,6 +156,21 @@ export default class WorldScene1 extends Phaser.Scene {
     }
 
     const speed = 175;
+
+    if(this.zombie.x > this.player.x) {
+      this.zombie.body.setVelocityX(-.5*speed);
+    }
+    else{
+      this.zombie.body.setVelocityX(.5*speed);
+    }
+
+    if(this.zombie.y > this.player.y) {
+      this.zombie.body.setVelocityY(-.5*speed);
+    }
+    else{
+      this.zombie.body.setVelocityY(.5*speed);
+    }
+
     const prevVelocity = this.player.body.velocity.clone();
 
     // Stop any previous movement from the last frame
