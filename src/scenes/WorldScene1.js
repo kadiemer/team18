@@ -1,7 +1,11 @@
 /*global Phaser*/
 import * as ChangeScene from "./ChangeScene.js";
 
+var textTimer = 0;
+var text;
+
 export default class WorldScene1 extends Phaser.Scene {
+
   constructor () {
     super('WorldScene1');
   }
@@ -54,7 +58,7 @@ export default class WorldScene1 extends Phaser.Scene {
       .setOffset(0, 24);
 
     // Watch the player and worldLayer for collisions, for the duration of the scene:
-    this.physics.add.collider(this.player, worldLayer);
+    //this.physics.add.collider(this.player, worldLayer);
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
@@ -111,8 +115,8 @@ export default class WorldScene1 extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
+    text = this.add
+      .text(16, 16, 'Arrow keys to move\nTeach all the zombies how to dance again', {
         font: "18px monospace",
         fill: "#000000",
         padding: { x: 20, y: 10 },
@@ -120,6 +124,7 @@ export default class WorldScene1 extends Phaser.Scene {
       })
       .setScrollFactor(0)
       .setDepth(30);
+
 
     // Debug graphics
     this.input.keyboard.once("keydown_D", event => {
@@ -140,6 +145,11 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+    textTimer += 1;
+    if(textTimer > 300) {
+      text.setVisible(false);
+    }
+
     const speed = 175;
     const prevVelocity = this.player.body.velocity.clone();
 
