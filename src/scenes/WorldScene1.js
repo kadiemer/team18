@@ -13,6 +13,7 @@ export default class WorldScene1 extends Phaser.Scene {
   preload() {
     this.load.image("tiles", "./assets/tilesets/tuxmon-sample-32px-extruded.png");
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
+    this.load.image("zombie", "./assets/sprites/zombieSprite.png");
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -61,9 +62,9 @@ export default class WorldScene1 extends Phaser.Scene {
     //this.physics.add.collider(this.player, worldLayer);
 
     this.zombie = this.physics.add
-      .sprite(300, 300, "atlas", "misa-front")
-      .setSize(30, 40)
-      .setOffset(0, 24);
+      .sprite(300, 300, "zombie");
+
+    this.zombie.scale = .2;
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
