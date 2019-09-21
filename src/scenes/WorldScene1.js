@@ -156,19 +156,20 @@ export default class WorldScene1 extends Phaser.Scene {
     }
 
     const speed = 175;
+    const zomSpeed = 60;
 
     if(this.zombie.x > this.player.x) {
-      this.zombie.body.setVelocityX(-.5*speed);
+      this.zombie.body.setVelocityX(-zomSpeed);
     }
-    else{
-      this.zombie.body.setVelocityX(.5*speed);
+    else if (this.zombie.x < this.player.x){
+      this.zombie.body.setVelocityX(zomSpeed);
     }
 
     if(this.zombie.y > this.player.y) {
-      this.zombie.body.setVelocityY(-.5*speed);
+      this.zombie.body.setVelocityY(-zomSpeed);
     }
-    else{
-      this.zombie.body.setVelocityY(.5*speed);
+    else if(this.zombie.y < this.player.y){
+      this.zombie.body.setVelocityY(zomSpeed);
     }
 
     const prevVelocity = this.player.body.velocity.clone();
