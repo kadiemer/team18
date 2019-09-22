@@ -65,7 +65,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.zombie = this.physics.add
       .sprite(300, 300, "zombie");
 
-    this.zombie.scale = .2;
+    this.zombie.scale = .1;
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
