@@ -69,6 +69,9 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.zombie.scale = .1;
 
+    // Watch the player and zombie for collisions, for the duration of the scene:
+    this.physics.add.collider(this.player, this.zombie);
+
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
 
