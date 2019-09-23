@@ -15,6 +15,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
     this.load.image("zombie", "./assets/sprites/zombieSprite.png");
     this.load.image("guy", "./assets/sprites/guySprite.png");
+    this.load.image('background', './assets/images/background.png');
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -29,6 +30,7 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(300,400,"background")
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
@@ -36,10 +38,10 @@ export default class WorldScene1 extends Phaser.Scene {
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
+    //const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
     //const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
     //const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
 
