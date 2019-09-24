@@ -23,7 +23,7 @@ export default class MenuScene extends Phaser.Scene {
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
     //Create the scene
-    var background = this.add.image(400, 300, 'menu');
+    var background = this.add.image(200, 300, 'menu');
 
     var play = this.add.text(300, 195, '< play >',
     {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'}).setInteractive();
