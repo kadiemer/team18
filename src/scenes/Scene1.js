@@ -9,6 +9,7 @@ export default class Scene1 extends Phaser.Scene {
   }
 
   preload () {
+
     // Preload assets
     this.load.image('danceBackground', './assets/images/danceBackground.png');
     this.load.image("zombie", "./assets/sprites/zombieSprite.png");
@@ -28,6 +29,9 @@ export default class Scene1 extends Phaser.Scene {
   }
 
   create (data) {
+
+    this.scoreText;
+    this.score = 0;
 
     //Create the scene
     this.add.image(1001.5,561.5,"danceBackground");
@@ -115,13 +119,15 @@ export default class Scene1 extends Phaser.Scene {
       function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
       }
-
-    this.physics.add.overlap(this.key1,this.myGroup,this.hitKey,null,this);
+      this.scoreText = this.add.text(300, 16, "score: 0", {
+        fontSize: "32px",
+        fill: "#000"
+        });
 
   }
 
   update (time, delta) {
-    this.zombie.x -= .2;
+    this.zombie.x -= .8;
     //Makes the letters fall down at speed of 2
     Phaser.Actions.IncY(this.myGroup.getChildren(), 2);
 
@@ -131,16 +137,51 @@ export default class Scene1 extends Phaser.Scene {
   }
 
   hitKey (staticKey, dynamicKey) {
-    this.text = this.add
-      .text(staticKey.x, staticKey.y+80, 'Hit!', {
-        font: "30px monospace",
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
+    var wKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.W);
+    var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.A);
+    var sKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.S);
+    var dKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.D);
+    if(staticKey['texture']['key'] == "wKey"){
+      if(wKey.isDown){
+        console.log("Pressing the w key")
+        dynamicKey.destroy();
+        this.score+=1;
+        this.scoreText.setText("Score: " + this.score);
+      }
+    }
+    else if(staticKey['texture']['key'] == "aKey"){
+      if(aKey.isDown){
+        console.log("Pressing the a key")
+        dynamicKey.destroy();
+        this.score+=1;
+        this.scoreText.setText("Score: " + this.score);
+      }
+    }
+    else if(staticKey['texture']['key'] == "sKey"){
+      if(sKey.isDown){
+        console.log("Pressing the s key")
+        dynamicKey.destroy();
+        this.score+=1;
+        this.scoreText.setText("Score: " + this.score);
+      }
+    }
+    else if(staticKey['texture']['key'] == "dKey"){
+      if(dKey.isDown){
+        console.log("Pressing the d key")
+        dynamicKey.destroy();
+        this.score+=1;
+        this.scoreText.setText("Score: " + this.score);
+      }
+    }
+    if(this.score > 14){
+      this.scoreText.setText("You win")
+      this.zombie.destroy();
+      this.myGroup.clear(true);
+    }
   }
 
-  zombieHit (player, key){
-    console.log("You lose")
+  zombieHit (player, zombie){
+    this.scoreText.setText("You lose")
   }
 
 }
