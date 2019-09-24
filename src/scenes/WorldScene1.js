@@ -15,6 +15,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
     this.load.image("zombie", "./assets/sprites/zombieSprite.png");
     this.load.image("guy", "./assets/sprites/guySprite.png");
+    this.load.image('background', './assets/images/background.png');
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -29,6 +30,7 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(1001.5,561.5,"background")
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
@@ -36,10 +38,10 @@ export default class WorldScene1 extends Phaser.Scene {
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
+    //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
+    //const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
     //const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
     //const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
 
@@ -59,7 +61,7 @@ export default class WorldScene1 extends Phaser.Scene {
       .setSize(30, 40)
       .setOffset(0, 24);
 
-    this.player.scale = .1;
+    this.player.scale = .2;
 
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player, worldLayer);
@@ -67,7 +69,10 @@ export default class WorldScene1 extends Phaser.Scene {
     this.zombie = this.physics.add
       .sprite(300, 300, "zombie");
 
-    this.zombie.scale = .1;
+    this.zombie.scale = .2;
+
+    // Watch the player and zombie for collisions, for the duration of the scene:
+    this.physics.add.collider(this.player, this.zombie);
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
@@ -81,7 +86,7 @@ export default class WorldScene1 extends Phaser.Scene {
     // Help text that has a "fixed" position on the screen
     text = this.add
       .text(16, 16, 'Arrow keys to move\nTeach all the zombies how to dance again', {
-        font: "18px monospace",
+        font: "40px monospace",
         fill: "#000000",
         padding: { x: 20, y: 10 },
         backgroundColor: "#ffffff"
@@ -114,7 +119,7 @@ export default class WorldScene1 extends Phaser.Scene {
       text.setVisible(false);
     }
 
-    const speed = 175;
+    const speed = 250;
     const zomSpeed = 60;
 
     if(this.zombie.x > this.player.x) {
