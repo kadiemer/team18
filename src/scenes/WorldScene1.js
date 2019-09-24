@@ -13,9 +13,16 @@ export default class WorldScene1 extends Phaser.Scene {
   preload() {
     this.load.image("tiles", "./assets/tilesets/tuxmon-sample-32px-extruded.png");
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
-    this.load.image("zombie", "./assets/sprites/zombieSprite.png");
-    this.load.image("guy", "./assets/sprites/guySprite.png");
+    this.load.spritesheet("zombie", "./assets/sprites/zombieSpriteSheet.png", {
+      frameHeight: 940,
+      frameWidth: 491
+    });
+    this.load.spritesheet("guy", "./assets/sprites/guySpriteSheet.png", {
+      frameHeight: 960,
+      frameWidth: 525
+    });
     this.load.image('background', './assets/images/background.png');
+
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -71,11 +78,37 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.zombie.scale = .2;
 
+
     // Watch the player and zombie for collisions, for the duration of the scene:
     this.physics.add.collider(this.player, this.zombie);
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
+
+    this.anims.create({
+      key: "walk",
+      frames: this.anims.generateFrameNumbers("guy", { start: 0, end: 5 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "idle",
+      frames: this.anims.generateFrameNumbers("guy", { start: 5, end: 5 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "zombieWalk",
+      frames: this.anims.generateFrameNumbers("zombie", { start: 0, end: 5 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "zombieIdle",
+      frames: this.anims.generateFrameNumbers("zombie", { start: 5, end: 5 }),
+      frameRate: 10,
+      repeat: -1
+    });
 
     const camera = this.cameras.main;
     camera.startFollow(this.player);
@@ -124,9 +157,13 @@ export default class WorldScene1 extends Phaser.Scene {
 
     if(this.zombie.x > this.player.x) {
       this.zombie.body.setVelocityX(-zomSpeed);
+      this.zombie.anims.play("zombieWalk", true);
+      this.zombie.flipX = false;
     }
     else if (this.zombie.x < this.player.x){
       this.zombie.body.setVelocityX(zomSpeed);
+      this.zombie.anims.play("zombieWalk", true);
+      this.zombie.flipX = true;
     }
 
     if(this.zombie.y > this.player.y) {
@@ -144,8 +181,14 @@ export default class WorldScene1 extends Phaser.Scene {
     // Horizontal movement
     if (this.cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
+      this.player.anims.play("walk", true);
+      this.player.flipX = false;
     } else if (this.cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
+     this.player.anims.play("walk", true);
+      this.player.flipX = true;
+    } else {
+     this.player.anims.play("idle", true);
     }
 
     // Vertical movement
