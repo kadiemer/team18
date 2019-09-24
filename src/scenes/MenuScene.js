@@ -23,17 +23,17 @@ export default class MenuScene extends Phaser.Scene {
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
     //Create the scene
-    var background = this.add.image(400, 300, 'menu');
+    var background = this.add.image(1001.5, 561.5, 'menu');
 
-    var play = this.add.text(300, 195, '< play >',
-    {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'}).setInteractive();
+    var play = this.add.text(1020.5, 261.5, '< play now >',
+    {fontFamily: 'Fantasy', fontSize: 70, color: '#ffffff'}).setInteractive();
     play.on("pointerup", function() {
       this.scene.start('WorldScene1');
     }, this
   );
 
-    var title = this.add.text(220,70, '[ Dance The Bite Away ]',
-    {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'});
+    var title = this.add.text(750.5,70, '[ Dance The Bite Away ]',
+    {fontFamily: 'Fantasy', fontSize: 85, color: '#ffffff'});
 
   }
 
