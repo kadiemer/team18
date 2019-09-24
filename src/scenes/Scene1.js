@@ -12,7 +12,10 @@ export default class Scene1 extends Phaser.Scene {
 
     // Preload assets
     this.load.image('danceBackground', './assets/images/danceBackground.png');
-    this.load.image("zombie", "./assets/sprites/zombieSprite.png");
+    this.load.spritesheet("zombie", "./assets/sprites/zombieSpriteSheet.png", {
+      frameHeight: 940,
+      frameWidth: 491
+    });
     this.load.image("guy", "./assets/sprites/guySprite.png");
     this.load.image('wKey', './assets/images/wKey.png');
     this.load.image('aKey', './assets/images/aKey.png');
@@ -30,6 +33,7 @@ export default class Scene1 extends Phaser.Scene {
 
   create (data) {
 
+    this.gameOver = false;
     this.scoreText;
     this.score = 0;
 
@@ -37,26 +41,26 @@ export default class Scene1 extends Phaser.Scene {
     this.add.image(1001.5,561.5,"danceBackground");
 
     this.player = this.physics.add
-      .sprite(100, 900, "guy");
-    this.player.scale = .2;
+      .sprite(150, 850, "guy");
+    this.player.scale = .5;
 
     this.zombie = this.physics.add
-      .sprite(1800, 900, "zombie");
+      .sprite(1800, 850, "zombie");
 
-    this.zombie.scale = .2;
+    this.zombie.scale = .5;
 
     this.physics.add.collider(this.player,this.zombie,this.zombieHit,null,this);
 
     //Adds base keys and makes the image smaller
 
-    this.key1 = this.physics.add.sprite(120,450,'wKey');
-    this.key1.setScale(0.75);
-    this.key2 = this.physics.add.sprite(220,450,'aKey');
-    this.key2.setScale(0.75);
-    this.key3 = this.physics.add.sprite(320,450,'sKey');
-    this.key3.setScale(0.75);
-    this.key4 = this.physics.add.sprite(420,450,'dKey');
-    this.key4.setScale(0.75);
+    this.key1 = this.physics.add.sprite(750,450,'wKey');
+    this.key1.setScale(1);
+    this.key2 = this.physics.add.sprite(900,450,'aKey');
+    this.key2.setScale(1);
+    this.key3 = this.physics.add.sprite(1050,450,'sKey');
+    this.key3.setScale(1);
+    this.key4 = this.physics.add.sprite(1200,450,'dKey');
+    this.key4.setScale(1);
 
 
     //creates a group for the falling sprites and an array to store the different keys
@@ -72,7 +76,7 @@ export default class Scene1 extends Phaser.Scene {
 
       //Adds play button to the screen, the letters will start falling once you hit play
 
-      var play = this.add.text(500, 195, '< play >',
+      var play = this.add.text(875, 525, '< play >',
       {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'}).setInteractive();
 
       //Makes it so letters start falling after click
@@ -86,19 +90,19 @@ export default class Scene1 extends Phaser.Scene {
 
           this.picker = getRandomInt(4);
           if (this.picker == 0) {
-            this.wKey = this.physics.add.sprite(120, 50, 'wKey');
+            this.wKey = this.physics.add.sprite(750, 50, 'wKey');
             this.myGroup.add(this.wKey);
           }
           else if (this.picker == 1) {
-            this.aKey = this.physics.add.sprite(220, 50, 'aKey');
+            this.aKey = this.physics.add.sprite(900, 50, 'aKey');
             this.myGroup.add(this.aKey);
           }
           else if (this.picker == 2) {
-            this.sKey = this.physics.add.sprite(320, 50, 'sKey');
+            this.sKey = this.physics.add.sprite(1050, 50, 'sKey');
             this.myGroup.add(this.sKey);
           }
           else if (this.picker == 3) {
-            this.dKey = this.physics.add.sprite(420, 50, 'dKey');
+            this.dKey = this.physics.add.sprite(1200, 50, 'dKey');
             this.myGroup.add(this.dKey);
           }
           this.myGroup.children.iterate(function(child){
@@ -115,24 +119,38 @@ export default class Scene1 extends Phaser.Scene {
       }, this
     );
 
+    this.anims.create({
+      key: "zombieWalk",
+      frames: this.anims.generateFrameNumbers("zombie", { start: 0, end: 5 }),
+      frameRate: 5,
+      repeat: -1
+    });
+
     //function used to generate random index for list of keys
       function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
       }
-      this.scoreText = this.add.text(300, 16, "score: 0", {
-        fontSize: "32px",
+      this.scoreText = this.add.text(50, 16, "score: 0", {
+        fontSize: "40px",
         fill: "#000"
         });
 
   }
 
   update (time, delta) {
-    this.zombie.x -= .8;
+    this.zombie.x -= .7 ;
+    if(this.gameOver != true){
+      this.zombie.anims.play("zombieWalk", true);
+    }
+    else if(this.gameOver == true){
+      this.zombie.destroy();
+    }
     //Makes the letters fall down at speed of 2
     Phaser.Actions.IncY(this.myGroup.getChildren(), 2);
 
     this.physics.overlap(this.key1,this.myGroup,this.hitKey,null,this);
 
+    this.player.flipX = true;
 
   }
 
@@ -174,8 +192,8 @@ export default class Scene1 extends Phaser.Scene {
       }
     }
     if(this.score > 14){
+      this.gameOver = true;
       this.scoreText.setText("You win")
-      this.zombie.destroy();
       this.myGroup.clear(true);
     }
   }
