@@ -11,6 +11,8 @@ export default class Scene1 extends Phaser.Scene {
   preload () {
     // Preload assets
     this.load.image('danceBackground', './assets/images/danceBackground.png');
+    this.load.image("zombie", "./assets/sprites/zombieSprite.png");
+    this.load.image("guy", "./assets/sprites/guySprite.png");
     this.load.image('wKey', './assets/images/wKey.png');
     this.load.image('aKey', './assets/images/aKey.png');
     this.load.image('sKey', './assets/images/sKey.png');
@@ -26,8 +28,20 @@ export default class Scene1 extends Phaser.Scene {
   }
 
   create (data) {
+
     //Create the scene
     this.add.image(1001.5,561.5,"danceBackground");
+
+    this.player = this.physics.add
+      .sprite(100, 900, "guy");
+    this.player.scale = .2;
+
+    this.zombie = this.physics.add
+      .sprite(1800, 900, "zombie");
+
+    this.zombie.scale = .2;
+
+    this.physics.add.collider(this.player,this.zombie,this.zombieHit,null,this);
 
     //Adds base keys and makes the image smaller
 
@@ -42,12 +56,7 @@ export default class Scene1 extends Phaser.Scene {
 
 
     //creates a group for the falling sprites and an array to store the different keys
-    this.myGroup = this.physics.add.staticGroup();
-
-    this.physics.add.collider(this.key2, this.myGroup);
-    this.physics.add.collider(this.key3, this.myGroup);
-    this.physics.add.collider(this.key4, this.myGroup);
-
+    this.myGroup = this.add.group();
 
     //Uses first 15 seconds of the track
     var track1 = this.sound.add('track1');
@@ -73,20 +82,28 @@ export default class Scene1 extends Phaser.Scene {
 
           this.picker = getRandomInt(4);
           if (this.picker == 0) {
-            this.myGroup.create(120, 50, 'wKey');
-
+            this.wKey = this.physics.add.sprite(120, 50, 'wKey');
+            this.myGroup.add(this.wKey);
           }
-            else if (this.picker == 1) {
-            this.myGroup.create(220, 50, 'aKey');
-          } else if (this.picker == 2) {
-            this.myGroup.create(320,50, 'sKey');
-          } else if (this.picker == 3) {
-            this.myGroup.create(420, 50, 'dKey');
+          else if (this.picker == 1) {
+            this.aKey = this.physics.add.sprite(220, 50, 'aKey');
+            this.myGroup.add(this.aKey);
+          }
+          else if (this.picker == 2) {
+            this.sKey = this.physics.add.sprite(320, 50, 'sKey');
+            this.myGroup.add(this.sKey);
+          }
+          else if (this.picker == 3) {
+            this.dKey = this.physics.add.sprite(420, 50, 'dKey');
+            this.myGroup.add(this.dKey);
           }
           this.myGroup.children.iterate(function(child){
             child.setScale(0.75);
-
-          });
+            this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
+            this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
+            this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
+            this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
+          }, this);
 
         },
         callbackScope: this,
@@ -97,32 +114,33 @@ export default class Scene1 extends Phaser.Scene {
     //function used to generate random index for list of keys
       function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
-}
+      }
 
-
+    this.physics.add.overlap(this.key1,this.myGroup,this.hitKey,null,this);
 
   }
-
-
 
   update (time, delta) {
+    this.zombie.x -= .2;
     //Makes the letters fall down at speed of 2
     Phaser.Actions.IncY(this.myGroup.getChildren(), 2);
-    Phaser.Actions.Call(this.myGroup.getChildren(), function(key) {
-      this.physics.add.overlap(this.key1,key,this.hitKey,null,this);
-    }, this);
+
+    this.physics.overlap(this.key1,this.myGroup,this.hitKey,null,this);
+
 
   }
 
-  hitKey (key1, key) {
-    text = this.add
-      .text(staticKey.x, staticKey.y-20, 'Hit!', {
-        font: "20px monospace",
+  hitKey (staticKey, dynamicKey) {
+    this.text = this.add
+      .text(staticKey.x, staticKey.y+80, 'Hit!', {
+        font: "30px monospace",
       })
       .setScrollFactor(0)
       .setDepth(30);
-    console.log("Hit Key");
+  }
 
+  zombieHit (player, key){
+    console.log("You lose")
   }
 
 }
