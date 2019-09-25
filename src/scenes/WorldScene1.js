@@ -22,7 +22,10 @@ export default class WorldScene1 extends Phaser.Scene {
       frameWidth: 525
     });
     this.load.image('background', './assets/images/background.png');
-
+    this.load.image('guySpriteSheet', "./assets/sprites/guySpriteSheet.png", {
+      frameHeight: 96,
+      frameWidth: 52.5
+    });
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -100,7 +103,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.anims.create({
       key: "zombieWalk",
       frames: this.anims.generateFrameNumbers("zombie", { start: 0, end: 5 }),
-      frameRate: 5,
+      frameRate: 10,
       repeat: -1
     });
     this.anims.create({
@@ -146,11 +149,14 @@ export default class WorldScene1 extends Phaser.Scene {
     });
   }
 
+
+
   update(time, delta) {
     textTimer += 1;
     if(textTimer > 300) {
       text.setVisible(false);
     }
+
 
     const speed = 250;
     const zomSpeed = 60;

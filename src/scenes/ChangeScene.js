@@ -10,7 +10,7 @@ function addSceneEventListeners (that) {
   that.input.keyboard.on(
     "keydown_ESC",
       function () {
-        that.scene.start('Scene1');
+        that.scene.start('WorldScene2');
       }
   );
 }

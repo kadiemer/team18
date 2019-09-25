@@ -1,7 +1,9 @@
 /*global Phaser*/
-export default class Scene1 extends Phaser.Scene {
+import * as ChangeScene from "./ChangeScene.js";
+
+export default class WorldScene2 extends Phaser.Scene {
   constructor () {
-    super('Scene1');
+    super('WorldScene2');
   }
 
   init (data) {
@@ -137,8 +139,10 @@ export default class Scene1 extends Phaser.Scene {
 
   }
 
-  update (time, delta) {
-    this.zombie.x -= .7 ;
+  update(time, delta) {
+
+    this.zombie.x -= .7;
+
     if(this.gameOver != true){
       this.zombie.anims.play("zombieWalk", true);
     }
@@ -195,11 +199,17 @@ export default class Scene1 extends Phaser.Scene {
       this.gameOver = true;
       this.scoreText.setText("You win")
       this.myGroup.clear(true);
+      this.scene.start('WinScene');
+
+
     }
   }
 
   zombieHit (player, zombie){
     this.scoreText.setText("You lose")
+    this.scene.start('LoseScene');
+
+
   }
 
 }
