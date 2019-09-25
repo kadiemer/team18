@@ -67,7 +67,7 @@ export default class WorldScene1 extends Phaser.Scene {
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
     this.player = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, "guy")
+      .sprite(900, 500, "guy")
       .setSize(30, 40)
       .setOffset(0, 24);
 
@@ -83,7 +83,8 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
     // Watch the player and zombie for collisions, for the duration of the scene:
-    this.physics.add.collider(this.player, this.zombie);
+    //this.physics.add.collider(this.player, this.zombie);
+    this.physics.add.overlap(this.player,this.zombie,this.sceneHit,null,this);
 
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
@@ -207,5 +208,9 @@ export default class WorldScene1 extends Phaser.Scene {
     // Normalize and scale the velocity so that player can't move faster along a diagonal
     this.player.body.velocity.normalize().scale(speed);
 
+  }
+
+  sceneHit(player, zombie) {
+    this.scene.start('WorldScene2');
   }
 }
