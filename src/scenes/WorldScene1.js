@@ -4,6 +4,8 @@ import * as ChangeScene from "./ChangeScene.js";
 var textTimer = 0;
 var text;
 
+// window.convertedZombie = false; global var to see if zombie is converted or not
+
 export default class WorldScene1 extends Phaser.Scene {
 
   constructor () {
@@ -26,6 +28,12 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 96,
       frameWidth: 52.5
     });
+
+    /*  Loads "transformed person sprite"
+    this.load.spritesheet("transformedGuy", "./assets/sprites/guySpriteSheet.png", {
+      frameHeight: 960,
+      frameWidth: 525
+    });    */
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -72,6 +80,15 @@ export default class WorldScene1 extends Phaser.Scene {
       .setOffset(0, 24);
 
     this.player.scale = .2;
+
+    /* Adds the transformed person to map and makes it invisible
+    this.transformed = this.physics.add
+      .sprite(900, 500, "transformedGuy")
+      .setSize(30, 40)
+      .setOffset(0, 24);
+
+    this.transformed.scale = .2;
+    this.transformed.visible = false; */
 
     // Watch the player and worldLayer for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player, worldLayer);
@@ -148,11 +165,21 @@ export default class WorldScene1 extends Phaser.Scene {
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
       });
     });
+
+
   }
 
 
 
   update(time, delta) {
+    /* If zombie has been converted in the minigame it changes the
+    zombie sprite to to the transformed guy sprite
+    if (window.convertedZombie == true) {
+      this.zombie.disableBody(true,true);
+      this.transformed.visible = true;
+
+    } */
+
     textTimer += 1;
     if(textTimer > 300) {
       text.setVisible(false);
@@ -208,9 +235,15 @@ export default class WorldScene1 extends Phaser.Scene {
     // Normalize and scale the velocity so that player can't move faster along a diagonal
     this.player.body.velocity.normalize().scale(speed);
 
+
   }
 
   sceneHit(player, zombie) {
     this.scene.start('WorldScene2');
+
+    /* Pauses this scene after a collision and starts the minigame
+    this.scene.launch('WorldScene2');
+    this.scene.pause('WorldScene1');
+    */
   }
 }

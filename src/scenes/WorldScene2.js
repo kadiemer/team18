@@ -197,8 +197,16 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     if(this.score > 14){
       this.gameOver = true;
-      this.scoreText.setText("You win")
+      this.scoreText.setText("You win");
       this.myGroup.clear(true);
+      /*
+      If the player wins the minigame, it takes
+      hem back to the other scene and sets convertedzombie to true
+
+      this.scene.resume('WorldScene1');
+      window.convertedZombie = true;
+      this.scene.stop('WorldScene2'); */
+
       this.scene.start('WinScene');
 
 
