@@ -150,7 +150,7 @@ export default class WorldScene2 extends Phaser.Scene {
       this.zombie.destroy();
     }
     //Makes the letters fall down at speed of 2
-    Phaser.Actions.IncY(this.myGroup.getChildren(), 2);
+    Phaser.Actions.IncY(this.myGroup.getChildren(), 8);
 
     this.physics.overlap(this.key1,this.myGroup,this.hitKey,null,this);
 
