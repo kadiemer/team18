@@ -56,6 +56,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
     this.physics.add.collider(this.player,this.zombie,this.zombieHit,null,this);
 
+
     //Adds base keys and makes the image smaller
 
     this.key1 = this.physics.add.sprite(400,650,'wKey');
@@ -72,8 +73,8 @@ export default class WorldScene2 extends Phaser.Scene {
     this.myGroup = this.add.group();
 
     //Uses first 15 seconds of the track
-    var track1 = this.sound.add('track1');
-    track1.addMarker({
+    this.track1 = this.sound.add('track1');
+    this.track1.addMarker({
         name: 'track1',
         start: 0.00,
         duration: 100
@@ -88,7 +89,7 @@ export default class WorldScene2 extends Phaser.Scene {
       play.on("pointerup", function() {
         play.destroy();
         this.started = true
-        track1.play('track1');
+        this.track1.play('track1');
         this.time.addEvent({
         delay: 300 + getRandomInt(500), //This is the amount of time in which each letter is delayed
         callback: function(){
@@ -151,6 +152,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.zombie.anims.play("zombieWalk", true);
       }
       else if(this.gameOver == true){
+        this.track1.destroy();
         this.zombie.destroy();
       }
     }
@@ -280,8 +282,7 @@ export default class WorldScene2 extends Phaser.Scene {
   zombieHit (player, zombie){
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
-
-
+    this.track1.destroy();
   }
 
 }
