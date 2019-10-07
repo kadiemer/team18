@@ -4,7 +4,8 @@ import * as ChangeScene from "./ChangeScene.js";
 var textTimer = 0;
 var text;
 
-// window.convertedZombie = false; global var to see if zombie is converted or not
+window.convertedZombie = false;
+//global var to see if zombie is converted or not
 
 export default class WorldScene1 extends Phaser.Scene {
 
@@ -29,11 +30,11 @@ export default class WorldScene1 extends Phaser.Scene {
       frameWidth: 52.5
     });
 
-    /*  Loads "transformed person sprite"
+    /*  Loads "transformed person sprite"*/
     this.load.spritesheet("transformedGuy", "./assets/sprites/guySpriteSheet.png", {
       frameHeight: 960,
       frameWidth: 525
-    });    */
+    });
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -81,28 +82,49 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.player.scale = .2;
 
-    /* Adds the transformed person to map and makes it invisible
-    this.transformed = this.physics.add
-      .sprite(900, 500, "transformedGuy")
-      .setSize(30, 40)
-      .setOffset(0, 24);
+     //Adds the transformed person to map and makes it invisible*/
+    // THe following code adds 4 zombies to the map and 4 invisible transformed
+    // Person sprites to the map and stores the zombie and person in a group
+    this.transformedGroup = this.add.group();
+    this.increment = 0;
+    this.increment2 = 0;
+    this.zombieGroup = this.add.group();
 
-    this.transformed.scale = .2;
-    this.transformed.visible = false; */
+    var i;
+    for (i = 0; i < 4; i++) {
 
-    // Watch the player and worldLayer for collisions, for the duration of the scene:
-    //this.physics.add.collider(this.player, worldLayer);
+      this.zombie1 = this.physics.add
+        .sprite(300 + this.increment, 300 + this.increment2, "zombie");
+      this.transformed = this.physics.add.sprite(300 + this.increment, 300 + this.increment2 , "transformedGuy")
 
-    this.zombie = this.physics.add
+
+      this.transformed.scale = .2;
+      this.zombie1.scale = .2;
+      this.zombieGroup.add(this.zombie1);
+      this.transformed.visible = false;
+      this.transformedGroup.add(this.transformed);
+
+
+      this.increment += 300;
+      this.increment2  += 200;
+
+    }
+
+    /*this.zombie = this.physics.add
       .sprite(300, 300, "zombie");
 
-    this.zombie.scale = .2;
+    this.zombie.scale = .2; */
 
 
     // Watch the player and zombie for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player, this.zombie);
-    this.physics.add.overlap(this.player,this.zombie,this.sceneHit,null,this);
+    //this.counter2 = 0;
+    //Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
+  //    this.physics.add.overlap(this.player,child,this.sceneHit,null,this);
+    //  this.str1 = this.counter2.toString();
+    //  console.log(this.str1)
 
+//    } , this);
     // Create the player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
 
@@ -127,6 +149,19 @@ export default class WorldScene1 extends Phaser.Scene {
     this.anims.create({
       key: "zombieIdle",
       frames: this.anims.generateFrameNumbers("zombie", { start: 5, end: 5 }),
+      frameRate: 10,
+      repeat: -1
+    });
+     //transformed walking animations
+    this.anims.create({
+      key: "transformedWalk",
+      frames: this.anims.generateFrameNumbers("transformedGuy", { start: 0, end: 5 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "transformedIdle",
+      frames: this.anims.generateFrameNumbers("transformedGuy", { start: 5, end: 5 }),
       frameRate: 10,
       repeat: -1
     });
@@ -172,13 +207,20 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
   update(time, delta) {
-    /* If zombie has been converted in the minigame it changes the
-    zombie sprite to to the transformed guy sprite
-    if (window.convertedZombie == true) {
-      this.zombie.disableBody(true,true);
-      this.transformed.visible = true;
+    //checks for collisions between the zombies and the Player
 
-    } */
+    this.physics.add.overlap(this.player,this.zombieGroup,this.sceneHit,null,this);
+    this.physics.add.overlap(this.player,this.transformedGroup,this.shadowHit,null,this);
+
+
+
+
+    if (window.convertedZombie == true) {
+
+
+      window.convertedZombie = false;
+
+    }
 
     textTimer += 1;
     if(textTimer > 300) {
@@ -187,25 +229,77 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
     const speed = 250;
-    const zomSpeed = 60;
+    var zomSpeed = 20;
+    //Helps set up zombie movememnt
+    Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
 
-    if(this.zombie.x > this.player.x) {
-      this.zombie.body.setVelocityX(-zomSpeed);
-      this.zombie.anims.play("zombieWalk", true);
-      this.zombie.flipX = false;
+      if(child.x > this.player.x) {
+        child.body.setVelocityX(-zomSpeed);
+        child.anims.play("zombieWalk", true);
+        child.flipX = false;
+      }
+      else if (child.x < this.player.x){
+        child.body.setVelocityX(zomSpeed);
+        child.anims.play("zombieWalk", true);
+        child.flipX = true;
+      }
+
+      if(child.y > this.player.y) {
+        child.body.setVelocityY(-zomSpeed);
+      }
+      else if(child.y < this.player.y){
+        child.body.setVelocityY(zomSpeed);
+      }
+
+    }, this);
+
+
+
+    //movement for invisible transformed people
+    this.transformedSpeed = 20;
+    Phaser.Actions.Call(this.transformedGroup.getChildren(), function(indiv) {
+      if(indiv.x > this.player.x) {
+        indiv.body.setVelocityX(-this.transformedSpeed);
+        indiv.anims.play("transformedWalk", true);
+        indiv.flipX = false;
+      }
+      else if (indiv.x < this.player.x){
+        indiv.body.setVelocityX(this.transformedSpeed);
+        indiv.anims.play("transformedWalk", true);
+        indiv.flipX = true;
+      }
+
+      if(indiv.y > this.player.y) {
+        indiv.body.setVelocityY(-this.transformedSpeed);
+      }
+      else if(indiv.y < this.player.y){
+        indiv.body.setVelocityY(this.transformedSpeed);
+      }
+
+    }, this);
+
+
+    //old code for one zombie
+    /*const transformedSpeed = 90;
+    if(this.transformed.x > this.player.x) {
+      this.transformed.body.setVelocityX(-transformedSpeed);
+      this.transformed.anims.play("transformedWalk", true);
+      this.transformed.flipX = false;
     }
-    else if (this.zombie.x < this.player.x){
-      this.zombie.body.setVelocityX(zomSpeed);
-      this.zombie.anims.play("zombieWalk", true);
-      this.zombie.flipX = true;
+    else if (this.transformed.x < this.player.x){
+      this.transformed.body.setVelocityX(transformedSpeed);
+      this.transformed.anims.play("transformedWalk", true);
+      this.transformed.flipX = true;
     }
 
-    if(this.zombie.y > this.player.y) {
-      this.zombie.body.setVelocityY(-zomSpeed);
+    if(this.transformed.y > this.player.y) {
+      this.transformed.body.setVelocityY(-transformedSpeed);
     }
-    else if(this.zombie.y < this.player.y){
-      this.zombie.body.setVelocityY(zomSpeed);
-    }
+    else if(this.transformed.y < this.player.y){
+      this.transformed.body.setVelocityY(transformedSpeed);
+    }*/
+
+
 
     const prevVelocity = this.player.body.velocity.clone();
 
@@ -239,11 +333,23 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   sceneHit(player, zombie) {
-    this.scene.start('WorldScene2');
 
-    /* Pauses this scene after a collision and starts the minigame
+    // Pauses this scene after a collision and starts the minigame
+    // Disables whichever zombie is being collided with
+    zombie.disableBody(true,true);
+
     this.scene.launch('WorldScene2');
-    this.scene.pause('WorldScene1');
-    */
+    this.scene.sleep('WorldScene1');
+
+  }
+
+  shadowHit(player, guy) {
+    //this function makes it so whichever zombie
+    //collides with the human, its corresponding
+    //invisible transformed person is set to visible and displayed if the Player
+    //wins the mini game
+    guy.visible = true;
+
+
   }
 }
