@@ -84,14 +84,14 @@ export default class WorldScene2 extends Phaser.Scene {
 
       //Makes it so letters start falling after click
       play.on("pointerup", function() {
+        play.destroy();
         this.started = true
         track1.play('track1');
         this.time.addEvent({
-        delay: 1500, //This is the amount of time in which each letter is delayed
+        delay: 300 + getRandomInt(500), //This is the amount of time in which each letter is delayed
         callback: function(){
 
           //This is the function that picks a random letter and makes it fall
-
           this.picker = getRandomInt(4);
           if (this.picker == 0) {
             this.wKey = this.physics.add.sprite(this.zombie.x, 650, 'wKey');
@@ -119,7 +119,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
         },
         callbackScope: this,
-        repeat: 5 }) //this is how many letters fall + 1
+        repeat: 30 }) //this is how many letters fall + 1
       }, this
     );
 
@@ -170,32 +170,88 @@ export default class WorldScene2 extends Phaser.Scene {
     if(staticKey['texture']['key'] == "wKey"){
       if(wKey.isDown){
         console.log("Pressing the w key")
+        if(dynamicKey.x > 400){
+          var text = this.add.text(350, 550, 'Early',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else if(dynamicKey.x < 350){
+          var text = this.add.text(350, 550, 'Late',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else{
+          var text = this.add.text(350, 550, 'Great!',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.score+=1;
+        }
         dynamicKey.destroy();
-        this.score+=1;
         this.scoreText.setText("Score: " + this.score);
       }
     }
     else if(staticKey['texture']['key'] == "aKey"){
       if(aKey.isDown){
         console.log("Pressing the a key")
+        if(dynamicKey.x > 400){
+          var text = this.add.text(350, 550, 'Early',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else if(dynamicKey.x < 350){
+          var text = this.add.text(350, 550, 'Late',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else{
+          var text = this.add.text(350, 550, 'Great!',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.score+=1;
+        }
         dynamicKey.destroy();
-        this.score+=1;
         this.scoreText.setText("Score: " + this.score);
       }
     }
     else if(staticKey['texture']['key'] == "sKey"){
       if(sKey.isDown){
         console.log("Pressing the s key")
+        if(dynamicKey.x > 400){
+          var text = this.add.text(350, 550, 'Early',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else if(dynamicKey.x < 350){
+          var text = this.add.text(350, 550, 'Late',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else{
+          var text = this.add.text(350, 550, 'Great!',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.score+=1;
+        }
         dynamicKey.destroy();
-        this.score+=1;
         this.scoreText.setText("Score: " + this.score);
       }
     }
     else if(staticKey['texture']['key'] == "dKey"){
       if(dKey.isDown){
         console.log("Pressing the d key")
+        if(dynamicKey.x > 400){
+          var text = this.add.text(350, 550, 'Early',
+          {fontFamily: 'Fantasy', fontSize: 50, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else if(dynamicKey.x < 350){
+          var text = this.add.text(350, 550, 'Late',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.score+=.5;
+        }
+        else{
+          var text = this.add.text(350, 550, 'Great!',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.score+=1;
+        }
         dynamicKey.destroy();
-        this.score+=1;
         this.scoreText.setText("Score: " + this.score);
       }
     }
