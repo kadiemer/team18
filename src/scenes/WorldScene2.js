@@ -261,7 +261,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.scoreText.setText("Score: " + this.score);
       }
     }
-    if(this.score > 1){
+    if(this.score > 14){
       this.gameOver = true;
       this.scoreText.setText("You win");
       this.myGroup.clear(true);
