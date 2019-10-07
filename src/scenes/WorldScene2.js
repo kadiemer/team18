@@ -122,7 +122,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
         },
         callbackScope: this,
-        repeat: 30 }) //this is how many letters fall + 1
+        repeat: 40 }) //this is how many letters fall + 1
       }, this
     );
 
