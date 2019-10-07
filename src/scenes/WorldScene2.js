@@ -18,7 +18,7 @@ export default class WorldScene2 extends Phaser.Scene {
       frameHeight: 940,
       frameWidth: 491
     });
-    this.load.image("guy", "./assets/sprites/guySprite.png");
+    this.load.image("girl", "./assets/sprites/girlSprite.png");
     this.load.image('wKey', './assets/images/wKey.png');
     this.load.image('aKey', './assets/images/aKey.png');
     this.load.image('sKey', './assets/images/sKey.png');
@@ -46,8 +46,8 @@ export default class WorldScene2 extends Phaser.Scene {
     this.add.image(1001.5,561.5,"danceBackground");
 
     this.player = this.physics.add
-      .sprite(150, 850, "guy");
-    this.player.scale = .5;
+      .sprite(150, 850, "girl");
+    this.player.scale = .3;
 
     this.zombie = this.physics.add
       .sprite(1800, 850, "zombie");
@@ -162,7 +162,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
     this.physics.overlap(this.key1,this.myGroup,this.hitKey,null,this);
 
-    this.player.flipX = true;
+    this.player.flipX = false;
 
   }
 
