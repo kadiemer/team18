@@ -55,14 +55,14 @@ export default class WorldScene2 extends Phaser.Scene {
 
     //Adds base keys and makes the image smaller
 
-    this.key1 = this.physics.add.sprite(750,450,'wKey');
-    this.key1.setScale(1);
-    this.key2 = this.physics.add.sprite(900,450,'aKey');
-    this.key2.setScale(1);
-    this.key3 = this.physics.add.sprite(1050,450,'sKey');
-    this.key3.setScale(1);
-    this.key4 = this.physics.add.sprite(1200,450,'dKey');
-    this.key4.setScale(1);
+    this.key1 = this.physics.add.sprite(400,650,'wKey');
+    this.key1.setScale(.75);
+    this.key2 = this.physics.add.sprite(400,750,'aKey');
+    this.key2.setScale(.75);
+    this.key3 = this.physics.add.sprite(400,850,'sKey');
+    this.key3.setScale(.75);
+    this.key4 = this.physics.add.sprite(400,950,'dKey');
+    this.key4.setScale(.75);
 
 
     //creates a group for the falling sprites and an array to store the different keys
@@ -117,7 +117,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
         },
         callbackScope: this,
-        repeat: 1000 }) //this is how many letters fall + 1
+        repeat: 5 }) //this is how many letters fall + 1
       }, this
     );
 
