@@ -20,14 +20,18 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 940,
       frameWidth: 491
     });
-    this.load.spritesheet("guy", "./assets/sprites/guySpriteSheet.png", {
-      frameHeight: 960,
-      frameWidth: 525
+    this.load.spritesheet("girl", "./assets/sprites/girlSpriteSheet.png", {
+      frameHeight: 1831,
+      frameWidth: 878
     });
     this.load.image('background', './assets/images/background.png');
     this.load.image('guySpriteSheet', "./assets/sprites/guySpriteSheet.png", {
       frameHeight: 96,
       frameWidth: 52.5
+    });
+    this.load.spritesheet('girlBack',"./assets/sprites/girlBack.png", {
+      frameHeight: 1469,
+      frameWidth: 767
     });
 
     /*  Loads "transformed person sprite"*/
@@ -76,11 +80,11 @@ export default class WorldScene1 extends Phaser.Scene {
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
     this.player = this.physics.add
-      .sprite(900, 500, "guy")
+      .sprite(900, 500, "girl")
       .setSize(30, 40)
       .setOffset(0, 24);
 
-    this.player.scale = .2;
+    this.player.scale = .11;
 
      //Adds the transformed person to map and makes it invisible*/
     // THe following code adds 4 zombies to the map and 4 invisible transformed
@@ -130,14 +134,21 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk",
-      frames: this.anims.generateFrameNumbers("guy", { start: 0, end: 5 }),
-      frameRate: 10,
+      frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 11 }),
+      frameRate: 12,
       repeat: -1
     });
     this.anims.create({
-      key: "idle",
-      frames: this.anims.generateFrameNumbers("guy", { start: 5, end: 5 }),
+      key: "walkUp",
+      frames: this.anims.generateFrameNumbers("girlBack", { start: 0, end: 0}),
       frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: "idle",
+      frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 0 }),
+      frameRate: 12,
       repeat: -1
     });
     this.anims.create({
@@ -310,11 +321,15 @@ export default class WorldScene1 extends Phaser.Scene {
     if (this.cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
       this.player.anims.play("walk", true);
-      this.player.flipX = false;
+      this.player.flipX = true;
     } else if (this.cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
      this.player.anims.play("walk", true);
-      this.player.flipX = true;
+      this.player.flipX = false;
+    } else if (this.cursors.up.isDown) {
+      this.player.body.setVelocityX(speed);
+     this.player.anims.play("walkUp", true);
+      this.player.flipX = false;
     } else {
      this.player.anims.play("idle", true);
     }
