@@ -39,6 +39,8 @@ export default class WorldScene2 extends Phaser.Scene {
     this.scoreText;
     this.score = 0;
     this.started = false;
+    this.indicatorText = this.add.text(-500, -525, 'placeholder',
+    {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'});
 
     //Create the scene
     this.add.image(1001.5,561.5,"danceBackground");
@@ -135,7 +137,7 @@ export default class WorldScene2 extends Phaser.Scene {
         return Math.floor(Math.random() * Math.floor(max));
       }
       this.scoreText = this.add.text(50, 16, "score: 0", {
-        fontSize: "40px",
+        fontSize: "60px",
         fill: "#000"
         });
 
@@ -144,7 +146,7 @@ export default class WorldScene2 extends Phaser.Scene {
   update(time, delta) {
 
     if(this.started){
-      this.zombie.x -= .7;
+      this.zombie.x -= .8;
       if(this.gameOver != true){
         this.zombie.anims.play("zombieWalk", true);
       }
@@ -167,21 +169,23 @@ export default class WorldScene2 extends Phaser.Scene {
     var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.A);
     var sKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.S);
     var dKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.D);
+    this.indicatorText.destroy();
+
     if(staticKey['texture']['key'] == "wKey"){
       if(wKey.isDown){
         console.log("Pressing the w key")
         if(dynamicKey.x > 400){
-          var text = this.add.text(350, 550, 'Early',
+          this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else if(dynamicKey.x < 350){
-          var text = this.add.text(350, 550, 'Late',
+          this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else{
-          var text = this.add.text(350, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
         }
@@ -193,17 +197,17 @@ export default class WorldScene2 extends Phaser.Scene {
       if(aKey.isDown){
         console.log("Pressing the a key")
         if(dynamicKey.x > 400){
-          var text = this.add.text(350, 550, 'Early',
+          this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else if(dynamicKey.x < 350){
-          var text = this.add.text(350, 550, 'Late',
+          this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else{
-          var text = this.add.text(350, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
         }
@@ -215,17 +219,17 @@ export default class WorldScene2 extends Phaser.Scene {
       if(sKey.isDown){
         console.log("Pressing the s key")
         if(dynamicKey.x > 400){
-          var text = this.add.text(350, 550, 'Early',
+          this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else if(dynamicKey.x < 350){
-          var text = this.add.text(350, 550, 'Late',
+          this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else{
-          var text = this.add.text(350, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
         }
@@ -237,17 +241,17 @@ export default class WorldScene2 extends Phaser.Scene {
       if(dKey.isDown){
         console.log("Pressing the d key")
         if(dynamicKey.x > 400){
-          var text = this.add.text(350, 550, 'Early',
-          {fontFamily: 'Fantasy', fontSize: 50, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'Early',
+          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else if(dynamicKey.x < 350){
-          var text = this.add.text(350, 550, 'Late',
+          this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
         }
         else{
-          var text = this.add.text(350, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
         }
