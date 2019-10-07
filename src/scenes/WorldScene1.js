@@ -28,6 +28,10 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 96,
       frameWidth: 52.5
     });
+    this.load.spritesheet('girlBack',"./assets/sprites/girlBack.png", {
+      frameHeight: 1469,
+      frameWidth: 767
+    });
 
     /*  Loads "transformed person sprite"
     this.load.spritesheet("transformedGuy", "./assets/sprites/guySpriteSheet.png", {
@@ -112,6 +116,13 @@ export default class WorldScene1 extends Phaser.Scene {
       frameRate: 12,
       repeat: -1
     });
+    this.anims.create({
+      key: "walkUp",
+      frames: this.anims.generateFrameNumbers("girlBack", { start: 0, end: 0}),
+      frameRate: 10,
+      repeat: -1
+    });
+
     this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 0 }),
@@ -220,6 +231,10 @@ export default class WorldScene1 extends Phaser.Scene {
     } else if (this.cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
      this.player.anims.play("walk", true);
+      this.player.flipX = false;
+    } else if (this.cursors.up.isDown) {
+      this.player.body.setVelocityX(speed);
+     this.player.anims.play("walkUp", true);
       this.player.flipX = false;
     } else {
      this.player.anims.play("idle", true);
