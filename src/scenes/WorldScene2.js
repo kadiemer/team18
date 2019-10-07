@@ -38,6 +38,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.gameOver = false;
     this.scoreText;
     this.score = 0;
+    this.started = false;
 
     //Create the scene
     this.add.image(1001.5,561.5,"danceBackground");
@@ -83,6 +84,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
       //Makes it so letters start falling after click
       play.on("pointerup", function() {
+        this.started = true
         track1.play('track1');
         this.time.addEvent({
         delay: 1500, //This is the amount of time in which each letter is delayed
@@ -92,19 +94,19 @@ export default class WorldScene2 extends Phaser.Scene {
 
           this.picker = getRandomInt(4);
           if (this.picker == 0) {
-            this.wKey = this.physics.add.sprite(750, 50, 'wKey');
+            this.wKey = this.physics.add.sprite(this.zombie.x, 650, 'wKey');
             this.myGroup.add(this.wKey);
           }
           else if (this.picker == 1) {
-            this.aKey = this.physics.add.sprite(900, 50, 'aKey');
+            this.aKey = this.physics.add.sprite(this.zombie.x, 750, 'aKey');
             this.myGroup.add(this.aKey);
           }
           else if (this.picker == 2) {
-            this.sKey = this.physics.add.sprite(1050, 50, 'sKey');
+            this.sKey = this.physics.add.sprite(this.zombie.x, 850, 'sKey');
             this.myGroup.add(this.sKey);
           }
           else if (this.picker == 3) {
-            this.dKey = this.physics.add.sprite(1200, 50, 'dKey');
+            this.dKey = this.physics.add.sprite(this.zombie.x, 950, 'dKey');
             this.myGroup.add(this.dKey);
           }
           this.myGroup.children.iterate(function(child){
@@ -141,16 +143,18 @@ export default class WorldScene2 extends Phaser.Scene {
 
   update(time, delta) {
 
-    this.zombie.x -= .7;
+    if(this.started){
+      this.zombie.x -= .7;
+      if(this.gameOver != true){
+        this.zombie.anims.play("zombieWalk", true);
+      }
+      else if(this.gameOver == true){
+        this.zombie.destroy();
+      }
+    }
 
-    if(this.gameOver != true){
-      this.zombie.anims.play("zombieWalk", true);
-    }
-    else if(this.gameOver == true){
-      this.zombie.destroy();
-    }
     //Makes the letters fall down at speed of 2
-    Phaser.Actions.IncY(this.myGroup.getChildren(), 8);
+    Phaser.Actions.IncX(this.myGroup.getChildren(), -8);
 
     this.physics.overlap(this.key1,this.myGroup,this.hitKey,null,this);
 
