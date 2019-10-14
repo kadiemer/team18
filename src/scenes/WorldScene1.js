@@ -4,6 +4,7 @@ import * as ChangeScene from "./ChangeScene.js";
 var textTimer = 0;
 var text;
 
+
 window.convertedZombie = false;
 //global var to see if zombie is converted or not
 
@@ -20,18 +21,14 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 940,
       frameWidth: 491
     });
-    this.load.spritesheet("girl", "./assets/sprites/girlSpriteSheet.png", {
-      frameHeight: 1831,
-      frameWidth: 878
+    this.load.spritesheet("guy", "./assets/sprites/guySpriteSheet.png", {
+      frameHeight: 960,
+      frameWidth: 525
     });
     this.load.image('background', './assets/images/background.png');
     this.load.image('guySpriteSheet', "./assets/sprites/guySpriteSheet.png", {
       frameHeight: 96,
       frameWidth: 52.5
-    });
-    this.load.spritesheet('girlBack',"./assets/sprites/girlBack.png", {
-      frameHeight: 1469,
-      frameWidth: 767
     });
 
     /*  Loads "transformed person sprite"*/
@@ -80,11 +77,11 @@ export default class WorldScene1 extends Phaser.Scene {
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
     this.player = this.physics.add
-      .sprite(900, 500, "girl")
+      .sprite(900, 500, "guy")
       .setSize(30, 40)
       .setOffset(0, 24);
 
-    this.player.scale = .11;
+    this.player.scale = .2;
 
      //Adds the transformed person to map and makes it invisible*/
     // THe following code adds 4 zombies to the map and 4 invisible transformed
@@ -92,25 +89,22 @@ export default class WorldScene1 extends Phaser.Scene {
     this.transformedGroup = this.add.group();
     this.increment = 0;
     this.increment2 = 0;
+    this.increment3=0; //this is used in the update file to add transformed zombies
     this.zombieGroup = this.add.group();
-
     var i;
     for (i = 0; i < 4; i++) {
 
       this.zombie1 = this.physics.add
         .sprite(300 + this.increment, 300 + this.increment2, "zombie");
-      this.transformed = this.physics.add.sprite(300 + this.increment, 300 + this.increment2 , "transformedGuy")
-
-
-      this.transformed.scale = .2;
+    //  this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
+      //this.transformed.scale = .2;
       this.zombie1.scale = .2;
       this.zombieGroup.add(this.zombie1);
-      this.transformed.visible = false;
-      this.transformedGroup.add(this.transformed);
-
-
+    //  this.transformed.visible = false;
+      //this.transformedGroup.add(this.transformed);
       this.increment += 300;
       this.increment2  += 200;
+      //this.increment3 += 100
 
     }
 
@@ -134,21 +128,14 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk",
-      frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 11 }),
-      frameRate: 12,
-      repeat: -1
-    });
-    this.anims.create({
-      key: "walkUp",
-      frames: this.anims.generateFrameNumbers("girlBack", { start: 0, end: 0}),
+      frames: this.anims.generateFrameNumbers("guy", { start: 0, end: 5 }),
       frameRate: 10,
       repeat: -1
     });
-
     this.anims.create({
       key: "idle",
-      frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 0 }),
-      frameRate: 12,
+      frames: this.anims.generateFrameNumbers("guy", { start: 5, end: 5 }),
+      frameRate: 10,
       repeat: -1
     });
     this.anims.create({
@@ -221,14 +208,17 @@ export default class WorldScene1 extends Phaser.Scene {
     //checks for collisions between the zombies and the Player
 
     this.physics.add.overlap(this.player,this.zombieGroup,this.sceneHit,null,this);
-    this.physics.add.overlap(this.player,this.transformedGroup,this.shadowHit,null,this);
-
+//    this.physics.add.overlap(this.player,this.transformedGroup,this.shadowHit,null,this);
 
 
 
     if (window.convertedZombie == true) {
-
-
+      //if convertedzombie boolean set to true in worldscene2 then it adds
+      //transformed sprite to the screen
+      this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
+      this.transformed.scale = .2;
+      this.transformedGroup.add(this.transformed);
+      this.increment3 = this.increment3 + 100;
       window.convertedZombie = false;
 
     }
@@ -267,7 +257,7 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
     //movement for invisible transformed people
-    this.transformedSpeed = 20;
+    /*this.transformedSpeed = 20;
     Phaser.Actions.Call(this.transformedGroup.getChildren(), function(indiv) {
       if(indiv.x > this.player.x) {
         indiv.body.setVelocityX(-this.transformedSpeed);
@@ -287,7 +277,7 @@ export default class WorldScene1 extends Phaser.Scene {
         indiv.body.setVelocityY(this.transformedSpeed);
       }
 
-    }, this);
+    }, this);*/
 
 
     //old code for one zombie
@@ -321,15 +311,11 @@ export default class WorldScene1 extends Phaser.Scene {
     if (this.cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
       this.player.anims.play("walk", true);
-      this.player.flipX = true;
+      this.player.flipX = false;
     } else if (this.cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
      this.player.anims.play("walk", true);
-      this.player.flipX = false;
-    } else if (this.cursors.up.isDown) {
-      this.player.body.setVelocityX(speed);
-     this.player.anims.play("walkUp", true);
-      this.player.flipX = false;
+      this.player.flipX = true;
     } else {
      this.player.anims.play("idle", true);
     }
@@ -352,13 +338,17 @@ export default class WorldScene1 extends Phaser.Scene {
     // Pauses this scene after a collision and starts the minigame
     // Disables whichever zombie is being collided with
     zombie.disableBody(true,true);
+    this.cursors.up.isDown = false;
+    this.cursors.down.isDown = false;
+    this.cursors.left.isDown = false;
+    this.cursors.right.isDown = false;
 
     this.scene.launch('WorldScene2');
     this.scene.sleep('WorldScene1');
 
   }
 
-  shadowHit(player, guy) {
+/*  shadowHit(player, guy) {
     //this function makes it so whichever zombie
     //collides with the human, its corresponding
     //invisible transformed person is set to visible and displayed if the Player
@@ -366,5 +356,5 @@ export default class WorldScene1 extends Phaser.Scene {
     guy.visible = true;
 
 
-  }
+  } */
 }
