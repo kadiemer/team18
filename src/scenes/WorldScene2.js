@@ -25,7 +25,8 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.image('dKey', './assets/images/dKey.png');
 
     this.load.audio('track1', './assets/sounds/track1.mp3');
-
+    this.load.audio('Miss','./assets/sounds/Miss.wav');
+    this.load.audio('Good','./assets/sounds/Good.wav');
 
 
     // Declare variables for center of the scene
@@ -175,21 +176,23 @@ export default class WorldScene2 extends Phaser.Scene {
 
     if(staticKey['texture']['key'] == "wKey"){
       if(wKey.isDown){
-        console.log("Pressing the w key")
         if(dynamicKey.x > 400){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
+          this.sound.play('Good');
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
@@ -197,21 +200,23 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "aKey"){
       if(aKey.isDown){
-        console.log("Pressing the a key")
         if(dynamicKey.x > 400){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
+          this.sound.play('Good');
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
@@ -219,21 +224,23 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "sKey"){
       if(sKey.isDown){
-        console.log("Pressing the s key")
         if(dynamicKey.x > 400){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
+          this.sound.play('Good');
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
@@ -241,21 +248,24 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "dKey"){
       if(dKey.isDown){
-        console.log("Pressing the d key")
         if(dynamicKey.x > 400){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score+=.5;
+          this.sound.play('Miss');
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'Great!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
+          this.sound.play('Good');
+
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);

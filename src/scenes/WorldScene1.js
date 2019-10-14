@@ -37,11 +37,6 @@ export default class WorldScene1 extends Phaser.Scene {
       frameWidth: 525
     });
 
-    // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
-    // the player animations (walking left, walking right, etc.) in one image. For more info see:
-    //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
-    // If you don't use an atlas, you can do the same thing with a spritesheet, see:
-    //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
     this.load.atlas(
       "atlas",
       "./assets/atlas/atlas.png",
@@ -56,19 +51,6 @@ export default class WorldScene1 extends Phaser.Scene {
 
     const map = this.make.tilemap({ key: "map" });
 
-    // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
-    // Phaser's cache (i.e. the name you used in preload)
-    //const tileset = map.addTilesetImage("tuxmon-sample-32px-extruded", "tiles");
-
-    // Parameters: layer name (or index) from Tiled, tileset, x, y
-    //const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
-    //const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
-    //const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
-
-    // worldLayer.setCollisionByProperty({ collides: true });
-
-    //aboveLayer.setDepth(10);
-
     const spawnPoint = map.findObject(
       "Objects",
       obj => obj.name === "Spawn Point"
@@ -77,9 +59,7 @@ export default class WorldScene1 extends Phaser.Scene {
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
     this.player = this.physics.add
-      .sprite(900, 500, "guy")
-      .setSize(30, 40)
-      .setOffset(0, 24);
+      .sprite(900, 500, "guy");
 
     this.player.scale = .2;
 
@@ -90,6 +70,8 @@ export default class WorldScene1 extends Phaser.Scene {
     this.increment = 0;
     this.increment2 = 0;
     this.increment3=0; //this is used in the update file to add transformed zombies
+    this.oldZombiex = 0;
+    this.oldZombiey = 0;
     this.zombieGroup = this.add.group();
     var i;
     for (i = 0; i < 4; i++) {
@@ -206,6 +188,10 @@ export default class WorldScene1 extends Phaser.Scene {
 
   update(time, delta) {
     //checks for collisions between the zombies and the Player
+    if(this.zombieGroup.getLength() == 0){
+      this.scene.sleep("WorldScene1");
+      this.scene.start("WinScene");
+    }
 
     this.physics.add.overlap(this.player,this.zombieGroup,this.sceneHit,null,this);
 //    this.physics.add.overlap(this.player,this.transformedGroup,this.shadowHit,null,this);
@@ -215,11 +201,11 @@ export default class WorldScene1 extends Phaser.Scene {
     if (window.convertedZombie == true) {
       //if convertedzombie boolean set to true in worldscene2 then it adds
       //transformed sprite to the screen
-      this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
+      this.transformed = this.physics.add.sprite(this.oldZombiex, this.oldZombiey, "transformedGuy")
       this.transformed.scale = .2;
       this.transformedGroup.add(this.transformed);
-      this.increment3 = this.increment3 + 100;
       window.convertedZombie = false;
+      this.physics.add.collider(this.transformed,this.zombieGroup,this.transformedHit,null,this);
 
     }
 
@@ -232,75 +218,73 @@ export default class WorldScene1 extends Phaser.Scene {
     const speed = 250;
     var zomSpeed = 20;
     //Helps set up zombie movememnt
-    Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
+    if (this.transformedGroup.getLength() != 0){
+      Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed){
+        Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
 
-      if(child.x > this.player.x) {
-        child.body.setVelocityX(-zomSpeed);
-        child.anims.play("zombieWalk", true);
-        child.flipX = false;
-      }
-      else if (child.x < this.player.x){
-        child.body.setVelocityX(zomSpeed);
-        child.anims.play("zombieWalk", true);
-        child.flipX = true;
-      }
+          if(Math.abs(Math.sqrt((transformed.x*transformed.x - child.x*child.x) + (transformed.y*transformed.y - child.y*child.y))) > Math.abs(Math.sqrt((this.player.x*this.player.x - child.x*child.x) + (this.player.y*this.player.y - child.y*child.y)))){
+            if(child.x > this.player.x) {
+              child.body.setVelocityX(-zomSpeed);
+              child.anims.play("zombieWalk", true);
+              child.flipX = false;
+            }
+            else if (child.x < this.player.x){
+              child.body.setVelocityX(zomSpeed);
+              child.anims.play("zombieWalk", true);
+              child.flipX = true;
+            }
 
-      if(child.y > this.player.y) {
-        child.body.setVelocityY(-zomSpeed);
-      }
-      else if(child.y < this.player.y){
-        child.body.setVelocityY(zomSpeed);
-      }
+            if(child.y > this.player.y) {
+              child.body.setVelocityY(-zomSpeed);
+            }
+            else if(child.y < this.player.y){
+              child.body.setVelocityY(zomSpeed);
+            }
+          }
+          else{
+            if(child.x > transformed.x) {
+              child.body.setVelocityX(-zomSpeed);
+              child.anims.play("zombieWalk", true);
+              child.flipX = false;
+            }
+            else if (child.x < transformed.x){
+              child.body.setVelocityX(zomSpeed);
+              child.anims.play("zombieWalk", true);
+              child.flipX = true;
+            }
 
-    }, this);
+            if(child.y > transformed.y) {
+              child.body.setVelocityY(-zomSpeed);
+            }
+            else if(child.y < transformed.y){
+              child.body.setVelocityY(zomSpeed);
+            }
+          }
 
-
-
-    //movement for invisible transformed people
-    /*this.transformedSpeed = 20;
-    Phaser.Actions.Call(this.transformedGroup.getChildren(), function(indiv) {
-      if(indiv.x > this.player.x) {
-        indiv.body.setVelocityX(-this.transformedSpeed);
-        indiv.anims.play("transformedWalk", true);
-        indiv.flipX = false;
-      }
-      else if (indiv.x < this.player.x){
-        indiv.body.setVelocityX(this.transformedSpeed);
-        indiv.anims.play("transformedWalk", true);
-        indiv.flipX = true;
-      }
-
-      if(indiv.y > this.player.y) {
-        indiv.body.setVelocityY(-this.transformedSpeed);
-      }
-      else if(indiv.y < this.player.y){
-        indiv.body.setVelocityY(this.transformedSpeed);
-      }
-
-    }, this);*/
-
-
-    //old code for one zombie
-    /*const transformedSpeed = 90;
-    if(this.transformed.x > this.player.x) {
-      this.transformed.body.setVelocityX(-transformedSpeed);
-      this.transformed.anims.play("transformedWalk", true);
-      this.transformed.flipX = false;
+        }, this);
+      },this);
     }
-    else if (this.transformed.x < this.player.x){
-      this.transformed.body.setVelocityX(transformedSpeed);
-      this.transformed.anims.play("transformedWalk", true);
-      this.transformed.flipX = true;
+    else{
+      Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
+        if(child.x > this.player.x) {
+          child.body.setVelocityX(-zomSpeed);
+          child.anims.play("zombieWalk", true);
+          child.flipX = false;
+        }
+        else if (child.x < this.player.x){
+          child.body.setVelocityX(zomSpeed);
+          child.anims.play("zombieWalk", true);
+          child.flipX = true;
+        }
+
+        if(child.y > this.player.y) {
+          child.body.setVelocityY(-zomSpeed);
+        }
+        else if(child.y < this.player.y){
+          child.body.setVelocityY(zomSpeed);
+        }
+      }, this);
     }
-
-    if(this.transformed.y > this.player.y) {
-      this.transformed.body.setVelocityY(-transformedSpeed);
-    }
-    else if(this.transformed.y < this.player.y){
-      this.transformed.body.setVelocityY(transformedSpeed);
-    }*/
-
-
 
     const prevVelocity = this.player.body.velocity.clone();
 
@@ -337,6 +321,8 @@ export default class WorldScene1 extends Phaser.Scene {
 
     // Pauses this scene after a collision and starts the minigame
     // Disables whichever zombie is being collided with
+    this.oldZombiex = zombie.x;
+    this.oldZombiey = zombie.y;
     zombie.disableBody(true,true);
     this.cursors.up.isDown = false;
     this.cursors.down.isDown = false;
@@ -345,6 +331,20 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.scene.launch('WorldScene2');
     this.scene.sleep('WorldScene1');
+
+  }
+
+  transformedHit(transformed, zombie) {
+
+    // Pauses this scene after a collision and starts the minigame
+    // Disables whichever zombie is being collided with
+    this.transformedGroup.remove(transformed);
+    var oldX = transformed.x;
+    var oldY = transformed.y;
+    transformed.destroy();
+    this.newZomb = this.physics.add.sprite(oldX-100, oldY+100, "zombie");
+    this.newZomb.scale = .2;
+    this.zombieGroup.add(this.newZomb);
 
   }
 
