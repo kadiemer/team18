@@ -57,6 +57,7 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   create() {
+    this.minigameZombie;
     this.add.image(1001.5,561.5,"background")
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -97,6 +98,7 @@ export default class WorldScene1 extends Phaser.Scene {
       //this.transformed.scale = .2;
       //this.zombie1.anims.play("gothZombieWalk",true);
       this.zombie1.scale = .45;
+      this.zombie1.num = i;
       this.zombieGroup.add(this.zombie1);
     //  this.transformed.visible = false;
       //this.transformedGroup.add(this.transformed);
@@ -216,7 +218,7 @@ export default class WorldScene1 extends Phaser.Scene {
 
   update(time, delta) {
     //checks for collisions between the zombies and the Player
-    if(this.zombieGroup.getLength() == 0){
+    if(this.zombieGroup.getLength() === 0 && window.convertedZombie == true){
       this.scene.sleep("WorldScene1");
       this.scene.start("WinScene");
     }
@@ -359,6 +361,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.cursors.right.isDown = false;
 
     this.scene.launch('WorldScene2');
+    this.zombieGroup.remove(zombie);
     this.scene.sleep('WorldScene1');
 
   }
@@ -371,7 +374,7 @@ export default class WorldScene1 extends Phaser.Scene {
     var oldX = transformed.x;
     var oldY = transformed.y;
     transformed.destroy();
-    this.newZomb = this.physics.add.sprite(oldX-100, oldY+100, "zombie");
+    this.newZomb = this.physics.add.sprite(oldX, oldY+100, "zombie");
     this.newZomb.scale = .4;
     this.zombieGroup.add(this.newZomb);
 

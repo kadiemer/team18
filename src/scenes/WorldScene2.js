@@ -297,6 +297,7 @@ export default class WorldScene2 extends Phaser.Scene {
       window.convertedZombie = true;
       this.scene.stop('WorldScene2');
       this.scene.wake('WorldScene1');
+
       //this.scene.stop('WorldScene2');
 
   //    this.scene.start('WinScene');
