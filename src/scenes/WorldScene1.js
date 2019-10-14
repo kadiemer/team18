@@ -229,8 +229,8 @@ export default class WorldScene1 extends Phaser.Scene {
     if (window.convertedZombie == true) {
       //if convertedzombie boolean set to true in worldscene2 then it adds
       //transformed sprite to the screen
-      this.transformed = this.physics.add.sprite(this.oldZombiex, this.oldZombiey, "transformedGuy")
-      this.transformed.scale = .2;
+      this.transformed = this.physics.add.sprite(this.oldZombiex + 300, this.oldZombiey, "transformedGuy")
+      this.transformed.scale = .35;
       this.transformedGroup.add(this.transformed);
       window.convertedZombie = false;
       this.physics.add.collider(this.transformed,this.zombieGroup,this.transformedHit,null,this);
@@ -254,12 +254,12 @@ export default class WorldScene1 extends Phaser.Scene {
           if(Math.abs(Math.sqrt((transformed.x*transformed.x - child.x*child.x) + (transformed.y*transformed.y - child.y*child.y))) > Math.abs(Math.sqrt((this.player.x*this.player.x - child.x*child.x) + (this.player.y*this.player.y - child.y*child.y)))){
             if(child.x > this.player.x) {
               child.body.setVelocityX(-zomSpeed);
-              child.anims.play("zombieWalk", true);
+              //child.anims.play("zombieWalk", true);
               child.flipX = false;
             }
             else if (child.x < this.player.x){
               child.body.setVelocityX(zomSpeed);
-              child.anims.play("zombieWalk", true);
+              //child.anims.play("zombieWalk", true);
               child.flipX = true;
             }
 
@@ -273,12 +273,12 @@ export default class WorldScene1 extends Phaser.Scene {
           else{
             if(child.x > transformed.x) {
               child.body.setVelocityX(-zomSpeed);
-              child.anims.play("zombieWalk", true);
+              //child.anims.play("zombieWalk", true);
               child.flipX = false;
             }
             else if (child.x < transformed.x){
               child.body.setVelocityX(zomSpeed);
-              child.anims.play("zombieWalk", true);
+              //child.anims.play("zombieWalk", true);
               child.flipX = true;
             }
 
@@ -297,12 +297,12 @@ export default class WorldScene1 extends Phaser.Scene {
       Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
         if(child.x > this.player.x) {
           child.body.setVelocityX(-zomSpeed);
-          child.anims.play("zombieWalk", true);
+          //child.anims.play("zombieWalk", true);
           child.flipX = false;
         }
         else if (child.x < this.player.x){
           child.body.setVelocityX(zomSpeed);
-          child.anims.play("zombieWalk", true);
+          //child.anims.play("zombieWalk", true);
           child.flipX = true;
         }
 
@@ -372,7 +372,7 @@ export default class WorldScene1 extends Phaser.Scene {
     var oldY = transformed.y;
     transformed.destroy();
     this.newZomb = this.physics.add.sprite(oldX-100, oldY+100, "zombie");
-    this.newZomb.scale = .2;
+    this.newZomb.scale = .4;
     this.zombieGroup.add(this.newZomb);
 
   }
