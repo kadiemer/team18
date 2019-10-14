@@ -21,15 +21,27 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 940,
       frameWidth: 491
     });
-    this.load.spritesheet("guy", "./assets/sprites/guySpriteSheet.png", {
-      frameHeight: 960,
-      frameWidth: 525
+    this.load.spritesheet("girl", "./assets/sprites/girlSpriteSheet.png", {
+      frameHeight: 1831,
+      frameWidth: 878
+    });
+    this.load.spritesheet("hipsterZombie", "./assets/sprites/hipsterSpriteSheet.png", {
+      frameHeight: 3138.5,
+      frameWidth: 1654
+    });
+    this.load.spritesheet("cheerZombie", "./assets/sprites/cheerleaderSpriteSheet.png", {
+      frameHeight: 3153,
+      frameWidth: 1848
+    });
+    this.load.spritesheet("businessZombie", "./assets/sprites/businessSpriteSheet.png", {
+      frameHeight: 3163,
+      frameWidth: 1470
+    });
+    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
+      frameHeight: 3253,
+      frameWidth: 1583
     });
     this.load.image('background', './assets/images/background.png');
-    this.load.image('guySpriteSheet', "./assets/sprites/guySpriteSheet.png", {
-      frameHeight: 96,
-      frameWidth: 52.5
-    });
 
     /*  Loads "transformed person sprite"*/
     this.load.spritesheet("transformedGuy", "./assets/sprites/guySpriteSheet.png", {
@@ -59,9 +71,12 @@ export default class WorldScene1 extends Phaser.Scene {
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
     this.player = this.physics.add
-      .sprite(900, 500, "guy");
+      .sprite(900, 500, "girl")
+      .setSize(30, 40)
+      .setOffset(0, 24);
 
     this.player.scale = .2;
+    var zombies = ["gothZombie","cheerZombie","businessZombie","hipsterZombie"];
 
      //Adds the transformed person to map and makes it invisible*/
     // THe following code adds 4 zombies to the map and 4 invisible transformed
@@ -77,10 +92,11 @@ export default class WorldScene1 extends Phaser.Scene {
     for (i = 0; i < 4; i++) {
 
       this.zombie1 = this.physics.add
-        .sprite(300 + this.increment, 300 + this.increment2, "zombie");
+        .sprite(300 + this.increment, 300 + this.increment2, zombies[i]);
     //  this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
       //this.transformed.scale = .2;
-      this.zombie1.scale = .2;
+      //this.zombie1.anims.play("gothZombieWalk",true);
+      this.zombie1.scale = .12;
       this.zombieGroup.add(this.zombie1);
     //  this.transformed.visible = false;
       //this.transformedGroup.add(this.transformed);
@@ -110,26 +126,38 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk",
-      frames: this.anims.generateFrameNumbers("guy", { start: 0, end: 5 }),
+      frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 11 }),
       frameRate: 10,
       repeat: -1
     });
     this.anims.create({
       key: "idle",
-      frames: this.anims.generateFrameNumbers("guy", { start: 5, end: 5 }),
+      frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 0 }),
       frameRate: 10,
       repeat: -1
     });
     this.anims.create({
-      key: "zombieWalk",
-      frames: this.anims.generateFrameNumbers("zombie", { start: 0, end: 5 }),
-      frameRate: 10,
+      key: "gothZombieWalk",
+      frames: this.anims.generateFrameNumbers("gothZombie", { start: 0, end: 3 }),
+      frameRate: 5,
       repeat: -1
     });
     this.anims.create({
-      key: "zombieIdle",
-      frames: this.anims.generateFrameNumbers("zombie", { start: 5, end: 5 }),
-      frameRate: 10,
+      key: "businessZombieWalk",
+      frames: this.anims.generateFrameNumbers("businessZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "cheerZombieWalk",
+      frames: this.anims.generateFrameNumbers("cheerZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "hipsterZombieWalk",
+      frames: this.anims.generateFrameNumbers("hipsterZombie", { start: 0, end: 3 }),
+      frameRate: 5,
       repeat: -1
     });
      //transformed walking animations
@@ -217,6 +245,7 @@ export default class WorldScene1 extends Phaser.Scene {
 
     const speed = 250;
     var zomSpeed = 20;
+    var zombieAnims = ["gothZombieWalk","cheerZombieWalk","businessZombieWalk","hipsterZombieWalk"]
     //Helps set up zombie movememnt
     if (this.transformedGroup.getLength() != 0){
       Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed){
@@ -295,11 +324,11 @@ export default class WorldScene1 extends Phaser.Scene {
     if (this.cursors.left.isDown) {
       this.player.body.setVelocityX(-speed);
       this.player.anims.play("walk", true);
-      this.player.flipX = false;
+      this.player.flipX = true;
     } else if (this.cursors.right.isDown) {
       this.player.body.setVelocityX(speed);
      this.player.anims.play("walk", true);
-      this.player.flipX = true;
+      this.player.flipX = false;
     } else {
      this.player.anims.play("idle", true);
     }
