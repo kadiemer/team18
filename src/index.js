@@ -18,7 +18,7 @@ class Game extends Phaser.Game {
     this.scene.add('LoseScene',LoseScene);
     this.scene.add('WinScene',WinScene);
 
-    this.scene.start('WorldScene1');
+    this.scene.start('MenuScene');
   }
 }
 

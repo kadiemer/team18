@@ -30,9 +30,9 @@ export default class WorldScene2 extends Phaser.Scene {
       frameHeight: 3163,
       frameWidth: 1470
     });
-    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
-      frameHeight: 3253,
-      frameWidth: 1583
+    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet1.png", {
+      frameHeight: 813,
+      frameWidth: 395.66
     });
     this.load.image("girl", "./assets/sprites/girlSprite.png");
     this.load.image('wKey', './assets/images/wKey.png');
@@ -69,7 +69,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.zombie = this.physics.add
       .sprite(1800, 850, "gothZombie");
 
-    this.zombie.scale = .17;
+    this.zombie.scale = .67;
 
     this.physics.add.collider(this.player,this.zombie,this.zombieHit,null,this);
 

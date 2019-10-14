@@ -25,21 +25,21 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 1831,
       frameWidth: 878
     });
-    this.load.spritesheet("hipsterZombie", "./assets/sprites/hipsterSpriteSheet.png", {
-      frameHeight: 3138.5,
-      frameWidth: 1654
+    this.load.spritesheet("hipsterZombie", "./assets/sprites/hipsterSpriteSheet1.png", {
+      frameHeight: 784.5,
+      frameWidth: 413.33
     });
-    this.load.spritesheet("cheerZombie", "./assets/sprites/cheerleaderSpriteSheet.png", {
-      frameHeight: 3153,
-      frameWidth: 1848
+    this.load.spritesheet("cheerZombie", "./assets/sprites/cheerleaderSpriteSheet1.png", {
+      frameHeight: 788.5,
+      frameWidth: 462
     });
-    this.load.spritesheet("businessZombie", "./assets/sprites/businessSpriteSheet.png", {
-      frameHeight: 3163,
-      frameWidth: 1470
+    this.load.spritesheet("businessZombie", "./assets/sprites/businessSpriteSheet1.png", {
+      frameHeight: 790.5,
+      frameWidth: 367.33
     });
-    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
-      frameHeight: 3253,
-      frameWidth: 1583
+    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet1.png", {
+      frameHeight: 813,
+      frameWidth: 395.66
     });
     this.load.image('background', './assets/images/background.png');
 
@@ -96,7 +96,7 @@ export default class WorldScene1 extends Phaser.Scene {
     //  this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
       //this.transformed.scale = .2;
       //this.zombie1.anims.play("gothZombieWalk",true);
-      this.zombie1.scale = .12;
+      this.zombie1.scale = .45;
       this.zombieGroup.add(this.zombie1);
     //  this.transformed.visible = false;
       //this.transformedGroup.add(this.transformed);
