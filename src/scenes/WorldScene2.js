@@ -14,9 +14,25 @@ export default class WorldScene2 extends Phaser.Scene {
 
     // Preload assets
     this.load.image('danceBackground', './assets/images/danceBackground.png');
-    this.load.spritesheet("zombie", "./assets/sprites/zombieSpriteSheet.png", {
-      frameHeight: 940,
-      frameWidth: 491
+    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
+      frameHeight: 3253,
+      frameWidth: 1583
+    });
+    this.load.spritesheet("hipsterZombie", "./assets/sprites/hipsterSpriteSheet.png", {
+      frameHeight: 3138.5,
+      frameWidth: 1654
+    });
+    this.load.spritesheet("cheerZombie", "./assets/sprites/cheerleaderSpriteSheet.png", {
+      frameHeight: 3153,
+      frameWidth: 1848
+    });
+    this.load.spritesheet("businessZombie", "./assets/sprites/businessSpriteSheet.png", {
+      frameHeight: 3163,
+      frameWidth: 1470
+    });
+    this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
+      frameHeight: 3253,
+      frameWidth: 1583
     });
     this.load.image("girl", "./assets/sprites/girlSprite.png");
     this.load.image('wKey', './assets/images/wKey.png');
@@ -50,9 +66,9 @@ export default class WorldScene2 extends Phaser.Scene {
     this.player.scale = .3;
 
     this.zombie = this.physics.add
-      .sprite(1800, 850, "zombie");
+      .sprite(1800, 850, "gothZombie");
 
-    this.zombie.scale = .5;
+    this.zombie.scale = .17;
 
     this.physics.add.collider(this.player,this.zombie,this.zombieHit,null,this);
 
@@ -128,7 +144,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
     this.anims.create({
       key: "zombieWalk",
-      frames: this.anims.generateFrameNumbers("zombie", { start: 0, end: 5 }),
+      frames: this.anims.generateFrameNumbers("gothZombie", { start: 0, end: 3 }),
       frameRate: 5,
       repeat: -1
     });
