@@ -35,6 +35,10 @@ export default class MenuScene extends Phaser.Scene {
       frameHeight: 813,
       frameWidth: 395.66
     });
+    //this.load.spritesheet("dance", "./assets/sprites/danceMove1SpriteSheet.png", {
+      //frameHeight: 412,
+      //frameWidth: 304.34
+    //});
 
 
     // Declare variables for center of the scene
@@ -64,6 +68,17 @@ export default class MenuScene extends Phaser.Scene {
     this.zombie4 = this.physics.add.sprite(this.centerX - 700, this.centerY + 200, "gothZombie");
     this.zombie4.scale = .4
     this.zombie4.flipX = true;
+
+    //this.anims.create({
+      //key: "danceMove1",
+      //frames: this.anims.generateFrameNumbers("dance", { start: 0, end: 23 }),
+      //frameRate: 10,
+      //repeat: -1
+    //});
+
+    //this.player = this.physics.add.sprite(this.centerX, this.centerY, "dance" );
+    //this.player.scale = 2
+    //this.player.anims.play("danceMove1",true);
 
 
 
@@ -95,6 +110,12 @@ export default class MenuScene extends Phaser.Scene {
       key: "hipsterZombieWalk",
       frames: this.anims.generateFrameNumbers("hipsterZombie", { start: 0, end: 3 }),
       frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "danceMove1",
+      frames: this.anims.generateFrameNumbers("dance", { start: 0, end: 22 }),
+      frameRate: 10,
       repeat: -1
     });
 
