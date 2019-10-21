@@ -15,7 +15,6 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("tiles", "./assets/tilesets/tuxmon-sample-32px-extruded.png");
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
     this.load.spritesheet("zombie", "./assets/sprites/zombieSpriteSheet.png", {
       frameHeight: 940,
@@ -48,12 +47,6 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 960,
       frameWidth: 525
     });
-
-    this.load.atlas(
-      "atlas",
-      "./assets/atlas/atlas.png",
-      "./assets/atlas/atlas.json"
-    );
   }
 
   create() {
@@ -112,7 +105,6 @@ export default class WorldScene1 extends Phaser.Scene {
       .sprite(300, 300, "zombie");
 
     this.zombie.scale = .2; */
-
 
     // Watch the player and zombie for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player, this.zombie);
@@ -213,8 +205,6 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
   }
-
-
 
   update(time, delta) {
     //checks for collisions between the zombies and the Player
