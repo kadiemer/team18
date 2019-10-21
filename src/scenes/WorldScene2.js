@@ -48,6 +48,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.audio('track1', './assets/sounds/track1.mp3');
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
+    this.load.audio('PowerMove','./assets/sounds/neon_light.wav');
 
 
     // Declare variables for center of the scene
@@ -280,6 +281,7 @@ export default class WorldScene2 extends Phaser.Scene {
           this.sound.play('Good');
           if (dynamicKey.special){
             this.createDanceMove();
+            this.sound.play("PowerMove");
           }
         }
         dynamicKey.destroy();
