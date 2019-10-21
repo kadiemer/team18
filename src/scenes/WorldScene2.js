@@ -11,7 +11,8 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   preload () {
-
+    this.danceMoves = [];
+    this.keyCount = 1;
     // Preload assets
     this.load.image('danceBackground', './assets/images/danceBackground.png');
     this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
@@ -34,6 +35,10 @@ export default class WorldScene2 extends Phaser.Scene {
       frameHeight: 813,
       frameWidth: 395.66
     });
+    this.load.spritesheet("danceMove","./assets/sprites/danceMove1SpriteSheet.png",{
+      frameHeight:412,
+      frameWidth:304.34
+    });
     this.load.image("girl", "./assets/sprites/girlSprite.png");
     this.load.image('wKey', './assets/images/wKey.png');
     this.load.image('aKey', './assets/images/aKey.png');
@@ -43,6 +48,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.audio('track1', './assets/sounds/track1.mp3');
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
+    this.load.audio('PowerMove','./assets/sounds/neon_light.wav');
 
 
     // Declare variables for center of the scene
@@ -70,6 +76,7 @@ export default class WorldScene2 extends Phaser.Scene {
       .sprite(1800, 850, "gothZombie");
 
     this.zombie.scale = .67;
+    this.zombie.stunnedTime = 0;
 
     this.physics.add.collider(this.player,this.zombie,this.zombieHit,null,this);
 
@@ -94,7 +101,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.track1.addMarker({
         name: 'track1',
         start: 0.00,
-        duration: 100
+        duration: 10000
       });
 
       //Adds play button to the screen, the letters will start falling once you hit play
@@ -129,6 +136,11 @@ export default class WorldScene2 extends Phaser.Scene {
             this.dKey = this.physics.add.sprite(this.zombie.x, 950, 'dKey');
             this.myGroup.add(this.dKey);
           }
+          if (this.keyCount % 5 == 0){
+            this.myGroup.getLast(true).tint = Math.random() * 0xffffff;
+            this.myGroup.getLast(true).special = true;
+          }
+          this.keyCount++;
           this.myGroup.children.iterate(function(child){
             child.setScale(0.75);
             this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
@@ -139,7 +151,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
         },
         callbackScope: this,
-        repeat: 40 }) //this is how many letters fall + 1
+        repeat: 400 }) //this is how many letters fall + 1
       }, this
     );
 
@@ -163,14 +175,45 @@ export default class WorldScene2 extends Phaser.Scene {
 
   update(time, delta) {
 
+    if(this.stunnedText){
+      this.stunnedText.destroy();
+    }
+
     if(this.started){
-      this.zombie.x -= .8;
-      if(this.gameOver != true){
-        this.zombie.anims.play("zombieWalk", true);
+      if (this.zombie.stunnedTime < 1){
+        this.zombie.x -= .8;
+        if(this.gameOver != true){
+          this.zombie.anims.play("zombieWalk", true);
+        }
+        else if(this.gameOver == true){
+          this.track1.destroy();
+          this.zombie.destroy();
+        }
       }
-      else if(this.gameOver == true){
-        this.track1.destroy();
-        this.zombie.destroy();
+      else{
+        this.stunnedText = this.add.text(this.zombie.x-125, this.zombie.y-350, "Stunned!",{
+          fontSize: "60px",
+          fill: "#000"
+          });
+        this.zombie.stunnedTime--;
+        if(this.gameOver == true){
+          this.track1.destroy();
+          this.zombie.destroy();
+        }
+      }
+    }
+
+    if (this.danceMoves.length > 0 && this.zombie){
+      for (var i = 0; i < this.danceMoves.length; i++) {
+        this.danceMoves[i].tint = Math.random() * 0xffffff;
+        this.danceMoves[i].x += 6;
+        if (this.danceMoves[i].x >= this.zombie.x){
+          this.zombie.stunnedTime = 90;
+          this.danceMoves[i].x = -1000;
+          this.danceMoves[i].destroy();
+          this.danceMoves.splice(i,1);
+          i--;
+        }
       }
     }
 
@@ -209,6 +252,9 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
+          if (dynamicKey.special){
+            this.createDanceMove();
+          }
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
@@ -233,6 +279,10 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
+          if (dynamicKey.special){
+            this.createDanceMove();
+            this.sound.play("PowerMove");
+          }
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
@@ -257,6 +307,9 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
+          if (dynamicKey.special){
+            this.createDanceMove();
+          }
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
@@ -281,13 +334,15 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
-
+          if (dynamicKey.special){
+            this.createDanceMove();
+          }
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
       }
     }
-    if(this.score > 1){
+    if(this.score > 14.5){
       this.gameOver = true;
       this.scoreText.setText("You win");
       this.myGroup.clear(true);
@@ -310,6 +365,19 @@ export default class WorldScene2 extends Phaser.Scene {
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
     this.track1.destroy();
+  }
+
+  createDanceMove (){
+    var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "danceMove");
+    danceMove.tint = Math.random() * 0xffffff;
+    this.anims.create({
+      key: "danceMoveMoving",
+      frames: this.anims.generateFrameNumbers("danceMove", { start: 0, end: 22 }),
+      frameRate: 15,
+      repeat: -1
+    });
+    danceMove.anims.play("danceMoveMoving", true);
+    this.danceMoves.push(danceMove);
   }
 
 }
