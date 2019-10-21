@@ -206,9 +206,9 @@ export default class WorldScene2 extends Phaser.Scene {
     if (this.danceMoves.length > 0 && this.zombie){
       for (var i = 0; i < this.danceMoves.length; i++) {
         this.danceMoves[i].tint = Math.random() * 0xffffff;
-        this.danceMoves[i].x += 5;
+        this.danceMoves[i].x += 6;
         if (this.danceMoves[i].x >= this.zombie.x){
-          this.zombie.stunnedTime = 120;
+          this.zombie.stunnedTime = 90;
           this.danceMoves[i].x = -1000;
           this.danceMoves[i].destroy();
           this.danceMoves.splice(i,1);
@@ -342,7 +342,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.scoreText.setText("Score: " + this.score);
       }
     }
-    if(this.score > 14){
+    if(this.score > 14.5){
       this.gameOver = true;
       this.scoreText.setText("You win");
       this.myGroup.clear(true);
