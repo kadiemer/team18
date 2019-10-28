@@ -105,6 +105,7 @@ export default class TutorialScene2 extends Phaser.Scene {
 
       //Makes it so letters start falling after click
       play.on("pointerup", function() {
+        this.text.destroy();
         play.destroy();
         this.started = true
         this.track1.play('track1');
@@ -161,7 +162,7 @@ export default class TutorialScene2 extends Phaser.Scene {
         });
 
         this.text = this.add
-          .text(400, 200, 'The zombie is approaching you! This is the\n minigame portion of the game. You must\nconvert the zombie by teaching it to dance\n(Press Enter to continue...)', {
+          .text(650, 180, 'The zombie is approaching you!\nTo teach the zombie to dance,\nhit the matching keys on beat\n(Press Play to start...)', {
             font: "40px monospace",
             fill: "#000000",
             padding: { x: 20, y: 10 },
@@ -173,7 +174,7 @@ export default class TutorialScene2 extends Phaser.Scene {
         this.loopCounter = 0;
 
         this.text2 = this.add
-          .text(400, 200, 'To teach the zombie to dance, you must\naccurately hit whatever key is displayed on the screen\n(using WASD).Make sure you are on beat!\n(Press Play to start...)', {
+          .text(400, 200, 'To teach the zombie to dance, you must\naccurately hit whatever key is displayed on beat\n(Press Play to start...)', {
             font: "40px monospace",
             fill: "#000000",
             padding: { x: 20, y: 10 },
@@ -189,13 +190,13 @@ export default class TutorialScene2 extends Phaser.Scene {
 
     var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
-    if(enterKey.isDown && this.loopCounter == 0){
+    /*if(enterKey.isDown && this.loopCounter == 0){
       console.log('is working');
       this.text.destroy();
       this.text2.visible = true;
       enterKey.isDown = false;
       this.loopCounter +=1;
-    };
+    }; */
 
 
 

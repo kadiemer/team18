@@ -5,6 +5,7 @@ var textTimer = 0;
 var text;
 
 
+
 window.convertedZombie2 = false;
 //global var to see if zombie is converted or not
 
@@ -57,6 +58,7 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
   }
 
   create() {
+    this.sCounter = 0;
     this.minigameZombie;
     this.add.image(1001.5,561.5,"background")
     //Add change scene event listeners
@@ -116,7 +118,7 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
     this.play.visible = false;
 
     this.text4 = this.add
-        .text(400, 180, 'Go ahead and give it a go! Using arrow keys\nto move around, approach the zombies\nand teach them to dance again! \n(Press Enter to start the movement...)', {
+        .text(400, 180, 'Using arrow keys to move around, collide\nwith the zombies and teach them to dance again!', {
           font: "40px monospace",
           fill: "#000000",
           padding: { x: 20, y: 10 },
@@ -124,8 +126,9 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
         })
         .setScrollFactor(0)
         .setDepth(30);
+
         this.text5 = this.add
-            .text(400, 180, 'Congrats! You have completed the tutorial\nand converted the zombie back to a human \nYou are now ready to Dance the Bite Away! \n(Press Play game now to start game...)', {
+            .text(400, 180, 'Congrats! You have completed the tutorial\nand converted the zombie back to a human \nYou are now ready to Dance the Bite Away!\n(Press Enter to start game...)', {
               font: "40px monospace",
               fill: "#000000",
               padding: { x: 20, y: 10 },
@@ -247,7 +250,7 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
 
 
     if (window.convertedZombie2 == true) {
-      var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
+      //var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
       //if convertedzombie boolean set to true in worldscene2 then it adds
       //transformed sprite to the screen
       this.transformed = this.physics.add.sprite(this.oldZombiex + 300, this.oldZombiey, "transformedGuy")
@@ -257,14 +260,22 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
       this.physics.add.collider(this.transformed,this.zombieGroup,this.transformedHit,null,this);
       this.text4.visible = false;
       this.text5.visible = true;
-      this.play.visible = true;
+    //  this.play.visible = true;
+      this.sCounter +=1;
 
-      if(enterKey.isDown){
+      /*if(enterKey.isDown){
         this.scene.start("WorldScene1");
         console.log('part 2 started');
         enterKey.isDown = false;
 
-    };
+    };*/
+  };
+    var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
+    if(enterKey.isDown && this.sCounter == 1){
+      this.scene.start("WorldScene1");
+      console.log('part 2 started');
+      enterKey.isDown = false;
+
   };
 
 

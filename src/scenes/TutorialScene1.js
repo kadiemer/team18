@@ -136,7 +136,7 @@ export default class TutorialScene1 extends Phaser.Scene {
 
     this.loopCounter = 0;
 
-    this.text2 = this.add
+    /*this.text2 = this.add
         .text(400, 180, 'Your objective is to convert the zombies back \nto humans by teaching them how to dance.\n(Press Enter to continue...)', {
           font: "40px monospace",
           fill: "#000000",
@@ -145,7 +145,7 @@ export default class TutorialScene1 extends Phaser.Scene {
         })
         .setScrollFactor(0)
         .setDepth(30);
-    this.text2.visible = false;
+    this.text2.visible = false;*/
 
     this.text2 = this.add
         .text(400, 180, 'Your objective is to convert the zombies back \nto humans by teaching them how to dance.\n(Press Enter to continue...)', {
@@ -157,9 +157,20 @@ export default class TutorialScene1 extends Phaser.Scene {
         .setScrollFactor(0)
         .setDepth(30);
     this.text2.visible = false;
+
+  /*  this.text3 = this.add
+        .text(400, 180, 'Throughout the game you will encounter a variety \nof rooms and levels. In each room the\nzombies will run after you and any other\nhumans on the map.You must quickly/strategically\nmove around and convert each zombie before they\nget to any other humans \n(Press Enter to continue...)', {
+          font: "40px monospace",
+          fill: "#000000",
+          padding: { x: 20, y: 10 },
+          backgroundColor: "#ffffff"
+        })
+        .setScrollFactor(0)
+        .setDepth(30);
+    this.text3.visible = false; */
 
     this.text3 = this.add
-        .text(400, 180, 'Throughout the game you will encounter a variety \nof rooms and levels. In each room the\nzombies will run after you and any other\nhumans on the map.You must quickly/strategically\nmove around and convert each zombie before they\nget to any other humans \n(Press Enter to continue...)', {
+        .text(400, 180, 'Using arrow keys to move around, collide\nwith the zombies and teach them to dance again!\n(Press Enter to start the movement...)', {
           font: "40px monospace",
           fill: "#000000",
           padding: { x: 20, y: 10 },
@@ -169,8 +180,8 @@ export default class TutorialScene1 extends Phaser.Scene {
         .setDepth(30);
     this.text3.visible = false;
 
-    this.text4 = this.add
-        .text(400, 180, 'Go ahead and give it a go! Using arrow keys\nto move around, approach the zombies\nand teach them to dance again! \n(Press Enter to start the movement...)', {
+    /*this.text4 = this.add
+        .text(400, 180, 'Using arrow keys to move around, collide\nwith the zombies and teach them to dance again!)', {
           font: "40px monospace",
           fill: "#000000",
           padding: { x: 20, y: 10 },
@@ -178,7 +189,7 @@ export default class TutorialScene1 extends Phaser.Scene {
         })
         .setScrollFactor(0)
         .setDepth(30);
-    this.text4.visible = false;
+    this.text4.visible = false;*/
 
 
 
@@ -298,21 +309,23 @@ export default class TutorialScene1 extends Phaser.Scene {
       this.loopCounter +=1;
     };
     if(enterKey.isDown && this.loopCounter == 2){
-      this.text3.destroy();
-      this.text4.visible = true;
+      this.scene.start("TutorialScene1Pt2");
+      console.log('part 2 started');
+      //this.text3.destroy();
+    //  this.text4.visible = true;
       enterKey.isDown = false;
-      this.loopCounter +=1;
+    //  this.loopCounter +=1;
    };
 
 
-    if(enterKey.isDown && this.loopCounter == 3){
+/*    if(enterKey.isDown && this.loopCounter == 3){
       this.scene.start("TutorialScene1Pt2");
       console.log('part 2 started');
-      enterKey.isDown = false;
+      enterKey.isDown = false; */
 
 
 
-    };
+  //  };
 
 
 
