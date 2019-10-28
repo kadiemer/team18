@@ -35,15 +35,27 @@ export default class WorldScene2 extends Phaser.Scene {
       frameHeight: 813,
       frameWidth: 395.66
     });
-    this.load.spritesheet("danceMove","./assets/sprites/danceMove1SpriteSheet.png",{
+    this.load.spritesheet("danceMove","./assets/sprites/danceMoveSpriteSheet.png",{
       frameHeight:412,
       frameWidth:304.34
     });
+    this.load.spritesheet("hipHop","./assets/sprites/hipHopSpriteSheet.png",{
+      frameHeight:412,
+      frameWidth:214.16
+    });
+    this.load.spritesheet("flip","./assets/sprites/flipSpriteSheet.png",{
+      frameHeight:412,
+      frameWidth:259.52
+    });
+    this.load.spritesheet("moonWalk","./assets/sprites/moonWalkSpriteSheet.png",{
+      frameHeight:412,
+      frameWidth:251.12
+    });
     this.load.image("girl", "./assets/sprites/girlSprite.png");
-    this.load.image('wKey', './assets/images/wKey.png');
-    this.load.image('aKey', './assets/images/aKey.png');
-    this.load.image('sKey', './assets/images/sKey.png');
-    this.load.image('dKey', './assets/images/dKey.png');
+    this.load.image('1Key', './assets/images/1Key.png');
+    this.load.image('2Key', './assets/images/2Key.png');
+    this.load.image('3Key', './assets/images/3Key.png');
+    this.load.image('4Key', './assets/images/4Key.png');
 
     this.load.audio('track1', './assets/sounds/track1.mp3');
     this.load.audio('Miss','./assets/sounds/Miss.wav');
@@ -83,14 +95,14 @@ export default class WorldScene2 extends Phaser.Scene {
 
     //Adds base keys and makes the image smaller
 
-    this.key1 = this.physics.add.sprite(400,650,'wKey');
-    this.key1.setScale(.75);
-    this.key2 = this.physics.add.sprite(400,750,'aKey');
-    this.key2.setScale(.75);
-    this.key3 = this.physics.add.sprite(400,850,'sKey');
-    this.key3.setScale(.75);
-    this.key4 = this.physics.add.sprite(400,950,'dKey');
-    this.key4.setScale(.75);
+    this.key1 = this.physics.add.sprite(400,650,'1Key');
+    this.key1.setScale(.17);
+    this.key2 = this.physics.add.sprite(400,750,'2Key');
+    this.key2.setScale(.17);
+    this.key3 = this.physics.add.sprite(400,850,'3Key');
+    this.key3.setScale(.17);
+    this.key4 = this.physics.add.sprite(400,950,'4Key');
+    this.key4.setScale(.17);
 
 
     //creates a group for the falling sprites and an array to store the different keys
@@ -121,19 +133,19 @@ export default class WorldScene2 extends Phaser.Scene {
           //This is the function that picks a random letter and makes it fall
           this.picker = getRandomInt(4);
           if (this.picker == 0) {
-            this.wKey = this.physics.add.sprite(this.zombie.x, 650, 'wKey');
-            this.myGroup.add(this.wKey);
-          }
-          else if (this.picker == 1) {
-            this.aKey = this.physics.add.sprite(this.zombie.x, 750, 'aKey');
+            this.aKey = this.physics.add.sprite(this.zombie.x, 650, '1Key');
             this.myGroup.add(this.aKey);
           }
+          else if (this.picker == 1) {
+            this.bKey = this.physics.add.sprite(this.zombie.x, 750, '2Key');
+            this.myGroup.add(this.bKey);
+          }
           else if (this.picker == 2) {
-            this.sKey = this.physics.add.sprite(this.zombie.x, 850, 'sKey');
-            this.myGroup.add(this.sKey);
+            this.cKey = this.physics.add.sprite(this.zombie.x, 850, '3Key');
+            this.myGroup.add(this.cKey);
           }
           else if (this.picker == 3) {
-            this.dKey = this.physics.add.sprite(this.zombie.x, 950, 'dKey');
+            this.dKey = this.physics.add.sprite(this.zombie.x, 950, '4Key');
             this.myGroup.add(this.dKey);
           }
           if (this.keyCount % 5 == 0){
@@ -142,7 +154,7 @@ export default class WorldScene2 extends Phaser.Scene {
           }
           this.keyCount++;
           this.myGroup.children.iterate(function(child){
-            child.setScale(0.75);
+            child.setScale(0.17);
             this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
             this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
             this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
@@ -227,28 +239,28 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   hitKey (staticKey, dynamicKey) {
-    var wKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.W);
-    var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.A);
-    var sKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.S);
-    var dKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.D);
+    var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ONE);
+    var bKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.TWO);
+    var cKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.THREE);
+    var dKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.FOUR);
     this.indicatorText.destroy();
 
-    if(staticKey['texture']['key'] == "wKey"){
-      if(wKey.isDown){
-        if(dynamicKey.x > 400){
+    if(staticKey['texture']['key'] == "1Key"){
+      if(aKey.isDown){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Perfect!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
@@ -260,22 +272,22 @@ export default class WorldScene2 extends Phaser.Scene {
         this.scoreText.setText("Score: " + this.score);
       }
     }
-    else if(staticKey['texture']['key'] == "aKey"){
-      if(aKey.isDown){
-        if(dynamicKey.x > 400){
+    else if(staticKey['texture']['key'] == "2Key"){
+      if(bKey.isDown){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Perfect!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
@@ -288,22 +300,22 @@ export default class WorldScene2 extends Phaser.Scene {
         this.scoreText.setText("Score: " + this.score);
       }
     }
-    else if(staticKey['texture']['key'] == "sKey"){
-      if(sKey.isDown){
-        if(dynamicKey.x > 400){
+    else if(staticKey['texture']['key'] == "3Key"){
+      if(cKey.isDown){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Perfect!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
@@ -315,22 +327,22 @@ export default class WorldScene2 extends Phaser.Scene {
         this.scoreText.setText("Score: " + this.score);
       }
     }
-    else if(staticKey['texture']['key'] == "dKey"){
+    else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
-        if(dynamicKey.x > 400){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
-          this.score+=.5;
+          this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Great!',
+          this.indicatorText = this.add.text(370, 550, 'Perfect!',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
@@ -368,16 +380,63 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   createDanceMove (){
-    var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "danceMove");
-    danceMove.tint = Math.random() * 0xffffff;
-    this.anims.create({
-      key: "danceMoveMoving",
-      frames: this.anims.generateFrameNumbers("danceMove", { start: 0, end: 22 }),
-      frameRate: 15,
-      repeat: -1
-    });
-    danceMove.anims.play("danceMoveMoving", true);
-    this.danceMoves.push(danceMove);
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    this.randomDance = getRandomInt(4);
+    if (this.randomDance == 0) {
+      var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "danceMove");
+      danceMove.tint = Math.random() * 0xffffff;
+      this.anims.create({
+        key: "danceMove",
+        frames: this.anims.generateFrameNumbers("danceMove", { start: 0, end: 22 }),
+        frameRate: 15,
+        repeat: -1
+      });
+      danceMove.anims.play("danceMove", true);
+      this.danceMoves.push(danceMove);
+    }
+    else if (this.randomDance == 1) {
+      var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "hipHop");
+      danceMove.tint = Math.random() * 0xffffff;
+      this.anims.create({
+        key: "hipHop",
+        frames: this.anims.generateFrameNumbers("hipHop", { start: 0, end: 30 }),
+        frameRate: 15,
+        repeat: -1
+      });
+      danceMove.anims.play("hipHop", true);
+      this.danceMoves.push(danceMove);
+    }
+    else if (this.randomDance == 2) {
+      var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "flip");
+      danceMove.tint = Math.random() * 0xffffff;
+      this.anims.create({
+        key: "flip",
+        frames: this.anims.generateFrameNumbers("flip", { start: 0, end: 20 }),
+        frameRate: 15,
+        repeat: -1
+      });
+      danceMove.scale = 1.3
+      danceMove.anims.play("flip", true);
+      this.danceMoves.push(danceMove);
+    }
+    else if (this.randomDance == 3) {
+      var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "moonWalk");
+      danceMove.tint = Math.random() * 0xffffff;
+      this.anims.create({
+        key: "moonWalk",
+        frames: this.anims.generateFrameNumbers("moonWalk", { start: 0, end: 18 }),
+        frameRate: 10,
+        repeat: -1
+      });
+      danceMove.flipX = true;
+      danceMove.anims.play("moonWalk", true);
+      this.danceMoves.push(danceMove);
+
+    }
   }
 
 }

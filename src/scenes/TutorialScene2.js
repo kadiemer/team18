@@ -35,10 +35,11 @@ export default class TutorialScene2 extends Phaser.Scene {
       frameWidth: 395.66
     });
     this.load.image("girl", "./assets/sprites/girlSprite.png");
-    this.load.image('wKey', './assets/images/wKey.png');
-    this.load.image('aKey', './assets/images/aKey.png');
-    this.load.image('sKey', './assets/images/sKey.png');
-    this.load.image('dKey', './assets/images/dKey.png');
+
+    this.load.image('wKey', './assets/images/1Key.png');
+    this.load.image('aKey', './assets/images/2Key.png');
+    this.load.image('sKey', './assets/images/3Key.png');
+    this.load.image('dKey', './assets/images/4Key.png');
 
     this.load.audio('track1', './assets/sounds/track1.mp3');
     this.load.audio('Miss','./assets/sounds/Miss.wav');
@@ -77,13 +78,13 @@ export default class TutorialScene2 extends Phaser.Scene {
     //Adds base keys and makes the image smaller
 
     this.key1 = this.physics.add.sprite(400,650,'wKey');
-    this.key1.setScale(.75);
+    this.key1.setScale(.17);
     this.key2 = this.physics.add.sprite(400,750,'aKey');
-    this.key2.setScale(.75);
+    this.key2.setScale(.17);
     this.key3 = this.physics.add.sprite(400,850,'sKey');
-    this.key3.setScale(.75);
+    this.key3.setScale(.17);
     this.key4 = this.physics.add.sprite(400,950,'dKey');
-    this.key4.setScale(.75);
+    this.key4.setScale(.17);
 
 
     //creates a group for the falling sprites and an array to store the different keys
@@ -130,7 +131,7 @@ export default class TutorialScene2 extends Phaser.Scene {
             this.myGroup.add(this.dKey);
           }
           this.myGroup.children.iterate(function(child){
-            child.setScale(0.75);
+            child.setScale(0.17);
             this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
             this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
             this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
@@ -219,10 +220,10 @@ export default class TutorialScene2 extends Phaser.Scene {
   }
 
   hitKey (staticKey, dynamicKey) {
-    var wKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.W);
-    var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.A);
-    var sKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.S);
-    var dKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.D);
+    var wKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ONE);
+    var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.TWO);
+    var sKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.THREE);
+    var dKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.FOUR);
     this.indicatorText.destroy();
 
     if(staticKey['texture']['key'] == "wKey"){
