@@ -272,6 +272,10 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
   };
     var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
     if(enterKey.isDown && this.sCounter == 1){
+      this.cursors.up.isDown = false;
+      this.cursors.down.isDown = false;
+      this.cursors.left.isDown = false;
+      this.cursors.right.isDown = false;
       this.scene.start("WorldScene1");
       console.log('part 2 started');
       enterKey.isDown = false;
