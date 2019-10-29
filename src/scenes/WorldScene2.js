@@ -51,6 +51,11 @@ export default class WorldScene2 extends Phaser.Scene {
       frameHeight:412,
       frameWidth:251.12
     });
+    this.load.spritesheet("turn","./assets/sprites/turnSpriteSheet.png",{
+      frameHeight:412,
+      frameWidth:442.833
+    });
+
     this.load.image("girl", "./assets/sprites/girlSprite.png");
     this.load.image('1Key', './assets/images/1Key.png');
     this.load.image('2Key', './assets/images/2Key.png');
@@ -385,7 +390,7 @@ export default class WorldScene2 extends Phaser.Scene {
       return Math.floor(Math.random() * Math.floor(max));
     }
 
-    this.randomDance = getRandomInt(4);
+    this.randomDance = getRandomInt(5);
     if (this.randomDance == 0) {
       var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "danceMove");
       danceMove.tint = Math.random() * 0xffffff;
@@ -435,7 +440,19 @@ export default class WorldScene2 extends Phaser.Scene {
       danceMove.flipX = true;
       danceMove.anims.play("moonWalk", true);
       this.danceMoves.push(danceMove);
-
+    }
+    else if (this.randomDance == 4) {
+      var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "turn");
+      danceMove.tint = Math.random() * 0xffffff;
+      this.anims.create({
+        key: "turn",
+        frames: this.anims.generateFrameNumbers("turn", { start: 0, end: 17 }),
+        frameRate: 20,
+        repeat: -1
+      });
+      danceMove.scale = 1
+      danceMove.anims.play("turn", true);
+      this.danceMoves.push(danceMove);
     }
   }
 
