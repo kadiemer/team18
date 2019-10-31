@@ -53,7 +53,11 @@ export default class WorldScene2 extends Phaser.Scene {
     });
     this.load.spritesheet("turn","./assets/sprites/turnSpriteSheet.png",{
       frameHeight:412,
-      frameWidth:442.833
+      frameWidth:442.83
+    });
+    this.load.spritesheet("disco","./assets/sprites/discoSpriteSheet.png",{
+      frameHeight:412,
+      frameWidth:218.32
     });
 
     this.load.image("girl", "./assets/sprites/girlSprite.png");
@@ -390,7 +394,7 @@ export default class WorldScene2 extends Phaser.Scene {
       return Math.floor(Math.random() * Math.floor(max));
     }
 
-    this.randomDance = getRandomInt(5);
+    this.randomDance = getRandomInt(2);
     if (this.randomDance == 0) {
       var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "danceMove");
       danceMove.tint = Math.random() * 0xffffff;
@@ -452,6 +456,19 @@ export default class WorldScene2 extends Phaser.Scene {
       });
       danceMove.scale = 1
       danceMove.anims.play("turn", true);
+      this.danceMoves.push(danceMove);
+    }
+    else if (this.randomDance == 5) {
+      var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "disco");
+      danceMove.tint = Math.random() * 0xffffff;
+      this.anims.create({
+        key: "disco",
+        frames: this.anims.generateFrameNumbers("disco", { start: 0, end: 30 }),
+        frameRate: 12,
+        repeat: -1
+      });
+      danceMove.scale = 1.15
+      danceMove.anims.play("disco", true);
       this.danceMoves.push(danceMove);
     }
   }
