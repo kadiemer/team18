@@ -58,11 +58,13 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
   }
 
   create() {
+
     this.sCounter = 0;
     this.minigameZombie;
     this.add.image(1001.5,561.5,"background")
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
+
 
     const map = this.make.tilemap({ key: "map" });
 
@@ -80,6 +82,9 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
 
     this.player.scale = .2;
     var zombies = ["gothZombie","cheerZombie","businessZombie","hipsterZombie"];
+    this.player.setCollideWorldBounds(true);
+    this.physics.world.setBounds(0, 0, 1850, 765.5);
+
 
      //Adds the transformed person to map and makes it invisible*/
     // THe following code adds 4 zombies to the map and 4 invisible transformed
@@ -90,6 +95,7 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
     this.increment3=0; //this is used in the update file to add transformed zombies
     this.oldZombiex = 0;
     this.oldZombiey = 0;
+    this.exited = false;
     this.zombieGroup = this.add.group();
     var i;
     for (i = 0; i < 1; i++) {
@@ -126,9 +132,10 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
         })
         .setScrollFactor(0)
         .setDepth(30);
+   this.physics.world.enable(this.text4);
 
         this.text5 = this.add
-            .text(400, 180, 'Congrats! You have completed the tutorial\nand converted the zombie back to a human \nYou are now ready to Dance the Bite Away!\n(Press Enter to start game...)', {
+            .text(400, 180, 'Congrats! You have completed the tutorial\nand converted the zombie back to a human again\nYou are now ready to Dance the Bite Away!\n(Press Enter to start game...)', {
               font: "40px monospace",
               fill: "#000000",
               padding: { x: 20, y: 10 },
@@ -233,6 +240,8 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
     });
 
 
+
+
   }
 
 
@@ -246,6 +255,16 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player,this.zombieGroup,this.sceneHit,null,this);
 //    this.physics.add.overlap(this.player,this.transformedGroup,this.shadowHit,null,this);
+    //this.variable1 = this.physics.add.overlap(this.player, this.text4, this.textHit, null, this );
+  /*  if (this.player.y < 440 && this.player.x > 400 && this.player.x < 1640) {
+      this.text4.visible = false;
+    }
+    else {
+      this.text4.visible = true;
+    } */
+
+    //this.player.x > 400  && this.player.x < 1640
+
 
 
 
@@ -258,7 +277,7 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
       this.transformedGroup.add(this.transformed);
       window.convertedZombie2 = false;
       this.physics.add.collider(this.transformed,this.zombieGroup,this.transformedHit,null,this);
-      this.text4.visible = false;
+      this.text4.destroy();
       this.text5.visible = true;
     //  this.play.visible = true;
       this.sCounter +=1;
@@ -269,7 +288,15 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
         enterKey.isDown = false;
 
     };*/
-  };
+  } else 
+    {
+    if (this.player.y < 440 && this.player.x > 400 && this.player.x < 1640) {
+      this.text4.visible = false;
+    }
+    else {
+      this.text4.visible = true;
+    }
+  }
     var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
     if(enterKey.isDown && this.sCounter == 1){
       this.cursors.up.isDown = false;
@@ -386,6 +413,8 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
     this.player.body.velocity.normalize().scale(speed);
 
 
+
+
   }
 
   sceneHit(player, zombie) {
@@ -403,6 +432,16 @@ export default class TutorialScene1Pt2 extends Phaser.Scene {
     this.scene.launch('TutorialScene2');
     this.zombieGroup.remove(zombie);
     this.scene.sleep('TutorialScene1Pt2');
+
+  }
+
+  textHit(player, text) {
+
+    // Pauses this scene after a collision and starts the minigame
+    // Disables whichever zombie is being collided with
+    console.log(' Collision occurred')
+    text.visible = false;
+    this.variable1.destroy();
 
   }
 
