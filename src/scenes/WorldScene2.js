@@ -70,6 +70,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
     this.load.audio('PowerMove','./assets/sounds/neon_light.wav');
+    this.load.audio('hipHopTrack','./assets/sounds/HIP_HOP.mp3');
 
 
     // Declare variables for center of the scene
@@ -125,6 +126,14 @@ export default class WorldScene2 extends Phaser.Scene {
         duration: 10000
       });
 
+      //Uses first 15 seconds of the track
+      this.hipHopTrack = this.sound.add('hipHopTrack');
+      this.hipHopTrack.addMarker({
+          name: 'hipHopTrack',
+          start: 0.00,
+          duration: 10000
+        });
+
       //Adds play button to the screen, the letters will start falling once you hit play
 
       var play = this.add.text(875, 525, '< play >',
@@ -134,47 +143,52 @@ export default class WorldScene2 extends Phaser.Scene {
       play.on("pointerup", function() {
         play.destroy();
         this.started = true
-        this.track1.play('track1');
-        this.time.addEvent({
-        delay: 300 + getRandomInt(500), //This is the amount of time in which each letter is delayed
-        callback: function(){
+        setTimeout(function () {
+          //this.track1.play('track1');
+          this.hipHopTrack.play('hipHopTrack');
+          this.time.addEvent({
+          delay: 600, //This is the amount of time in which each letter is delayed
+          callback: function(){
 
-          //This is the function that picks a random letter and makes it fall
-          this.picker = getRandomInt(4);
-          if (this.picker == 0) {
-            this.aKey = this.physics.add.sprite(this.zombie.x, 650, '1Key');
-            this.myGroup.add(this.aKey);
-          }
-          else if (this.picker == 1) {
-            this.bKey = this.physics.add.sprite(this.zombie.x, 750, '2Key');
-            this.myGroup.add(this.bKey);
-          }
-          else if (this.picker == 2) {
-            this.cKey = this.physics.add.sprite(this.zombie.x, 850, '3Key');
-            this.myGroup.add(this.cKey);
-          }
-          else if (this.picker == 3) {
-            this.dKey = this.physics.add.sprite(this.zombie.x, 950, '4Key');
-            this.myGroup.add(this.dKey);
-          }
-          if (this.keyCount % 5 == 0){
-            this.myGroup.getLast(true).tint = Math.random() * 0xffffff;
-            this.myGroup.getLast(true).special = true;
-          }
-          this.keyCount++;
-          this.myGroup.children.iterate(function(child){
-            child.setScale(0.17);
-            this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
-            this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
-            this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
-            this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
-          }, this);
+            //This is the function that picks a random letter and makes it fall
+            this.picker = getRandomInt(4);
+            if (this.picker == 0) {
+              this.aKey = this.physics.add.sprite(this.zombie.x, 650, '1Key');
+              this.myGroup.add(this.aKey);
+            }
+            else if (this.picker == 1) {
+              this.bKey = this.physics.add.sprite(this.zombie.x, 750, '2Key');
+              this.myGroup.add(this.bKey);
+            }
+            else if (this.picker == 2) {
+              this.cKey = this.physics.add.sprite(this.zombie.x, 850, '3Key');
+              this.myGroup.add(this.cKey);
+            }
+            else if (this.picker == 3) {
+              this.dKey = this.physics.add.sprite(this.zombie.x, 950, '4Key');
+              this.myGroup.add(this.dKey);
+            }
+            if (this.keyCount % 5 == 0){
+              this.myGroup.getLast(true).tint = Math.random() * 0xffffff;
+              this.myGroup.getLast(true).special = true;
+            }
+            this.keyCount++;
+            this.myGroup.children.iterate(function(child){
+              child.setScale(0.17);
+              this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
+              this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
+              this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
+              this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
+            }, this);
 
-        },
-        callbackScope: this,
-        repeat: 400 }) //this is how many letters fall + 1
-      }, this
-    );
+            },
+            callbackScope: this,
+            repeat: 400 }) //this is how many letters fall + 1
+            }, 10);
+          }, this
+        );
+
+
 
     this.anims.create({
       key: "zombieWalk",
@@ -385,7 +399,8 @@ export default class WorldScene2 extends Phaser.Scene {
   zombieHit (player, zombie){
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
-    this.track1.destroy();
+    this.hipHopTrack.destroy();
+    //this.track1.destroy();
   }
 
   createDanceMove (){
