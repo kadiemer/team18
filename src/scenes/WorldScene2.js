@@ -394,7 +394,7 @@ export default class WorldScene2 extends Phaser.Scene {
       return Math.floor(Math.random() * Math.floor(max));
     }
 
-    this.randomDance = getRandomInt(2);
+    this.randomDance = getRandomInt(6);
     if (this.randomDance == 0) {
       var danceMove = this.physics.add.sprite(this.player.x, this.player.y, "danceMove");
       danceMove.tint = Math.random() * 0xffffff;

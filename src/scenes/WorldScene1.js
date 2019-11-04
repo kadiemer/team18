@@ -121,7 +121,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.anims.create({
       key: "walk",
       frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 11 }),
-      frameRate: 20,
+      frameRate: 10,
       repeat: -1
     });
     this.anims.create({
