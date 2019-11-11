@@ -7,7 +7,7 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   init (data) {
-    // Initialization code goes here
+    this.newSprite = data.newSprite
   }
 
   preload () {
@@ -70,7 +70,6 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
     this.load.audio('PowerMove','./assets/sounds/neon_light.wav');
-    this.load.audio('hipHopTrack','./assets/sounds/HIP_HOP.mp3');
 
 
     // Declare variables for center of the scene
@@ -94,8 +93,7 @@ export default class WorldScene2 extends Phaser.Scene {
       .sprite(150, 850, "girl");
     this.player.scale = .3;
 
-    this.zombie = this.physics.add
-      .sprite(1800, 850, "gothZombie");
+    this.zombie = this.physics.add.sprite(1850, 850, this.newSprite);
 
     this.zombie.scale = .67;
     this.zombie.stunnedTime = 0;
@@ -126,18 +124,6 @@ export default class WorldScene2 extends Phaser.Scene {
         duration: 10000
       });
 
-      //Uses first 15 seconds of the track
-      this.hipHopTrack = this.sound.add('hipHopTrack');
-      this.hipHopTrack.addMarker({
-          name: 'hipHopTrack',
-          start: 0,
-          duration: this.hipHopTrack.duration,
-          config: {
-            loop: true,
-            delay: 100
-          }
-        });
-
       //Adds play button to the screen, the letters will start falling once you hit play
 
       var play = this.add.text(875, 525, '< play >',
@@ -145,16 +131,11 @@ export default class WorldScene2 extends Phaser.Scene {
 
       //Makes it so letters start falling after click
       play.on("pointerup", function() {
-        function sleep() {
-            var start = new Date().getTime();
-            while (new Date().getTime() < start + 10000);
-        }
         play.destroy();
         this.started = true
-        //this.track1.play('track1');
-        this.hipHopTrack.play('hipHopTrack');
+        this.track1.play('track1');
         this.time.addEvent({
-        delay: 600, //This is the amount of time in which each letter is delayed
+        delay: 300 + getRandomInt(500), //This is the amount of time in which each letter is delayed
         callback: function(){
 
           //This is the function that picks a random letter and makes it fall
@@ -188,16 +169,33 @@ export default class WorldScene2 extends Phaser.Scene {
             this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
           }, this);
 
-          },
-          callbackScope: this,
-          repeat: 400 }) //this is how many letters fall + 1
-        }, this);
-
-
+        },
+        callbackScope: this,
+        repeat: 400 }) //this is how many letters fall + 1
+      }, this
+    );
 
     this.anims.create({
-      key: "zombieWalk",
+      key: "gothZombieWalk",
       frames: this.anims.generateFrameNumbers("gothZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "cheerZombieWalk",
+      frames: this.anims.generateFrameNumbers("cheerZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "businessZombieWalk",
+      frames: this.anims.generateFrameNumbers("businessZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "hipsterZombieWalk",
+      frames: this.anims.generateFrameNumbers("hipsterZombie", { start: 0, end: 3 }),
       frameRate: 5,
       repeat: -1
     });
@@ -223,11 +221,22 @@ export default class WorldScene2 extends Phaser.Scene {
       if (this.zombie.stunnedTime < 1){
         this.zombie.x -= .8;
         if(this.gameOver != true){
-          this.zombie.anims.play("zombieWalk", true);
+          if (this.zombie['texture']['key'] == "gothZombie"){
+            this.zombie.anims.play("gothZombieWalk", true);
+          }
+          else if (this.zombie['texture']['key'] == "cheerZombie"){
+            this.zombie.anims.play("cheerZombieWalk", true);
+          }
+          else if (this.zombie['texture']['key'] == "businessZombie"){
+            this.zombie.anims.play("businessZombieWalk", true);
+          }
+          else if (this.zombie['texture']['key'] == "hipsterZombie"){
+            this.zombie.anims.play("hipsterZombieWalk", true);
+          }
+
         }
         else if(this.gameOver == true){
           this.track1.destroy();
-          this.hipHopTrack.destroy();
           this.zombie.destroy();
         }
       }
@@ -239,7 +248,6 @@ export default class WorldScene2 extends Phaser.Scene {
         this.zombie.stunnedTime--;
         if(this.gameOver == true){
           this.track1.destroy();
-          this.hipHopTrack.destroy();
           this.zombie.destroy();
         }
       }
@@ -304,13 +312,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -332,13 +340,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -359,13 +367,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 410){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 340){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -393,7 +401,22 @@ export default class WorldScene2 extends Phaser.Scene {
       hem back to the other scene and sets convertedzombie to true*/
       window.convertedZombie = true;
       this.scene.stop('WorldScene2');
-      this.scene.wake('WorldScene1');
+      if (this.zombie['texture']['key'] == "businessZombie"){
+        window.transformedSprite = "normalBusiness";
+        this.scene.wake('WorldScene1')
+      }
+      else if (this.zombie['texture']['key'] == "cheerZombie"){
+        window.transformedSprite = "normalCheer";
+        this.scene.wake('WorldScene1')
+      }
+      else if (this.zombie['texture']['key'] == "hipsterZombie"){
+        window.transformedSprite = "normalHipster";
+        this.scene.wake('WorldScene1')
+      }
+      else if (this.zombie['texture']['key'] == "gothZombie"){
+        window.transformedSprite = "normalGoth";
+          this.scene.wake('WorldScene1')
+      }
 
       //this.scene.stop('WorldScene2');
 
@@ -406,8 +429,7 @@ export default class WorldScene2 extends Phaser.Scene {
   zombieHit (player, zombie){
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
-    this.hipHopTrack.destroy();
-    //this.track1.destroy();
+    this.track1.destroy();
   }
 
   createDanceMove (){
@@ -489,7 +511,7 @@ export default class WorldScene2 extends Phaser.Scene {
         frameRate: 12,
         repeat: -1
       });
-      danceMove.scale = 1.15
+      danceMove.scale = 1.2
       danceMove.anims.play("disco", true);
       this.danceMoves.push(danceMove);
     }
