@@ -6,6 +6,9 @@ var text;
 
 
 window.convertedZombie = false;
+window.transformedSprite = "nothing"
+
+
 //global var to see if zombie is converted or not
 
 export default class WorldScene1 extends Phaser.Scene {
@@ -13,6 +16,7 @@ export default class WorldScene1 extends Phaser.Scene {
   constructor () {
     super('WorldScene1');
   }
+
 
   preload() {
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
@@ -41,6 +45,23 @@ export default class WorldScene1 extends Phaser.Scene {
       frameWidth: 395.66
     });
     this.load.image('background', './assets/images/background.png');
+
+    this.load.spritesheet("normalGoth", "./assets/sprites/normalGoth.png", {
+      frameHeight: 784,
+      frameWidth: 290
+    });
+    this.load.spritesheet("normalBusiness", "./assets/sprites/normalBusinessMan.png", {
+      frameHeight: 784,
+      frameWidth: 284
+    });
+    this.load.spritesheet("normalCheer", "./assets/sprites/NormalCheer.png", {
+      frameHeight: 784,
+      frameWidth: 380
+    });
+    this.load.spritesheet("normalHipster", "./assets/sprites/normalHipster.png", {
+      frameHeight: 784,
+      frameWidth: 315
+    });
 
     /*  Loads "transformed person sprite"*/
     this.load.spritesheet("transformedGuy", "./assets/sprites/guySpriteSheet.png", {
@@ -85,7 +106,7 @@ export default class WorldScene1 extends Phaser.Scene {
     var i;
     for (i = 0; i < 4; i++) {
 
-      this.zombie1 = this.physics.add
+  this.zombie1 = this.physics.add
         .sprite(300 + this.increment, 300 + this.increment2, zombies[i]);
     //  this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
       //this.transformed.scale = .2;
@@ -93,11 +114,14 @@ export default class WorldScene1 extends Phaser.Scene {
       this.zombie1.scale = .45;
       this.zombie1.num = i;
       this.zombieGroup.add(this.zombie1);
+
+
+
     //  this.transformed.visible = false;
       //this.transformedGroup.add(this.transformed);
       this.increment += 300;
       this.increment2  += 200;
-      //this.increment3 += 100
+      //this.increment3 += 10
 
     }
 
@@ -156,17 +180,13 @@ export default class WorldScene1 extends Phaser.Scene {
     });
      //transformed walking animations
     this.anims.create({
-      key: "transformedWalk",
-      frames: this.anims.generateFrameNumbers("transformedGuy", { start: 0, end: 5 }),
+      key: "transformedGothWalk",
+      frames: this.anims.generateFrameNumbers("transformedGothWalk", { start: 0, end: 5 }),
       frameRate: 10,
       repeat: -1
     });
-    this.anims.create({
-      key: "transformedIdle",
-      frames: this.anims.generateFrameNumbers("transformedGuy", { start: 5, end: 5 }),
-      frameRate: 10,
-      repeat: -1
-    });
+
+
 
     const camera = this.cameras.main;
     camera.startFollow(this.player);
@@ -217,12 +237,12 @@ export default class WorldScene1 extends Phaser.Scene {
 //    this.physics.add.overlap(this.player,this.transformedGroup,this.shadowHit,null,this);
 
 
-
     if (window.convertedZombie == true) {
       //if convertedzombie boolean set to true in worldscene2 then it adds
       //transformed sprite to the screen
-      this.transformed = this.physics.add.sprite(this.oldZombiex + 300, this.oldZombiey, "transformedGuy")
-      this.transformed.scale = .35;
+      this.transformed = this.physics.add.sprite(this.oldZombiex + 300, this.oldZombiey, window.transformedSprite)
+      window.transformedSprite = "nothing";
+      this.transformed.scale = .5;
       this.transformedGroup.add(this.transformed);
       window.convertedZombie = false;
       this.physics.add.collider(this.transformed,this.zombieGroup,this.transformedHit,null,this);
@@ -289,11 +309,34 @@ export default class WorldScene1 extends Phaser.Scene {
       Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
         if(child.x > this.player.x) {
           child.body.setVelocityX(-zomSpeed);
-          //child.anims.play("zombieWalk", true);
+          if (child['texture']['key'] == "gothZombie"){
+            child.anims.play("gothZombieWalk", true);
+          }
+          else if (child['texture']['key'] == "cheerZombie"){
+            child.anims.play("cheerZombieWalk", true);
+          }
+          else if (child['texture']['key'] == "businessZombie"){
+            child.anims.play("businessZombieWalk", true);
+          }
+          else if (child['texture']['key'] == "hipsterZombie"){
+            child.anims.play("hipsterZombieWalk", true);
+          }
           child.flipX = false;
         }
         else if (child.x < this.player.x){
           child.body.setVelocityX(zomSpeed);
+          if (child['texture']['key'] == "gothZombie"){
+            child.anims.play("gothZombieWalk", true);
+          }
+          else if (child['texture']['key'] == "cheerZombie"){
+            child.anims.play("cheerZombieWalk", true);
+          }
+          else if (child['texture']['key'] == "businessZombie"){
+            child.anims.play("businessZombieWalk", true);
+          }
+          else if (child['texture']['key'] == "hipsterZombie"){
+            child.anims.play("hipsterZombieWalk", true);
+          }
           //child.anims.play("zombieWalk", true);
           child.flipX = true;
         }
@@ -349,8 +392,18 @@ export default class WorldScene1 extends Phaser.Scene {
     this.cursors.down.isDown = false;
     this.cursors.left.isDown = false;
     this.cursors.right.isDown = false;
-
-    this.scene.launch('WorldScene2');
+    if (zombie['texture']['key'] == "gothZombie") {
+      this.scene.launch('WorldScene2',{newSprite: "gothZombie"});
+    }
+    else if (zombie['texture']['key'] == "cheerZombie") {
+      this.scene.launch('WorldScene2',{newSprite: "cheerZombie"});
+    }
+    else if (zombie['texture']['key'] == "businessZombie") {
+      this.scene.launch('WorldScene2',{newSprite: "businessZombie"});
+    }
+    else if (zombie['texture']['key'] == "hipsterZombie") {
+      this.scene.launch('WorldScene2',{newSprite: "hipsterZombie"});
+    }
     this.zombieGroup.remove(zombie);
     this.scene.sleep('WorldScene1');
 
@@ -364,7 +417,18 @@ export default class WorldScene1 extends Phaser.Scene {
     var oldX = transformed.x;
     var oldY = transformed.y;
     transformed.destroy();
-    this.newZomb = this.physics.add.sprite(oldX, oldY+100, "zombie");
+    if (this.transformed['texture']['key'] == "normalGoth"){
+      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "gothZombie");
+    }
+    else if (this.transformed['texture']['key'] == "normalBusiness"){
+      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "businessZombie");
+    }
+    else if (this.transformed['texture']['key'] == "normalCheer"){
+      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "cheerZombie");
+    }
+    else if (this.transformed['texture']['key'] == "normalHipster"){
+      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "hipsterZombie");
+    }
     this.newZomb.scale = .4;
     this.zombieGroup.add(this.newZomb);
 
