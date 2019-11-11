@@ -285,13 +285,13 @@ export default class WorldScene2 extends Phaser.Scene {
 
     if(staticKey['texture']['key'] == "1Key"){
       if(aKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -312,13 +312,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -340,13 +340,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -367,13 +367,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
