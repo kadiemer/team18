@@ -70,6 +70,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
     this.load.audio('PowerMove','./assets/sounds/neon_light.wav');
+    this.load.audio('hipHopTrack','./assets/sounds/HIP_HOP.mp3');
 
 
     // Declare variables for center of the scene
@@ -125,6 +126,18 @@ export default class WorldScene2 extends Phaser.Scene {
         duration: 10000
       });
 
+      //Uses first 15 seconds of the track
+      this.hipHopTrack = this.sound.add('hipHopTrack');
+      this.hipHopTrack.addMarker({
+          name: 'hipHopTrack',
+          start: 0,
+          duration: this.hipHopTrack.duration,
+          config: {
+            loop: true,
+            delay: 100
+          }
+        });
+
       //Adds play button to the screen, the letters will start falling once you hit play
 
       var play = this.add.text(875, 525, '< play >',
@@ -132,11 +145,16 @@ export default class WorldScene2 extends Phaser.Scene {
 
       //Makes it so letters start falling after click
       play.on("pointerup", function() {
+        function sleep() {
+            var start = new Date().getTime();
+            while (new Date().getTime() < start + 10000);
+        }
         play.destroy();
         this.started = true
-        this.track1.play('track1');
+        //this.track1.play('track1');
+        this.hipHopTrack.play('hipHopTrack');
         this.time.addEvent({
-        delay: 300 + getRandomInt(500), //This is the amount of time in which each letter is delayed
+        delay: 600, //This is the amount of time in which each letter is delayed
         callback: function(){
 
           //This is the function that picks a random letter and makes it fall
@@ -170,11 +188,12 @@ export default class WorldScene2 extends Phaser.Scene {
             this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
           }, this);
 
-        },
-        callbackScope: this,
-        repeat: 400 }) //this is how many letters fall + 1
-      }, this
-    );
+          },
+          callbackScope: this,
+          repeat: 400 }) //this is how many letters fall + 1
+        }, this);
+
+
 
     this.anims.create({
       key: "zombieWalk",
@@ -208,6 +227,7 @@ export default class WorldScene2 extends Phaser.Scene {
         }
         else if(this.gameOver == true){
           this.track1.destroy();
+          this.hipHopTrack.destroy();
           this.zombie.destroy();
         }
       }
@@ -219,6 +239,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.zombie.stunnedTime--;
         if(this.gameOver == true){
           this.track1.destroy();
+          this.hipHopTrack.destroy();
           this.zombie.destroy();
         }
       }
@@ -283,13 +304,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -311,13 +332,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -338,13 +359,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -385,7 +406,8 @@ export default class WorldScene2 extends Phaser.Scene {
   zombieHit (player, zombie){
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
-    this.track1.destroy();
+    this.hipHopTrack.destroy();
+    //this.track1.destroy();
   }
 
   createDanceMove (){
