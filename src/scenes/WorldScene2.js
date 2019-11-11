@@ -7,7 +7,7 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   init (data) {
-    // Initialization code goes here
+    this.newSprite = data.newSprite
   }
 
   preload () {
@@ -93,8 +93,7 @@ export default class WorldScene2 extends Phaser.Scene {
       .sprite(150, 850, "girl");
     this.player.scale = .3;
 
-    this.zombie = this.physics.add
-      .sprite(1800, 850, "gothZombie");
+    this.zombie = this.physics.add.sprite(1850, 850, this.newSprite);
 
     this.zombie.scale = .67;
     this.zombie.stunnedTime = 0;
@@ -177,8 +176,26 @@ export default class WorldScene2 extends Phaser.Scene {
     );
 
     this.anims.create({
-      key: "zombieWalk",
+      key: "gothZombieWalk",
       frames: this.anims.generateFrameNumbers("gothZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "cheerZombieWalk",
+      frames: this.anims.generateFrameNumbers("cheerZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "businessZombieWalk",
+      frames: this.anims.generateFrameNumbers("businessZombie", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "hipsterZombieWalk",
+      frames: this.anims.generateFrameNumbers("hipsterZombie", { start: 0, end: 3 }),
       frameRate: 5,
       repeat: -1
     });
@@ -204,7 +221,19 @@ export default class WorldScene2 extends Phaser.Scene {
       if (this.zombie.stunnedTime < 1){
         this.zombie.x -= .8;
         if(this.gameOver != true){
-          this.zombie.anims.play("zombieWalk", true);
+          if (this.zombie['texture']['key'] == "gothZombie"){
+            this.zombie.anims.play("gothZombieWalk", true);
+          }
+          else if (this.zombie['texture']['key'] == "cheerZombie"){
+            this.zombie.anims.play("cheerZombieWalk", true);
+          }
+          else if (this.zombie['texture']['key'] == "businessZombie"){
+            this.zombie.anims.play("businessZombieWalk", true);
+          }
+          else if (this.zombie['texture']['key'] == "hipsterZombie"){
+            this.zombie.anims.play("hipsterZombieWalk", true);
+          }
+
         }
         else if(this.gameOver == true){
           this.track1.destroy();
@@ -372,7 +401,22 @@ export default class WorldScene2 extends Phaser.Scene {
       hem back to the other scene and sets convertedzombie to true*/
       window.convertedZombie = true;
       this.scene.stop('WorldScene2');
-      this.scene.wake('WorldScene1');
+      if (this.zombie['texture']['key'] == "businessZombie"){
+        window.transformedSprite = "normalBusiness";
+        this.scene.wake('WorldScene1')
+      }
+      else if (this.zombie['texture']['key'] == "cheerZombie"){
+        window.transformedSprite = "normalCheer";
+        this.scene.wake('WorldScene1')
+      }
+      else if (this.zombie['texture']['key'] == "hipsterZombie"){
+        window.transformedSprite = "normalHipster";
+        this.scene.wake('WorldScene1')
+      }
+      else if (this.zombie['texture']['key'] == "gothZombie"){
+        window.transformedSprite = "normalGoth";
+          this.scene.wake('WorldScene1')
+      }
 
       //this.scene.stop('WorldScene2');
 
@@ -467,7 +511,7 @@ export default class WorldScene2 extends Phaser.Scene {
         frameRate: 12,
         repeat: -1
       });
-      danceMove.scale = 1.15
+      danceMove.scale = 1.2
       danceMove.anims.play("disco", true);
       this.danceMoves.push(danceMove);
     }
