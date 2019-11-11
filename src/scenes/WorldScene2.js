@@ -130,8 +130,12 @@ export default class WorldScene2 extends Phaser.Scene {
       this.hipHopTrack = this.sound.add('hipHopTrack');
       this.hipHopTrack.addMarker({
           name: 'hipHopTrack',
-          start: 0.00,
-          duration: 10000
+          start: 0,
+          duration: this.hipHopTrack.duration,
+          config: {
+            loop: true,
+            delay: 100
+          }
         });
 
       //Adds play button to the screen, the letters will start falling once you hit play
@@ -141,52 +145,53 @@ export default class WorldScene2 extends Phaser.Scene {
 
       //Makes it so letters start falling after click
       play.on("pointerup", function() {
+        function sleep() {
+            var start = new Date().getTime();
+            while (new Date().getTime() < start + 10000);
+        }
         play.destroy();
         this.started = true
-        setTimeout(function () {
-          //this.track1.play('track1');
-          this.hipHopTrack.play('hipHopTrack');
-          this.time.addEvent({
-          delay: 600, //This is the amount of time in which each letter is delayed
-          callback: function(){
+        //this.track1.play('track1');
+        this.hipHopTrack.play('hipHopTrack');
+        this.time.addEvent({
+        delay: 600, //This is the amount of time in which each letter is delayed
+        callback: function(){
 
-            //This is the function that picks a random letter and makes it fall
-            this.picker = getRandomInt(4);
-            if (this.picker == 0) {
-              this.aKey = this.physics.add.sprite(this.zombie.x, 650, '1Key');
-              this.myGroup.add(this.aKey);
-            }
-            else if (this.picker == 1) {
-              this.bKey = this.physics.add.sprite(this.zombie.x, 750, '2Key');
-              this.myGroup.add(this.bKey);
-            }
-            else if (this.picker == 2) {
-              this.cKey = this.physics.add.sprite(this.zombie.x, 850, '3Key');
-              this.myGroup.add(this.cKey);
-            }
-            else if (this.picker == 3) {
-              this.dKey = this.physics.add.sprite(this.zombie.x, 950, '4Key');
-              this.myGroup.add(this.dKey);
-            }
-            if (this.keyCount % 5 == 0){
-              this.myGroup.getLast(true).tint = Math.random() * 0xffffff;
-              this.myGroup.getLast(true).special = true;
-            }
-            this.keyCount++;
-            this.myGroup.children.iterate(function(child){
-              child.setScale(0.17);
-              this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
-              this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
-              this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
-              this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
-            }, this);
+          //This is the function that picks a random letter and makes it fall
+          this.picker = getRandomInt(4);
+          if (this.picker == 0) {
+            this.aKey = this.physics.add.sprite(this.zombie.x, 650, '1Key');
+            this.myGroup.add(this.aKey);
+          }
+          else if (this.picker == 1) {
+            this.bKey = this.physics.add.sprite(this.zombie.x, 750, '2Key');
+            this.myGroup.add(this.bKey);
+          }
+          else if (this.picker == 2) {
+            this.cKey = this.physics.add.sprite(this.zombie.x, 850, '3Key');
+            this.myGroup.add(this.cKey);
+          }
+          else if (this.picker == 3) {
+            this.dKey = this.physics.add.sprite(this.zombie.x, 950, '4Key');
+            this.myGroup.add(this.dKey);
+          }
+          if (this.keyCount % 5 == 0){
+            this.myGroup.getLast(true).tint = Math.random() * 0xffffff;
+            this.myGroup.getLast(true).special = true;
+          }
+          this.keyCount++;
+          this.myGroup.children.iterate(function(child){
+            child.setScale(0.17);
+            this.physics.add.overlap(this.key1, child, this.hitKey, null, this);
+            this.physics.add.overlap(this.key2, child, this.hitKey, null, this);
+            this.physics.add.overlap(this.key3, child, this.hitKey, null, this);
+            this.physics.add.overlap(this.key4, child, this.hitKey, null, this);
+          }, this);
 
-            },
-            callbackScope: this,
-            repeat: 400 }) //this is how many letters fall + 1
-            }, 10);
-          }, this
-        );
+          },
+          callbackScope: this,
+          repeat: 400 }) //this is how many letters fall + 1
+        }, this);
 
 
 
@@ -222,6 +227,7 @@ export default class WorldScene2 extends Phaser.Scene {
         }
         else if(this.gameOver == true){
           this.track1.destroy();
+          this.hipHopTrack.destroy();
           this.zombie.destroy();
         }
       }
@@ -233,6 +239,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.zombie.stunnedTime--;
         if(this.gameOver == true){
           this.track1.destroy();
+          this.hipHopTrack.destroy();
           this.zombie.destroy();
         }
       }
@@ -297,13 +304,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -325,13 +332,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
@@ -352,13 +359,13 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
-        if(dynamicKey.x > 410){
+        if(dynamicKey.x > 420){
           this.indicatorText = this.add.text(370, 550, 'Early',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 340){
+        else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'Late',
           {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
           this.score-=1;
