@@ -41,9 +41,9 @@ export default class TutorialScene2 extends Phaser.Scene {
     this.load.image('sKey', './assets/images/3Key.png');
     this.load.image('dKey', './assets/images/4Key.png');
 
-    this.load.audio('track1', './assets/sounds/track1.mp3');
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
+    this.load.audio('tutorialTrack', './assets/sounds/track1.mp3');
 
 
     // Declare variables for center of the scene
@@ -52,6 +52,7 @@ export default class TutorialScene2 extends Phaser.Scene {
   }
 
   create (data) {
+
 
     this.gameOver = false;
     this.scoreText;
@@ -91,9 +92,9 @@ export default class TutorialScene2 extends Phaser.Scene {
     this.myGroup = this.add.group();
 
     //Uses first 15 seconds of the track
-    this.track1 = this.sound.add('track1');
-    this.track1.addMarker({
-        name: 'track1',
+    this.tutorialTrack = this.sound.add('tutorialTrack');
+    this.tutorialTrack.addMarker({
+        name: 'tutorialTrack',
         start: 0.00,
         duration: 100
       });
@@ -108,7 +109,7 @@ export default class TutorialScene2 extends Phaser.Scene {
         this.text.destroy();
         play.destroy();
         this.started = true
-        this.track1.play('track1');
+        this.tutorialTrack.play('tutorialTrack');
         this.time.addEvent({
         delay: 800 + getRandomInt(500), //This is the amount of time in which each letter is delayed
         callback: function(){
@@ -206,7 +207,7 @@ export default class TutorialScene2 extends Phaser.Scene {
         this.zombie.anims.play("zombieWalk", true);
       }
       else if(this.gameOver == true){
-        this.track1.destroy();
+        this.tutorialTrack.destroy();
         this.zombie.destroy();
       }
     }
@@ -346,7 +347,7 @@ export default class TutorialScene2 extends Phaser.Scene {
   zombieHit (player, zombie){
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
-    this.track1.destroy();
+    this.tutorialTrack.destroy();
   }
 
 }
