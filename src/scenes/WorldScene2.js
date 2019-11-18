@@ -14,7 +14,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.danceMoves = [];
     this.keyCount = 1;
     // Preload assets
-    this.load.image('danceBackground', './assets/images/danceBackground.png');
+    this.load.image('danceBackground', './assets/images/danceBG.png');
     this.load.spritesheet("gothZombie", "./assets/sprites/gothSpriteSheet.png", {
       frameHeight: 3253,
       frameWidth: 1583
@@ -87,10 +87,12 @@ export default class WorldScene2 extends Phaser.Scene {
     {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'});
 
     //Create the scene
-    this.add.image(1001.5,561.5,"danceBackground");
+    var background = this.add.image(1001.5,561.5,"danceBackground");
 
     this.player = this.physics.add
-      .sprite(150, 850, "girl");
+      .sprite(150, 850, "girl")
+      .setSize(350, 500)
+      .setOffset(400, 100)
     this.player.scale = .3;
 
     this.zombie = this.physics.add.sprite(1850, 850, this.newSprite);
@@ -126,11 +128,12 @@ export default class WorldScene2 extends Phaser.Scene {
 
       //Adds play button to the screen, the letters will start falling once you hit play
 
-      var play = this.add.text(875, 525, '< play >',
-      {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'}).setInteractive();
+      var enterKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
+      var play = this.add.text(800, 400, 'P r e s s    E n t e r',
+      {fontFamily: 'League Gothic', fontSize: 70, color: '#f7b600'}).setInteractive();
 
       //Makes it so letters start falling after click
-      play.on("pointerup", function() {
+      enterKey.on("down", function() {
         play.destroy();
         this.started = true
         this.track1.play('track1');
@@ -204,9 +207,10 @@ export default class WorldScene2 extends Phaser.Scene {
       function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
       }
-      this.scoreText = this.add.text(50, 16, "score: 0", {
+      this.scoreText = this.add.text(50, 16, "Score : 0", {
+        fontFamily: "Optima",
         fontSize: "60px",
-        fill: "#000"
+        fill: "#f7b600"
         });
 
   }
@@ -241,9 +245,10 @@ export default class WorldScene2 extends Phaser.Scene {
         }
       }
       else{
-        this.stunnedText = this.add.text(this.zombie.x-125, this.zombie.y-350, "Stunned!",{
+        this.stunnedText = this.add.text(this.zombie.x-125, this.zombie.y-350, "S t u n n e d !",{
+          fontFamily: "League Gothic",
           fontSize: "60px",
-          fill: "#000"
+          fill: "#fff"
           });
         this.zombie.stunnedTime--;
         if(this.gameOver == true){
@@ -286,20 +291,20 @@ export default class WorldScene2 extends Phaser.Scene {
     if(staticKey['texture']['key'] == "1Key"){
       if(aKey.isDown){
         if(dynamicKey.x > 420){
-          this.indicatorText = this.add.text(370, 550, 'Early',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'E a r l y',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
-          this.indicatorText = this.add.text(370, 550, 'Late',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'L a t e',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Perfect!',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
           if (dynamicKey.special){
@@ -313,20 +318,20 @@ export default class WorldScene2 extends Phaser.Scene {
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
         if(dynamicKey.x > 420){
-          this.indicatorText = this.add.text(370, 550, 'Early',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'E a r l y',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
-          this.indicatorText = this.add.text(370, 550, 'Late',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'L a t e',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Perfect!',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
           if (dynamicKey.special){
@@ -341,20 +346,20 @@ export default class WorldScene2 extends Phaser.Scene {
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
         if(dynamicKey.x > 420){
-          this.indicatorText = this.add.text(370, 550, 'Early',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'E a r l y',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
-          this.indicatorText = this.add.text(370, 550, 'Late',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'L a t e',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Perfect!',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
           if (dynamicKey.special){
@@ -368,20 +373,20 @@ export default class WorldScene2 extends Phaser.Scene {
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
         if(dynamicKey.x > 420){
-          this.indicatorText = this.add.text(370, 550, 'Early',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'E a r l y',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else if(dynamicKey.x < 350){
-          this.indicatorText = this.add.text(370, 550, 'Late',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#FF0000'});
+          this.indicatorText = this.add.text(370, 550, 'L a t e',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
         }
         else{
-          this.indicatorText = this.add.text(370, 550, 'Perfect!',
-          {fontFamily: 'Fantasy', fontSize: 30, color: '#32FF00'});
+          this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
+          {fontFamily: 'League Gothic', fontSize: 30, color: '#32FF00'});
           this.score+=1;
           this.sound.play('Good');
           if (dynamicKey.special){

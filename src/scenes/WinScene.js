@@ -25,10 +25,10 @@ export default class WinScene extends Phaser.Scene {
 
     //tell user game is over and their score
     var text = this.add.text( 650, 480, "Congrats! You Survived!", {
-      fontFamily: 'Fantasy', fontSize: 70, color: '#ffffff'});
+      fontFamily: 'Optima', fontSize: 70, color: '#ffffff'});
 
     var subText = this.add.text( 600, 580, "You turned all the zombies human again", {
-      fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'});
+      fontFamily: 'Optima', fontSize: 50, color: '#ffffff'});
 
 
 

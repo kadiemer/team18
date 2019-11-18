@@ -68,11 +68,26 @@ export default class WorldScene1 extends Phaser.Scene {
       frameHeight: 960,
       frameWidth: 525
     });
+    this.load.image('newBackground', './assets/images/newBackground.png');
+    this.load.image('house1', './assets/images/house1.png');
+    this.load.image('house2', './assets/images/house2.png');
+    this.load.image('house3', './assets/images/house3.png');
+    this.load.image('house4', './assets/images/house4.png');
+    this.load.image('house5', './assets/images/house5.png');
+    this.load.image('house6', './assets/images/house6.png');
+    this.load.image('tree1', './assets/images/tree1.png');
+    this.load.image('tree2', './assets/images/tree2.png');
+    this.load.image('tree3', './assets/images/tree3.png');
+    this.load.image('mailbox2', './assets/images/mailbox2.png');
+
   }
 
   create() {
     this.minigameZombie;
-    this.add.image(1001.5,561.5,"background")
+    this.add.image(2150,1202.5,"newBackground");
+    this.add.image(975,1775,"mailbox2");
+    this.add.image(3900,1200,"mailbox2");
+
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
 
@@ -86,9 +101,17 @@ export default class WorldScene1 extends Phaser.Scene {
     // Create a sprite with physics enabled via the physics system. The image used for the sprite has
     // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
     this.player = this.physics.add
-      .sprite(900, 500, "girl")
-      .setSize(30, 40)
-      .setOffset(0, 24);
+      .sprite(100, 1775, "girl")
+      .setSize(350, 500)
+      .setOffset(400, 100);
+
+    this.player.setCollideWorldBounds(true);
+    this.physics.world.setBounds(50, 0, 4200, 2150);
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+
 
     this.player.scale = .2;
     var zombies = ["gothZombie","cheerZombie","businessZombie","hipsterZombie"];
@@ -104,16 +127,26 @@ export default class WorldScene1 extends Phaser.Scene {
     this.oldZombiey = 0;
     this.zombieGroup = this.add.group();
     var i;
-    for (i = 0; i < 4; i++) {
-
+    var j = 0;
+    for (i = 0; i < 11; i++) {
   this.zombie1 = this.physics.add
-        .sprite(300 + this.increment, 300 + this.increment2, zombies[i]);
+        .sprite((getRandomInt(4300)), (getRandomInt(2300)), zombies[j])
+        .setSize(200, 300)
+        .setOffset(100, 100)
+        .setDepth(100);
     //  this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
       //this.transformed.scale = .2;
       //this.zombie1.anims.play("gothZombieWalk",true);
       this.zombie1.scale = .45;
       this.zombie1.num = i;
       this.zombieGroup.add(this.zombie1);
+      if (j == 3) {
+        j = 0
+      }
+      else if (j < 3) {
+        j++
+      }
+
 
 
 
@@ -124,6 +157,76 @@ export default class WorldScene1 extends Phaser.Scene {
       //this.increment3 += 10
 
     }
+
+    this.buildings = this.physics.add.staticGroup();
+
+    this.buildings
+      .create(1000, 620, "house1")
+      .body.setSize(350,200);
+    this.buildings
+      .create(2140, 1850, "house2")
+      .body.setSize(350,200);
+    this.buildings
+      .create(4000, 900, "house3")
+      .body.setSize(350,200);
+      this.buildings
+      .create(3660, 1700, "house4")
+      .body.setSize(350,200);
+      this.buildings
+      .create(850, 1450, "house5")
+      .body.setSize(350,200);
+      this.buildings
+      .create(2500, 650, "house6")
+      .body.setSize(350,200);
+      this.buildings
+      .create(2800,200, "tree1")
+      .body.setSize(100,100);
+      this.buildings
+      .create(700, 400, "tree1")
+      .body.setSize(100,100);
+      this.buildings
+      .create(1250, 1400, "tree1")
+      .body.setSize(100,100);
+      this.buildings
+      .create(4150, 2000, "tree1")
+      .body.setSize(100,100);
+      this.buildings
+      .create(2150, 750, "tree2")
+      .body.setSize(100,100);
+      this.buildings
+      .create(500, 1600, "tree2")
+      .body.setSize(100,100);
+      this.buildings
+      .create(2600, 2200, "tree2")
+      .body.setSize(100,100);
+      this.buildings
+      .create(3100, 1350, "tree2")
+      .body.setSize(100,100);
+      this.buildings
+      .create(1350, 750, "tree3")
+      .body.setSize(350,200);
+      this.buildings
+      .create(800, 2300, "tree3")
+      .body.setSize(350,200);
+      this.buildings
+      .create(1950, 1950, "tree3")
+      .body.setSize(350,200);
+      this.buildings
+      .create(3800, 500, "tree3")
+      .body.setSize(350,200);
+
+
+    this.player.depth = 100;
+
+
+
+
+
+
+
+    this.physics.add.collider(this.player, this.buildings);
+    this.physics.add.collider(this.zombieGroup, this.buildings);
+
 
     /*this.zombie = this.physics.add
       .sprite(300, 300, "zombie");
@@ -145,7 +248,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.anims.create({
       key: "walk",
       frames: this.anims.generateFrameNumbers("girl", { start: 0, end: 11 }),
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1
     });
     this.anims.create({
@@ -189,16 +292,17 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
     const camera = this.cameras.main;
-    camera.startFollow(this.player);
-    camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.startFollow(this.player);
+    this.cameras.main.setBounds(0, 0, 4280, 2408);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // Help text that has a "fixed" position on the screen
     text = this.add
       .text(16, 16, 'Arrow keys to move\nTeach all the zombies how to dance again', {
-        font: "40px monospace",
-        fill: "#000000",
+        fontFamily: "Optima",
+        fontSize: 40,
+        color: "#000000",
         padding: { x: 20, y: 10 },
         backgroundColor: "#ffffff"
       })
@@ -227,6 +331,7 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+
     //checks for collisions between the zombies and the Player
     if(this.zombieGroup.getLength() === 0 && window.convertedZombie == true){
       this.scene.sleep("WorldScene1");
@@ -379,6 +484,8 @@ export default class WorldScene1 extends Phaser.Scene {
     this.player.body.velocity.normalize().scale(speed);
 
 
+
+
   }
 
   sceneHit(player, zombie) {
@@ -433,6 +540,7 @@ export default class WorldScene1 extends Phaser.Scene {
     this.zombieGroup.add(this.newZomb);
 
   }
+
 
 /*  shadowHit(player, guy) {
     //this function makes it so whichever zombie

@@ -24,11 +24,13 @@ export default class LoseScene extends Phaser.Scene {
     //Create the scene
 
     //tell user game is over and their score
-    var text = this.add.text( 700, 480, "Oh, no! You died!", {
-      fontFamily: 'Fantasy', fontSize: 70, color: '#ffffff'});
-    var play = this.add.text(705, 580, '< click here to try again >',
-    {fontFamily: 'Fantasy', fontSize: 50, color: '#ffffff'}).setInteractive();
-    play.on("pointerup", function() {
+    var enterKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
+
+    var text = this.add.text( 700, 480, "Oh no, you died!", {
+      fontFamily: 'Optima', fontSize: 70, color: '#ffffff'});
+    var play = this.add.text(715, 580, 'Press Enter to try again',
+    {fontFamily: 'Optima', fontSize: 50, color: '#ffffff'}).setInteractive();
+    enterKey.on("down", function() {
       this.scene.start('WorldScene1');
     }, this
   );

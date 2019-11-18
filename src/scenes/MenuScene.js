@@ -125,7 +125,7 @@ export default class MenuScene extends Phaser.Scene {
     var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
     if(enterKey.isDown){
-      this.scene.start('TutorialScene1')
+      this.scene.start('WorldScene1')
     };
 
   }
