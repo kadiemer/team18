@@ -222,6 +222,22 @@ export default class WorldScene2 extends Phaser.Scene {
         fill: "#f7b600"
         });
 
+        //****************************
+        // Variables for progressBar
+        this.progressBar = this.add.graphics();
+        this.progressBox = this.add.graphics();
+        this.progressBox.fillStyle(0xDADCD6, 0.8);
+        this.progressBox.fillRect(1450, 100, 425, 50);
+        this.widthTracker = 0;
+        this.progressPercentage = 0;
+
+      this.progressText = this.add.text(1450, 16, "Progress: 0%", {
+                fontFamily: "Optima",
+                fontSize: "60px",
+              fill: "#f7b600"
+                    });
+        //*************************
+
   }
 
   update(time, delta) {
@@ -291,6 +307,12 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   hitKey (staticKey, dynamicKey) {
+
+    if (this.score < 0.5) {
+      this.progressText.setText("Percentage: 0%");
+      this.progressPercentage = 0;
+      this.progressBar.clear();
+    }
     var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ONE);
     var bKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.TWO);
     var cKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.THREE);
@@ -304,12 +326,22 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressBar.clear();
+          this.progressPercentage -= 6.67;
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressBar.clear();
+          this.progressPercentage -= 6.67;
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
@@ -319,9 +351,19 @@ export default class WorldScene2 extends Phaser.Scene {
           if (dynamicKey.special){
             this.createDanceMove();
           }
+          this.widthTracker += 28.33
+          this.progressPercentage += 6.67;
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
+        if (this.progressPercentage < 0.5) {
+          this.progressText.setText("Percentage: 0%");
+          this.progressPercentage  = 0
+        } else {
+        this.progressText.setText("Percentage: " + this.progressPercentage + "%");
+}
       }
     }
     else if(staticKey['texture']['key'] == "2Key"){
@@ -331,12 +373,22 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressPercentage -= 6.67;
+          this.progressBar.clear();
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressPercentage -= 6.67;
+          this.progressBar.clear();
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
@@ -347,9 +399,20 @@ export default class WorldScene2 extends Phaser.Scene {
             this.createDanceMove();
             this.sound.play("PowerMove");
           }
+          this.widthTracker += 28.33
+          this.progressPercentage += 6.67;
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
+        if (this.progressPercentage < 0.5) {
+          this.progressText.setText("Percentage: 0%");
+          this.progressPercentage  = 0
+        } else {
+        this.progressText.setText("Percentage: " + this.progressPercentage + "%");
+      }
+
       }
     }
     else if(staticKey['texture']['key'] == "3Key"){
@@ -359,12 +422,22 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressPercentage -= 6.67;
+          this.progressBar.clear();
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressPercentage -= 6.67;
+          this.progressBar.clear();
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
@@ -374,9 +447,20 @@ export default class WorldScene2 extends Phaser.Scene {
           if (dynamicKey.special){
             this.createDanceMove();
           }
+          this.widthTracker += 28.33
+          this.progressPercentage += 6.67;
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
+        if (this.progressPercentage < 0.5) {
+          this.progressText.setText("Percentage: 0%");
+          this.progressPercentage  = 0
+        } else {
+        this.progressText.setText("Percentage: " + this.progressPercentage + "%");
+      }
+
       }
     }
     else if(staticKey['texture']['key'] == "4Key"){
@@ -386,12 +470,22 @@ export default class WorldScene2 extends Phaser.Scene {
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressPercentage -= 6.67;
+          this.progressBar.clear();
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else if(dynamicKey.x < 350){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
           this.score-=1;
           this.sound.play('Miss');
+          this.widthTracker -= 28.33
+          this.progressPercentage -= 6.67;
+          this.progressBar.clear();
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         else{
           this.indicatorText = this.add.text(370, 550, 'P e r f e c t !',
@@ -401,13 +495,25 @@ export default class WorldScene2 extends Phaser.Scene {
           if (dynamicKey.special){
             this.createDanceMove();
           }
+          this.widthTracker += 28.33
+          this.progressPercentage += 6.67;
+          this.progressBar.fillStyle(0xFFFB04, 1);
+          this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
         }
         dynamicKey.destroy();
         this.scoreText.setText("Score: " + this.score);
+        if (this.progressPercentage < 0.5) {
+          this.progressText.setText("Percentage: 0%");
+          this.progressPercentage  = 0
+        } else {
+        this.progressText.setText("Percentage: " + this.progressPercentage + "%");
+      }
+
       }
     }
     if(this.score > 14.5){
       this.gameOver = true;
+      this.progressText.setText("Percentage:100%");
       this.scoreText.setText("You win");
       this.myGroup.clear(true);
       /*
