@@ -66,7 +66,11 @@ export default class WorldScene2 extends Phaser.Scene {
     this.load.image('3Key', './assets/images/3Key.png');
     this.load.image('4Key', './assets/images/4Key.png');
 
-    this.load.audio('track1', './assets/sounds/track1.mp3');
+
+    this.load.audio('Hipster', './assets/sounds/Hipster.mp3');
+    this.load.audio('Goth', './assets/sounds/Goth.mp3');
+    this.load.audio('Cheerleader', './assets/sounds/Cheerleader.mp3');
+    this.load.audio('Business_Man', './assets/sounds/Business_Man.mp3');
     this.load.audio('Miss','./assets/sounds/Miss.wav');
     this.load.audio('Good','./assets/sounds/Good.wav');
     this.load.audio('PowerMove','./assets/sounds/neon_light.wav');
@@ -78,6 +82,11 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   create (data) {
+    this.randomValue = Phaser.Math.Between(0,3);
+    var songs = ['Goth','Hipster','Cheerleader','Business_Man'];
+    var bpms = [618.56,280.37,600,491.8]; //97 bpm,214 bpm,100 bpm, 122 bpm
+    this.bpm = bpms[this.randomValue];
+    this.trackName = songs[this.randomValue];
 
     this.gameOver = false;
     this.scoreText;
@@ -119,7 +128,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.myGroup = this.add.group();
 
     //Uses first 15 seconds of the track
-    this.track1 = this.sound.add('track1');
+    this.track1 = this.sound.add(this.trackName);
     this.track1.addMarker({
         name: 'track1',
         start: 0.00,
@@ -138,7 +147,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.started = true
         this.track1.play('track1');
         this.time.addEvent({
-        delay: 300 + getRandomInt(500), //This is the amount of time in which each letter is delayed
+        delay: this.bpm, //This is the amount of time in which each letter is delayed
         callback: function(){
 
           //This is the function that picks a random letter and makes it fall
