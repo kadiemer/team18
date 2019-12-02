@@ -162,61 +162,25 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.buildings
       .create(1000, 620, "house1")
-      .body.setSize(350,200);
+      .body.setSize(300,375);
     this.buildings
-      .create(2140, 1850, "house2")
-      .body.setSize(350,200);
+      .create(2140, 1750, "house2")
+      .body.setSize(325,400);
     this.buildings
       .create(4000, 900, "house3")
-      .body.setSize(350,200);
-      this.buildings
+      .body.setSize(300,375);
+    this.buildings
       .create(3660, 1700, "house4")
-      .body.setSize(350,200);
-      this.buildings
-      .create(850, 1450, "house5")
-      .body.setSize(350,200);
-      this.buildings
+      .body.setSize(300,375);
+    this.buildings
+      .create(850, 1400, "house5")
+      .body.setSize(350,450);
+    this.buildings
       .create(2500, 650, "house6")
-      .body.setSize(350,200);
-      this.buildings
-      .create(2800,200, "tree1")
-      .body.setSize(100,100);
-      this.buildings
-      .create(700, 400, "tree1")
-      .body.setSize(100,100);
-      this.buildings
-      .create(1250, 1400, "tree1")
-      .body.setSize(100,100);
-      this.buildings
-      .create(4150, 2000, "tree1")
-      .body.setSize(100,100);
-      this.buildings
-      .create(2150, 750, "tree2")
-      .body.setSize(100,100);
-      this.buildings
-      .create(500, 1600, "tree2")
-      .body.setSize(100,100);
-      this.buildings
-      .create(2600, 2200, "tree2")
-      .body.setSize(100,100);
-      this.buildings
-      .create(3100, 1350, "tree2")
-      .body.setSize(100,100);
-      this.buildings
-      .create(1350, 750, "tree3")
-      .body.setSize(350,200);
-      this.buildings
-      .create(800, 2300, "tree3")
-      .body.setSize(350,200);
-      this.buildings
-      .create(1950, 1950, "tree3")
-      .body.setSize(350,200);
-      this.buildings
-      .create(3800, 500, "tree3")
-      .body.setSize(350,200);
+      .body.setSize(425,500);
 
 
-    this.player.depth = 100;
+    this.player.depth = 0;
 
 
 
@@ -332,6 +296,10 @@ export default class WorldScene1 extends Phaser.Scene {
 
   update(time, delta) {
 
+    if(this.player.y > this.buildings.y) {
+      this.player.depth = 0;
+    }
+
     //checks for collisions between the zombies and the Player
     if(this.zombieGroup.getLength() === 0 && window.convertedZombie == true){
       this.scene.sleep("WorldScene1");
@@ -374,7 +342,7 @@ export default class WorldScene1 extends Phaser.Scene {
               //child.anims.play("zombieWalk", true);
               child.flipX = false;
             }
-            else if (child.x < this.player.x){
+            else if (child.x < this.player.x - 1000){
               child.body.setVelocityX(zomSpeed);
               //child.anims.play("zombieWalk", true);
               child.flipX = true;
