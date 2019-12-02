@@ -142,7 +142,8 @@ export default class WorldScene2 extends Phaser.Scene {
       {fontFamily: 'League Gothic', fontSize: 70, color: '#f7b600'}).setInteractive();
 
       //Makes it so letters start falling after click
-      enterKey.on("down", function() {
+      this.lastPicker = 0;
+      this.buttonFunction = enterKey.on("down", function() {
         play.destroy();
         this.started = true
         this.track1.play('track1');
@@ -152,6 +153,10 @@ export default class WorldScene2 extends Phaser.Scene {
 
           //This is the function that picks a random letter and makes it fall
           this.picker = getRandomInt(4);
+          while (this.picker == this.lastPicker){
+            this.picker = getRandomInt(4);
+          }
+          this.lastPicker = this.picker;
           if (this.picker == 0) {
             this.aKey = this.physics.add.sprite(this.zombie.x, 650, '1Key');
             this.myGroup.add(this.aKey);
@@ -267,6 +272,7 @@ export default class WorldScene2 extends Phaser.Scene {
         else if(this.gameOver == true){
           this.track1.destroy();
           this.zombie.destroy();
+          this.buttonFunction.destroy();
         }
       }
       else{
@@ -279,6 +285,7 @@ export default class WorldScene2 extends Phaser.Scene {
         if(this.gameOver == true){
           this.track1.destroy();
           this.zombie.destroy();
+          this.buttonFunction.destroy();
         }
       }
     }
@@ -471,6 +478,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
     this.track1.destroy();
+    this.buttonFunction.destroy();
   }
 
   createDanceMove (){
