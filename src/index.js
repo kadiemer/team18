@@ -21,7 +21,7 @@ class Game extends Phaser.Game {
     this.scene.add('WinScene',WinScene);
     this.scene.add('Difficulty',Difficulty);
 
-    this.scene.start('WorldScene1');
+    this.scene.start('MenuScene');
   }
 }
 

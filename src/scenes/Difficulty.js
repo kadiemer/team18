@@ -58,8 +58,10 @@ export default class WinScene extends Phaser.Scene {
         volume: .6
       });
       window.maxZombies = 5;
-      window.zombieSpeed = 20;
+      window.zombieSpeed = 30;
       window.miniGameSpeed = .6;
+      window.transformedCount = 0;
+      window.zombieCount = 0;
       this.scene.start('WorldScene1');
       }, this
     );
@@ -69,8 +71,10 @@ export default class WinScene extends Phaser.Scene {
         volume: .6
       });
       window.maxZombies = 10;
-      window.zombieSpeed = 30;
+      window.zombieSpeed = 40;
       window.miniGameSpeed = .8;
+      window.transformedCount = 0;
+      window.zombieCount = 0;
       this.scene.start('WorldScene1');
       }, this
     );
@@ -80,8 +84,10 @@ export default class WinScene extends Phaser.Scene {
         volume: .6
       });
       window.maxZombies = 15;
-      window.zombieSpeed = 40;
+      window.zombieSpeed = 50;
       window.miniGameSpeed = 1;
+      window.transformedCount = 0;
+      window.zombieCount = 0;
       this.scene.start('WorldScene1');
       }, this
     );

@@ -5,13 +5,10 @@ var textTimer = 0;
 var newTimer = 0;
 var text;
 var text1;
-<<<<<<< Updated upstream
-=======
 var text2;
 var transformedCount;
 var transformTimer = 0;
 var sfx;
->>>>>>> Stashed changes
 
 
 window.totalMiniGames = 0;
@@ -98,6 +95,7 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   create() {
+
     sfx = this.sound.add("zombie");
     this.minigameZombie;
     this.add.image(2150,1202.5,"newBackground");
@@ -129,6 +127,26 @@ export default class WorldScene1 extends Phaser.Scene {
       return Math.floor(Math.random() * Math.floor(max));
     }
 
+    function generateX(max,zombies){
+      var xCoord = getRandomInt(max);
+      Phaser.Actions.Call(zombies.getChildren(), function(child) {
+        while(Math.abs(xCoord - child.x) < 50) {
+          xCoord = getRandomInt(max)
+        }
+      },this);
+      return xCoord + 400
+
+    }
+    function generateY(max,zombies){
+      var yCoord = getRandomInt(max);
+      Phaser.Actions.Call(zombies.getChildren(), function(child) {
+        while(Math.abs(yCoord - child.y) < 25) {
+          yCoord = getRandomInt(max)
+        }
+      },this);
+      return yCoord
+    }
+
 
 
     this.player.scale = .2;
@@ -146,9 +164,9 @@ export default class WorldScene1 extends Phaser.Scene {
     this.zombieGroup = this.add.group();
     var i;
     var j = 0;
-    for (i = 0; i < window.maxZombies; i++) {
+    for (i = 0; i < window.maxZombies; i++) { //window.maxZombies
   this.zombie1 = this.physics.add
-        .sprite((600 + getRandomInt(3900)), (getRandomInt(2300)), zombies[j])
+        .sprite(generateX(4200,this.zombieGroup),generateY(2300,this.zombieGroup), zombies[j])
         .setSize(200, 300)
         .setOffset(100, 100)
         .setDepth(50);
@@ -284,7 +302,7 @@ export default class WorldScene1 extends Phaser.Scene {
 
     // Help text that has a "fixed" position on the screen
     this.zombieCount = this.add
-      .text(15,5, 'ZOMBIES TRANSFORMED:' + window.transformedCount + "/" + window.zombieCount , {
+      .text(15,5, 'ZOMBIES TRANSFORMED:' + window.transformedCount + "/" + window.maxZombies , {
         fontFamily: "League Gothic",
         fontSize: 70,
         color: '#ab0000',
@@ -308,11 +326,7 @@ export default class WorldScene1 extends Phaser.Scene {
       .setDepth(200);
 
     text1 = this.add
-<<<<<<< Updated upstream
-          .text(720/2, 700/2, 'TEACH THEM TO DANCE TO FIND THEIR INNER HUMANITY\nUSE ARROW KEYS TO MOVE', {
-=======
           .text(720/2, 700/2, 'TEACH THEM TO DANCE TO FIND THEIR INNER HUMANITY\nUSE ARROW KEYS TO MOVE/COLLIDE WITH ZOMBIES', {
->>>>>>> Stashed changes
             fontFamily: "League Gothic",
             fontSize: 70,
             color: "#000000",
@@ -323,8 +337,6 @@ export default class WorldScene1 extends Phaser.Scene {
           .setScrollFactor(0)
           .setDepth(200);
 
-<<<<<<< Updated upstream
-=======
     text2 = this.add
           .text(950/2, 700/2, 'THE ZOMBIE TURNED BACK HUMAN, PROTECT THEM! \nTHEY CAN BE TURNED BACK IF THEY COLLIDE WITH A ZOMBIE', {
             fontFamily: "League Gothic",
@@ -338,16 +350,6 @@ export default class WorldScene1 extends Phaser.Scene {
           .setDepth(200);
 
 
-    var repeat;
-    var delay = this.add.text(0,0,repeat, {
-            fontFamily: "League Gothic",
-            fontSize:100,
-            color: '#ab0000',
-            stroke: "#000000",
-            strokeThickness:5
-          })
-          .setDepth(200);
->>>>>>> Stashed changes
 
     // Debug graphics
     this.input.keyboard.once("keydown_D", event => {
@@ -402,81 +404,43 @@ export default class WorldScene1 extends Phaser.Scene {
 
     }
 
-<<<<<<< Updated upstream
-    var zomSpeed = 20;
-
-    textTimer += 1;
-    text1.setVisible(false);
-=======
     var zomSpeed = 0;
     var speed = 0;
 
     textTimer += 1;
     text1.setVisible(false);
     text2.setVisible(false);
->>>>>>> Stashed changes
 
     if(textTimer > 200) {
       text.setVisible(false);
       text1.setVisible(true);
-<<<<<<< Updated upstream
-      if(this.cursors.left.isDown) {
-        text1.destroy()
-      }
-      if(this.cursors.right.isDown) {
-        text1.destroy()
-      }
-      if(this.cursors.up.isDown) {
-        text1.destroy()
-      }
-      else if(this.cursors.down.isDown) {
-        text1.destroy()
-      }
-
-    }
-
-
-
-
-
-
-
-
-    const speed = 250;
-    var zombieAnims = ["gothZombieWalk","cheerZombieWalk","businessZombieWalk","hipsterZombieWalk"]
-    //Helps set up zombie movememnt
-    if (this.transformedGroup.getLength() != 0){
-      Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed){
-        Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
-          if(Math.abs(Math.sqrt((transformed.x*transformed.x - child.x*child.x) + (transformed.y*transformed.y - child.y*child.y))) > Math.abs(Math.sqrt((this.player.x*this.player.x - child.x*child.x) + (this.player.y*this.player.y - child.y*child.y)))){
-            if(child.x > this.player.x) {
-              child.body.setVelocityX(-zomSpeed);
-                //child.anims.play("zombieWalk", true);
-              child.flipX = false;
-=======
       var zomSpeed = window.zombieSpeed;
-      speed = 250;
+      speed = 350;
       if (this.cursors.up.isDown || this.cursors.down.isDown){
-        if(this.cursors.left.isDown || this.cursors.right.isDown){
-          text1.destroy()
-              }
-            }
+        text1.destroy()
       }
+      if(this.cursors.left.isDown || this.cursors.right.isDown){
+        text1.destroy()
+      }
+      }
+
 
     if(window.totalMiniGames == 1){
       newTimer += 1;
-      speed = 250;
+      speed = 350;
       text2.setVisible(true);
       if(newTimer > 200) {
         text2.setVisible(false);
         zomSpeed = window.zombieSpeed;
       }
-      else if (this.cursors.up.isDown || this.cursors.down.isDown){
-                if(this.cursors.left.isDown || this.cursors.right.isDown){
-                  text2.destroy()
-                }
+      if (this.cursors.up.isDown || this.cursors.down.isDown){
+        text2.destroy()
+      }
+      if(this.cursors.left.isDown || this.cursors.right.isDown){
+        text2.destroy()
+      }
               }
-    }
+
 
     function distance(x1, y1, x2, y2) {
         var dx = x1 - x2;
@@ -485,225 +449,232 @@ export default class WorldScene1 extends Phaser.Scene {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    function zombieFollow(zombie,transGroup,player) {
+      var closest = 5000;
+      var closestObj = null;
+      var newDistance;
+      Phaser.Actions.Call(transGroup.getChildren(), function(transformed) {
+        newDistance = distance(zombie.x,zombie.y,transformed.x,transformed.y);
+        if(newDistance < closest) {
+          closest = newDistance;
+          closestObj = transformed;
+        }
+      },this);
+      newDistance = distance(zombie.x,zombie.y,player.x,player.y);
+      if(newDistance < closest) {
+        closestObj = player;
+        return closestObj
+      }
+      else{
+        return closestObj
+      }
+    }
+
+
 
     var zombieAnims = ["gothZombieWalk","cheerZombieWalk","businessZombieWalk","hipsterZombieWalk"]
     //Helps set up zombie movememnt
     if (zomSpeed > 0 ) {
       if (this.transformedGroup.getLength() != 0){
-        Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed){
-          Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
-            if(distance(transformed.x,transformed.y,child.x,child.y) > distance(this.player.x,this.player.y,child.x,child.y)){
-              if(distance(this.player.x,this.player.y,child.x,child.y) > 2000 ) {
-                child.body.moves = false;
-              }
-              else{
-                child.body.moves = true;
-              }
-
-              if(child.x > this.player.x + 20) {
-                child.body.setVelocityX(-zomSpeed);
-                //child.anims.play("zombieWalk", true);
-                child.flipX = false;
-              }
-              else if (child.x < this.player.x - 20){
-                child.body.setVelocityX(zomSpeed);
-                //child.anims.play("zombieWalk", true);
-                child.flipX = true;
-              }
-              else if (this.player.x + 20 < child.x < this.player.x - 20){
-                child.body.setVelocityX(zomSpeed);
-                //child.anims.play("zombieWalk", true);
-              }
-
-              if(child.y > this.player.y + 10) {
-                child.body.setVelocityY(-zomSpeed);
-                this.player.depth = 5;
-                child.depth = 100;
-              }
-              else if(child.y < this.player.y -10){
-                child.body.setVelocityY(zomSpeed);
-                this.player.depth = 100;
-                child.depth = 5;
-              }
-              else if(this.player + 10 < child.y < this.player.y - 10){
-                child.body.setVelocityY(zomSpeed);
-                this.player.depth = 100;
-                child.depth = 5;
-              }
->>>>>>> Stashed changes
+        Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
+          var closestObj = zombieFollow(child,this.transformedGroup,this.player)
+        if(distance(closestObj.x,closestObj.y,child.x,child.y) > 1100){
+          child.enable = true;
+          if(child.x > closestObj.x) {
+            child.body.setVelocityX(zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = true;
             }
-            else if(distance(transformed.x,transformed.y,child.x,child.y) < distance(this.player.x,this.player.y,child.x,child.y)){
-              if(distance(this.player.x,this.player.y,transformed.x,transformed.y) > 2000 ) {
-                child.body.moves = false;
-              }
-              else{
-                child.body.moves = true;
-              }
-
-              if(child.x > transformed.x + 20) {
-                child.body.setVelocityX(-zomSpeed);
-                //child.anims.play("zombieWalk", true);
-                child.flipX = false;
-              }
-              else if (child.x < transformed.x - 20){
-                child.body.setVelocityX(zomSpeed);
-                //child.anims.play("zombieWalk", true);
-                child.flipX = true;
-              }
-              else if (transformed.x + 20 < child.x < transformed.x - 20){
-                child.body.setVelocityX(zomSpeed);
-                //child.anims.play("zombieWalk", true);
-              }
-
-              if(child.y > transformed.y) {
-                child.body.setVelocityY(-zomSpeed);
-                child.depth = 100;
-                transformed.depth = 5;
-              }
-              else if(child.y < transformed.y){
-                child.body.setVelocityY(zomSpeed);
-                child.depth = 5;
-                transformed.depth = 100;
-              }
+          else if (child.x < closestObj){
+            child.body.setVelocityX(-zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = false;
+          }
+          if(child.y > closestObj.y) {
+            child.body.setVelocityY(zomSpeed);
+          }
+          else if(child.y < closestObj.y){
+            child.body.setVelocityY(-zomSpeed);
+          }
+        }
+        if(distance(closestObj.x,closestObj.y,child.x,child.y) < 1100 || distance(closestObj.x,closestObj.y,child.x,child.y) > 2100) {
+          child.enable = true;
+          if(child.x > closestObj.x + 20) {
+            child.body.setVelocityX(-zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = false;
+          }
+          else if (child.x < closestObj.x - 20){
+            child.body.setVelocityX(zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = true;
+          }
+          else if (closestObj.x + 20 < child.x < closestObj.x - 20){
+            child.body.setVelocityX(zomSpeed);
+            //child.anims.play("zombieWalk", true);
+          }
+          if(child.y > closestObj.y) {
+            child.body.setVelocityY(-zomSpeed);
+            child.depth = 100;
+            closestObj.depth = 5;
             }
-            if(transformed.y > this.player.y + 10) {
-              this.player.depth = 5;
+          else if(child.y < closestObj.y){
+            child.body.setVelocityY(zomSpeed);
+            child.depth = 5;
+            closestObj.depth = 100;
+          }
+        }
+
+          Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed) {
+            if (transformed.y > this.player.y - 20){
               transformed.depth = 100;
+              this.player.depth = 50;
             }
-            else if(transformed.y < this.player - 10) {
-              transformed.depth = 5;
+            else if(transformed.y < this.player.y - 20){
+              transformed.depth = 50;
               this.player.depth = 100;
             }
-            else if(this.player + 10 < transformed.y < this.player.y - 10){
-              child.body.setVelocityY(zomSpeed);
+            if (child.y > this.player.y - 20){
+              child.depth = 50;
               this.player.depth = 100;
-              transformed.depth = 5;
             }
-
-
-          }, this);
+            else if(child.y < this.player.y - 20){
+              child.depth = 100;
+              this.player.depth = 50;
+            }
+            if (transformed.y > child.y - 20){
+              transformed.depth = 100;
+              child.depth = 50;
+            }
+            else if(transformed.y < child.y - 20){
+              transformed.depth = 50;
+               child.depth = 100;
+            }
+          },this);
         },this);
       }
+
+
+
       else{
         Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
-          console.log(distance(this.player.x,this.player.y,child.x,child.y))
-          if(distance(this.player.x,this.player.y,child.x,child.y) > 2000 ) {
-            child.body.moves = false;
-          }
-          else{
-            child.body.moves = true;
-          }
-          if(child.x > this.player.x + 20) {
-            child.body.setVelocityX(-zomSpeed);
-            if (child['texture']['key'] == "gothZombie"){
-              child.anims.play("gothZombieWalk", true);
+          if(distance(this.player.x,this.player.y,child.x,child.y) > 1100){
+            child.enable = true;
+            if(child.x > this.player.x) {
+              child.body.setVelocityX(zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
+              child.flipX = true;
             }
-            else if (child['texture']['key'] == "cheerZombie"){
-              child.anims.play("cheerZombieWalk", true);
+            else if (child.x < this.player.x){
+              child.body.setVelocityX(-zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
+              //child.anims.play("zombieWalk", true);
+              child.flipX = false;
             }
-            else if (child['texture']['key'] == "businessZombie"){
-              child.anims.play("businessZombieWalk", true);
-            }
-<<<<<<< Updated upstream
-            else if(child.y < transformed.y){
+            if(child.y > this.player.y) {
               child.body.setVelocityY(zomSpeed);
+              this.player.depth = 5;
+              child.depth = 100;
+            }
+            else if(child.y < this.player.y){
+              child.body.setVelocityY(-zomSpeed);
+              this.player.depth = 100;
+              child.depth = 5;
+            }
+          }
+          if (distance(this.player.x,this.player.y,child.x,child.y) < 1100 || distance(this.player.x,this.player.y,child.x,child.y) > 2100){
+            child.enable = true;
+            if(child.x > this.player.x + 20) {
+              child.body.setVelocityX(-zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
+              child.flipX = false;
+            }
+            else if (child.x < this.player.x - 20){
+              child.body.setVelocityX(zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
+              //child.anims.play("zombieWalk", true);
+              child.flipX = true;
+            }
+            else if (this.player.x - 20 > child.x > this.player.x + 20) {
+              child.body.setVelocityX(zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", false);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", false);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", false);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", false);
               }
             }
 
-        }, this);
-      },this);
-    }
-    else{
-      Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
-        if(text1.visible == false && text.visible == false) {
+            if(child.y > this.player.y + 10) {
+              child.body.setVelocityY(-zomSpeed);
+              this.player.depth = 5;
+              child.depth = 100;
+            }
+            else if(child.y < this.player.y - 10){
+              child.body.setVelocityY(zomSpeed);
+              this.player.depth = 100;
+              child.depth = 5;
+            }
+            else if(this.player + 10 < child.y < this.player.y - 10){
+              child.body.setVelocityY(zomSpeed);
+              this.player.depth = 100;
+              child.depth = 5;
 
-          if(child.x > this.player.x) {
-            child.body.setVelocityX(-zomSpeed);
-=======
-            else if (child['texture']['key'] == "hipsterZombie"){
-              child.anims.play("hipsterZombieWalk", true);
             }
-            child.flipX = false;
-          }
-          else if (child.x < this.player.x - 20){
-            child.body.setVelocityX(zomSpeed);
->>>>>>> Stashed changes
-            if (child['texture']['key'] == "gothZombie"){
-              child.anims.play("gothZombieWalk", true);
-            }
-            else if (child['texture']['key'] == "cheerZombie"){
-              child.anims.play("cheerZombieWalk", true);
-            }
-            else if (child['texture']['key'] == "businessZombie"){
-              child.anims.play("businessZombieWalk", true);
-            }
-            else if (child['texture']['key'] == "hipsterZombie"){
-              child.anims.play("hipsterZombieWalk", true);
-            }
-<<<<<<< Updated upstream
-            child.flipX = false;
-          }
-          else if (child.x < this.player.x){
-            child.body.setVelocityX(zomSpeed);
-            if (child['texture']['key'] == "gothZombie"){
-              child.anims.play("gothZombieWalk", true);
-            }
-            else if (child['texture']['key'] == "cheerZombie"){
-              child.anims.play("cheerZombieWalk", true);
-            }
-            else if (child['texture']['key'] == "businessZombie"){
-              child.anims.play("businessZombieWalk", true);
-            }
-            else if (child['texture']['key'] == "hipsterZombie"){
-              child.anims.play("hipsterZombieWalk", true);
-            }
-            //child.anims.play("zombieWalk", true);
-            child.flipX = true;
-          }
-
-          if(child.y > this.player.y) {
-            child.body.setVelocityY(-zomSpeed);
-          }
-          else if(child.y < this.player.y){
-            child.body.setVelocityY(zomSpeed);
-          }
-=======
-            //child.anims.play("zombieWalk", true);
-            child.flipX = true;
-          }
-          else if (this.player.x - 20 > child.x > this.player.x + 20) {
-            child.body.setVelocityX(zomSpeed);
-            if (child['texture']['key'] == "gothZombie"){
-              child.anims.play("gothZombieWalk", false);
-            }
-            else if (child['texture']['key'] == "cheerZombie"){
-              child.anims.play("cheerZombieWalk", false);
-            }
-            else if (child['texture']['key'] == "businessZombie"){
-              child.anims.play("businessZombieWalk", false);
-            }
-            else if (child['texture']['key'] == "hipsterZombie"){
-              child.anims.play("hipsterZombieWalk", false);
-            }
-          }
-
-          if(child.y > this.player.y + 10) {
-            child.body.setVelocityY(-zomSpeed);
-            this.player.depth = 5;
-            child.depth = 100;
-          }
-          else if(child.y < this.player.y - 10){
-            child.body.setVelocityY(zomSpeed);
-            this.player.depth = 100;
-            child.depth = 5;
-          }
-          else if(this.player + 10 < child.y < this.player.y - 10){
-            child.body.setVelocityY(zomSpeed);
-            this.player.depth = 100;
-            child.depth = 5;
           }
         }, this);
       }
+
 
       const prevVelocity = this.player.body.velocity.clone();
 
@@ -721,7 +692,6 @@ export default class WorldScene1 extends Phaser.Scene {
           this.player.body.setVelocityX(speed);
           this.player.anims.play("walk", true);
           this.player.flipX = false;
->>>>>>> Stashed changes
         }
         // Vertical movement
         if (this.cursors.up.isDown) {
@@ -737,48 +707,15 @@ export default class WorldScene1 extends Phaser.Scene {
             this.player.anims.play("idle",true)
         }
       }
-    }}
-
-
-<<<<<<< Updated upstream
-    const prevVelocity = this.player.body.velocity.clone();
-
-    // Stop any previous movement from the last frame
-    this.player.body.setVelocity(0);
-
-    // Horizontal movement
-    if (textTimer > 200) {
-      if (this.cursors.left.isDown) {
-        this.player.body.setVelocityX(-speed);
-        this.player.anims.play("walk", true);
-        this.player.flipX = true;
-      } else if (this.cursors.right.isDown) {
-        this.player.body.setVelocityX(speed);
-       this.player.anims.play("walk", true);
-        this.player.flipX = false;
-      } else {
-       this.player.anims.play("idle", true);
-      }
-
-      // Vertical movement
-      if (this.cursors.up.isDown) {
-        this.player.body.setVelocityY(-speed);
-      } else if (this.cursors.down.isDown) {
-        this.player.body.setVelocityY(speed);
-      }
     }
-=======
+}
 
->>>>>>> Stashed changes
+
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
     this.player.body.velocity.normalize().scale(speed);
 
-
-
-
-  }
-
+}
   sceneHit(player, zombie) {
 
     // Pauses this scene after a collision and starts the minigame
@@ -814,11 +751,7 @@ export default class WorldScene1 extends Phaser.Scene {
     }
 
   transformedHit(transformed, zombie) {
-    transformTimer += 1;
-    transformed.body.moves = false;
 
-    if (transformTimer > 30) {
-      zombie.body.moves = true;
       this.transformedGroup.remove(transformed);
       var oldX = transformed.x;
       var oldY = transformed.y;
@@ -839,20 +772,12 @@ export default class WorldScene1 extends Phaser.Scene {
       this.newZomb.setSize(200, 300)
       this.newZomb.setOffset(100, 100)
       this.zombieGroup.add(this.newZomb);
-      transformedCount -= 1;
       window.zombieCount += 1;
       window.transformedCount -=1;
       this.zombieCount.setText("Zombies Transformed: " + window.transformedCount + "/" + window.maxZombies);
       transformTimer = 0;
     }
-<<<<<<< Updated upstream
-    this.newZomb.scale = .4;
-    this.zombieGroup.add(this.newZomb);
-    var zomSpeed = 20;
 
-=======
->>>>>>> Stashed changes
-  }
 
 
 
