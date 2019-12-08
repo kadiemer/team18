@@ -2,11 +2,21 @@
 import * as ChangeScene from "./ChangeScene.js";
 
 var textTimer = 0;
+var newTimer = 0;
 var text;
+var text1;
+var text2;
+var transformedCount;
+var transformTimer = 0;
+var sfx;
 
 
+window.totalMiniGames = 0;
 window.convertedZombie = false;
-window.transformedSprite = "nothing"
+window.transformedSprite = "nothing";
+window.transformedCount = 0;
+window.zombieCount = 0;
+
 
 
 //global var to see if zombie is converted or not
@@ -19,6 +29,8 @@ export default class WorldScene1 extends Phaser.Scene {
 
 
   preload() {
+    this.load.audio('track2','./assets/sounds/track2.mp3');
+    this.load.audio('zombie','./assets/sounds/zombie.m4a');
     this.load.tilemapTiledJSON("map", "./assets/tilemaps/tuxemon-town.json");
     this.load.spritesheet("zombie", "./assets/sprites/zombieSpriteSheet.png", {
       frameHeight: 940,
@@ -83,10 +95,13 @@ export default class WorldScene1 extends Phaser.Scene {
   }
 
   create() {
+
+    sfx = this.sound.add("zombie");
     this.minigameZombie;
     this.add.image(2150,1202.5,"newBackground");
     this.add.image(975,1775,"mailbox2");
     this.add.image(3900,1200,"mailbox2");
+    this.delay;
 
     //Add change scene event listeners
     ChangeScene.addSceneEventListeners(this);
@@ -112,6 +127,27 @@ export default class WorldScene1 extends Phaser.Scene {
       return Math.floor(Math.random() * Math.floor(max));
     }
 
+    function generateX(max,zombies){
+      var xCoord = getRandomInt(max);
+      Phaser.Actions.Call(zombies.getChildren(), function(child) {
+        while(Math.abs(xCoord - child.x) < 50) {
+          xCoord = getRandomInt(max)
+        }
+      },this);
+      return xCoord + 400
+
+    }
+    function generateY(max,zombies){
+      var yCoord = getRandomInt(max);
+      Phaser.Actions.Call(zombies.getChildren(), function(child) {
+        while(Math.abs(yCoord - child.y) < 25) {
+          yCoord = getRandomInt(max)
+        }
+      },this);
+      return yCoord
+    }
+
+
 
     this.player.scale = .2;
     var zombies = ["gothZombie","cheerZombie","businessZombie","hipsterZombie"];
@@ -128,18 +164,20 @@ export default class WorldScene1 extends Phaser.Scene {
     this.zombieGroup = this.add.group();
     var i;
     var j = 0;
-    for (i = 0; i < 11; i++) {
+    for (i = 0; i < window.maxZombies; i++) { //window.maxZombies
   this.zombie1 = this.physics.add
-        .sprite((getRandomInt(4300)), (getRandomInt(2300)), zombies[j])
+        .sprite(generateX(4200,this.zombieGroup),generateY(2300,this.zombieGroup), zombies[j])
         .setSize(200, 300)
         .setOffset(100, 100)
-        .setDepth(100);
+        .setDepth(50);
     //  this.transformed = this.physics.add.sprite(1600 + this.increment3, 300 + this.increment3 , "transformedGuy")
       //this.transformed.scale = .2;
       //this.zombie1.anims.play("gothZombieWalk",true);
       this.zombie1.scale = .45;
       this.zombie1.num = i;
+      this.zombie1.setCollideWorldBounds(true);
       this.zombieGroup.add(this.zombie1);
+      window.zombieCount += 1;
       if (j == 3) {
         j = 0
       }
@@ -158,29 +196,28 @@ export default class WorldScene1 extends Phaser.Scene {
 
     }
 
-    this.buildings = this.physics.add.staticGroup();
+    //this.buildings = this.physics.add.staticGroup();
 
-    this.buildings
-      .create(1000, 620, "house1")
-      .body.setSize(300,375);
-    this.buildings
-      .create(2140, 1750, "house2")
-      .body.setSize(325,400);
-    this.buildings
-      .create(4000, 900, "house3")
-      .body.setSize(300,375);
-    this.buildings
-      .create(3660, 1700, "house4")
-      .body.setSize(300,375);
-    this.buildings
-      .create(850, 1400, "house5")
-      .body.setSize(350,450);
-    this.buildings
-      .create(2500, 650, "house6")
-      .body.setSize(425,500);
+    //this.buildings
+      //.create(1000, 620, "house1")
+      //.body.setSize(300,375);
+    //this.buildings
+      //.create(2140, 1750, "house2")
+      //.body.setSize(325,400);
+    //this.buildings
+      //.create(4000, 900, "house3")
+      //.body.setSize(300,375);
+    //this.buildings
+      //.create(3660, 1700, "house4")
+      //.body.setSize(300,375);
+    //this.buildings
+      //.create(850, 1400, "house5")
+      //.body.setSize(350,450);
+    //this.buildings
+      //.create(2500, 650, "house6")
+      //.body.setSize(425,500);
 
 
-    this.player.depth = 0;
 
 
 
@@ -261,23 +298,63 @@ export default class WorldScene1 extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
+
+
     // Help text that has a "fixed" position on the screen
-    text = this.add
-      .text(16, 16, 'Arrow keys to move\nTeach all the zombies how to dance again', {
-        fontFamily: "Optima",
-        fontSize: 40,
-        color: "#000000",
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#ffffff"
+    this.zombieCount = this.add
+      .text(15,5, 'ZOMBIES TRANSFORMED:' + window.transformedCount + "/" + window.maxZombies , {
+        fontFamily: "League Gothic",
+        fontSize: 70,
+        color: '#ab0000',
+        stroke: "#000000",
+        strokeThickness:5
       })
       .setScrollFactor(0)
-      .setDepth(30);
+      .setDepth(200)
+
+
+    text = this.add
+      .text(950/2, 700/2, 'THE WORLD HAS BEEN OVERRUN BY ZOMBIES\nYOU ARE THE ONLY ONE WHO CAN HELP', {
+        fontFamily: "League Gothic",
+        fontSize: 70,
+        color: "#000000",
+        padding: { x: 100, y: 100 },
+        backgroundColor: "#e0dac3",
+        align: 'center'
+      })
+      .setScrollFactor(0)
+      .setDepth(200);
+
+    text1 = this.add
+          .text(720/2, 700/2, 'TEACH THEM TO DANCE TO FIND THEIR INNER HUMANITY\nUSE ARROW KEYS TO MOVE/COLLIDE WITH ZOMBIES', {
+            fontFamily: "League Gothic",
+            fontSize: 70,
+            color: "#000000",
+            padding: { x: 100, y: 100 },
+            backgroundColor: "#e0dac3",
+            align: 'center'
+          })
+          .setScrollFactor(0)
+          .setDepth(200);
+
+    text2 = this.add
+          .text(950/2, 700/2, 'THE ZOMBIE TURNED BACK HUMAN, PROTECT THEM! \nTHEY CAN BE TURNED BACK IF THEY COLLIDE WITH A ZOMBIE', {
+            fontFamily: "League Gothic",
+            fontSize: 70,
+            color: "#000000",
+            padding: { x: 100, y: 100 },
+            backgroundColor: "#e0dac3",
+            align: 'center'
+          })
+          .setScrollFactor(0)
+          .setDepth(200);
+
 
 
     // Debug graphics
     this.input.keyboard.once("keydown_D", event => {
       // Turn on physics debugging to show player's hitbox
-    this.physics.world.createDebugGraphic();
+    //this.physics.world.createDebugGraphic();
 
    // Create worldLayer collision graphic above the player, but below the help text
       const graphics = this.add
@@ -296,9 +373,9 @@ export default class WorldScene1 extends Phaser.Scene {
 
   update(time, delta) {
 
-    if(this.player.y > this.buildings.y) {
-      this.player.depth = 0;
-    }
+    //if(this.player.y > this.buildings.y) {
+      //this.player.depth = 0;
+    //}
 
     //checks for collisions between the zombies and the Player
     if(this.zombieGroup.getLength() === 0 && window.convertedZombie == true){
@@ -313,149 +390,332 @@ export default class WorldScene1 extends Phaser.Scene {
     if (window.convertedZombie == true) {
       //if convertedzombie boolean set to true in worldscene2 then it adds
       //transformed sprite to the screen
-      this.transformed = this.physics.add.sprite(this.oldZombiex + 300, this.oldZombiey, window.transformedSprite)
+      this.transformed = this.physics.add.sprite(this.oldZombiex + 30, this.oldZombiey, window.transformedSprite)
       window.transformedSprite = "nothing";
-      this.transformed.scale = .5;
+      this.transformed.scale = .45
+      this.transformed.setSize(200, 300)
+      this.transformed.setOffset(0, 0)
       this.transformedGroup.add(this.transformed);
+      this.transformed.setCollideWorldBounds(true);
+      window.transformedCount += 1;
+      this.zombieCount.setText("Zombies Transformed: " + window.transformedCount + "/" + window.maxZombies);
       window.convertedZombie = false;
       this.physics.add.collider(this.transformed,this.zombieGroup,this.transformedHit,null,this);
 
     }
 
+    var zomSpeed = 0;
+    var speed = 0;
+
     textTimer += 1;
-    if(textTimer > 300) {
+    text1.setVisible(false);
+    text2.setVisible(false);
+
+    if(textTimer > 200) {
       text.setVisible(false);
+      text1.setVisible(true);
+      var zomSpeed = window.zombieSpeed;
+      speed = 350;
+      if (this.cursors.up.isDown || this.cursors.down.isDown){
+        text1.destroy()
+      }
+      if(this.cursors.left.isDown || this.cursors.right.isDown){
+        text1.destroy()
+      }
+      }
+
+
+    if(window.totalMiniGames == 1){
+      newTimer += 1;
+      speed = 350;
+      text2.setVisible(true);
+      if(newTimer > 200) {
+        text2.setVisible(false);
+        zomSpeed = window.zombieSpeed;
+      }
+      if (this.cursors.up.isDown || this.cursors.down.isDown){
+        text2.destroy()
+      }
+      if(this.cursors.left.isDown || this.cursors.right.isDown){
+        text2.destroy()
+      }
+              }
+
+
+    function distance(x1, y1, x2, y2) {
+        var dx = x1 - x2;
+        var dy = y1 - y2;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function zombieFollow(zombie,transGroup,player) {
+      var closest = 5000;
+      var closestObj = null;
+      var newDistance;
+      Phaser.Actions.Call(transGroup.getChildren(), function(transformed) {
+        newDistance = distance(zombie.x,zombie.y,transformed.x,transformed.y);
+        if(newDistance < closest) {
+          closest = newDistance;
+          closestObj = transformed;
+        }
+      },this);
+      newDistance = distance(zombie.x,zombie.y,player.x,player.y);
+      if(newDistance < closest) {
+        closestObj = player;
+        return closestObj
+      }
+      else{
+        return closestObj
+      }
     }
 
 
-    const speed = 250;
-    var zomSpeed = 20;
+
     var zombieAnims = ["gothZombieWalk","cheerZombieWalk","businessZombieWalk","hipsterZombieWalk"]
     //Helps set up zombie movememnt
-    if (this.transformedGroup.getLength() != 0){
-      Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed){
+    if (zomSpeed > 0 ) {
+      if (this.transformedGroup.getLength() != 0){
         Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
+          var closestObj = zombieFollow(child,this.transformedGroup,this.player)
+        if(distance(closestObj.x,closestObj.y,child.x,child.y) > 1100){
+          child.enable = true;
+          if(child.x > closestObj.x) {
+            child.body.setVelocityX(zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = true;
+            }
+          else if (child.x < closestObj){
+            child.body.setVelocityX(-zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = false;
+          }
+          if(child.y > closestObj.y) {
+            child.body.setVelocityY(zomSpeed);
+          }
+          else if(child.y < closestObj.y){
+            child.body.setVelocityY(-zomSpeed);
+          }
+        }
+        if(distance(closestObj.x,closestObj.y,child.x,child.y) < 1100 || distance(closestObj.x,closestObj.y,child.x,child.y) > 2100) {
+          child.enable = true;
+          if(child.x > closestObj.x + 20) {
+            child.body.setVelocityX(-zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = false;
+          }
+          else if (child.x < closestObj.x - 20){
+            child.body.setVelocityX(zomSpeed);
+            //child.anims.play("zombieWalk", true);
+            child.flipX = true;
+          }
+          else if (closestObj.x + 20 < child.x < closestObj.x - 20){
+            child.body.setVelocityX(zomSpeed);
+            //child.anims.play("zombieWalk", true);
+          }
+          if(child.y > closestObj.y) {
+            child.body.setVelocityY(-zomSpeed);
+            child.depth = 100;
+            closestObj.depth = 5;
+            }
+          else if(child.y < closestObj.y){
+            child.body.setVelocityY(zomSpeed);
+            child.depth = 5;
+            closestObj.depth = 100;
+          }
+        }
 
-          if(Math.abs(Math.sqrt((transformed.x*transformed.x - child.x*child.x) + (transformed.y*transformed.y - child.y*child.y))) > Math.abs(Math.sqrt((this.player.x*this.player.x - child.x*child.x) + (this.player.y*this.player.y - child.y*child.y)))){
+          Phaser.Actions.Call(this.transformedGroup.getChildren(), function(transformed) {
+            if (transformed.y > this.player.y - 20){
+              transformed.depth = 100;
+              this.player.depth = 50;
+            }
+            else if(transformed.y < this.player.y - 20){
+              transformed.depth = 50;
+              this.player.depth = 100;
+            }
+            if (child.y > this.player.y - 20){
+              child.depth = 50;
+              this.player.depth = 100;
+            }
+            else if(child.y < this.player.y - 20){
+              child.depth = 100;
+              this.player.depth = 50;
+            }
+            if (transformed.y > child.y - 20){
+              transformed.depth = 100;
+              child.depth = 50;
+            }
+            else if(transformed.y < child.y - 20){
+              transformed.depth = 50;
+               child.depth = 100;
+            }
+          },this);
+        },this);
+      }
+
+
+
+      else{
+        Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
+          if(distance(this.player.x,this.player.y,child.x,child.y) > 1100){
+            child.enable = true;
             if(child.x > this.player.x) {
+              child.body.setVelocityX(zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
+              child.flipX = true;
+            }
+            else if (child.x < this.player.x){
               child.body.setVelocityX(-zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
               //child.anims.play("zombieWalk", true);
               child.flipX = false;
             }
-            else if (child.x < this.player.x - 1000){
-              child.body.setVelocityX(zomSpeed);
-              //child.anims.play("zombieWalk", true);
-              child.flipX = true;
-            }
-
             if(child.y > this.player.y) {
-              child.body.setVelocityY(-zomSpeed);
+              child.body.setVelocityY(zomSpeed);
+              this.player.depth = 5;
+              child.depth = 100;
             }
             else if(child.y < this.player.y){
-              child.body.setVelocityY(zomSpeed);
+              child.body.setVelocityY(-zomSpeed);
+              this.player.depth = 100;
+              child.depth = 5;
             }
           }
-          else{
-            if(child.x > transformed.x) {
+          if (distance(this.player.x,this.player.y,child.x,child.y) < 1100 || distance(this.player.x,this.player.y,child.x,child.y) > 2100){
+            child.enable = true;
+            if(child.x > this.player.x + 20) {
               child.body.setVelocityX(-zomSpeed);
-              //child.anims.play("zombieWalk", true);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
               child.flipX = false;
             }
-            else if (child.x < transformed.x){
+            else if (child.x < this.player.x - 20){
               child.body.setVelocityX(zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", true);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", true);
+              }
               //child.anims.play("zombieWalk", true);
               child.flipX = true;
             }
+            else if (this.player.x - 20 > child.x > this.player.x + 20) {
+              child.body.setVelocityX(zomSpeed);
+              if (child['texture']['key'] == "gothZombie"){
+                child.anims.play("gothZombieWalk", false);
+              }
+              else if (child['texture']['key'] == "cheerZombie"){
+                child.anims.play("cheerZombieWalk", false);
+              }
+              else if (child['texture']['key'] == "businessZombie"){
+                child.anims.play("businessZombieWalk", false);
+              }
+              else if (child['texture']['key'] == "hipsterZombie"){
+                child.anims.play("hipsterZombieWalk", false);
+              }
+            }
 
-            if(child.y > transformed.y) {
+            if(child.y > this.player.y + 10) {
               child.body.setVelocityY(-zomSpeed);
+              this.player.depth = 5;
+              child.depth = 100;
             }
-            else if(child.y < transformed.y){
+            else if(child.y < this.player.y - 10){
               child.body.setVelocityY(zomSpeed);
+              this.player.depth = 100;
+              child.depth = 5;
+            }
+            else if(this.player + 10 < child.y < this.player.y - 10){
+              child.body.setVelocityY(zomSpeed);
+              this.player.depth = 100;
+              child.depth = 5;
+
             }
           }
-
         }, this);
-      },this);
-    }
-    else{
-      Phaser.Actions.Call(this.zombieGroup.getChildren(), function(child) {
-        if(child.x > this.player.x) {
-          child.body.setVelocityX(-zomSpeed);
-          if (child['texture']['key'] == "gothZombie"){
-            child.anims.play("gothZombieWalk", true);
-          }
-          else if (child['texture']['key'] == "cheerZombie"){
-            child.anims.play("cheerZombieWalk", true);
-          }
-          else if (child['texture']['key'] == "businessZombie"){
-            child.anims.play("businessZombieWalk", true);
-          }
-          else if (child['texture']['key'] == "hipsterZombie"){
-            child.anims.play("hipsterZombieWalk", true);
-          }
-          child.flipX = false;
+      }
+
+
+      const prevVelocity = this.player.body.velocity.clone();
+
+      // Stop any previous movement from the last frame
+      this.player.body.setVelocity(0);
+
+      // Horizontal movement
+      if (speed > 0) {
+        if (this.cursors.left.isDown) {
+          this.player.body.setVelocityX(-speed);
+          this.player.anims.play("walk", true);
+          this.player.flipX = true;
         }
-        else if (child.x < this.player.x){
-          child.body.setVelocityX(zomSpeed);
-          if (child['texture']['key'] == "gothZombie"){
-            child.anims.play("gothZombieWalk", true);
-          }
-          else if (child['texture']['key'] == "cheerZombie"){
-            child.anims.play("cheerZombieWalk", true);
-          }
-          else if (child['texture']['key'] == "businessZombie"){
-            child.anims.play("businessZombieWalk", true);
-          }
-          else if (child['texture']['key'] == "hipsterZombie"){
-            child.anims.play("hipsterZombieWalk", true);
-          }
-          //child.anims.play("zombieWalk", true);
-          child.flipX = true;
+        else if (this.cursors.right.isDown) {
+          this.player.body.setVelocityX(speed);
+          this.player.anims.play("walk", true);
+          this.player.flipX = false;
         }
-
-        if(child.y > this.player.y) {
-          child.body.setVelocityY(-zomSpeed);
+        // Vertical movement
+        if (this.cursors.up.isDown) {
+          this.player.body.setVelocityY(-speed);
+          this.player.anims.play("walk", true);
         }
-        else if(child.y < this.player.y){
-          child.body.setVelocityY(zomSpeed);
+        else if (this.cursors.down.isDown) {
+          this.player.body.setVelocityY(speed);
+          this.player.anims.play("walk", true);
         }
-      }, this);
+        if (this.cursors.up.isDown == false && this.cursors.down.isDown == false){
+          if(this.cursors.left.isDown == false && this.cursors.right.isDown == false){
+            this.player.anims.play("idle",true)
+        }
+      }
     }
+}
 
-    const prevVelocity = this.player.body.velocity.clone();
 
-    // Stop any previous movement from the last frame
-    this.player.body.setVelocity(0);
-
-    // Horizontal movement
-    if (this.cursors.left.isDown) {
-      this.player.body.setVelocityX(-speed);
-      this.player.anims.play("walk", true);
-      this.player.flipX = true;
-    } else if (this.cursors.right.isDown) {
-      this.player.body.setVelocityX(speed);
-     this.player.anims.play("walk", true);
-      this.player.flipX = false;
-    } else {
-     this.player.anims.play("idle", true);
-    }
-
-    // Vertical movement
-    if (this.cursors.up.isDown) {
-      this.player.body.setVelocityY(-speed);
-    } else if (this.cursors.down.isDown) {
-      this.player.body.setVelocityY(speed);
-    }
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
     this.player.body.velocity.normalize().scale(speed);
 
-
-
-
-  }
-
+}
   sceneHit(player, zombie) {
 
     // Pauses this scene after a collision and starts the minigame
@@ -468,46 +728,57 @@ export default class WorldScene1 extends Phaser.Scene {
     this.cursors.left.isDown = false;
     this.cursors.right.isDown = false;
     if (zombie['texture']['key'] == "gothZombie") {
+      sfx.play({
+        volume: .8,
+        detune: 2
+      });
       this.scene.launch('WorldScene2',{newSprite: "gothZombie"});
     }
     else if (zombie['texture']['key'] == "cheerZombie") {
+      sfx.play();
       this.scene.launch('WorldScene2',{newSprite: "cheerZombie"});
     }
     else if (zombie['texture']['key'] == "businessZombie") {
+      sfx.play();
       this.scene.launch('WorldScene2',{newSprite: "businessZombie"});
     }
     else if (zombie['texture']['key'] == "hipsterZombie") {
+      sfx.play();
       this.scene.launch('WorldScene2',{newSprite: "hipsterZombie"});
     }
-    this.zombieGroup.remove(zombie);
     this.scene.sleep('WorldScene1');
-
-  }
+    this.zombieGroup.remove(zombie);
+    }
 
   transformedHit(transformed, zombie) {
 
-    // Pauses this scene after a collision and starts the minigame
-    // Disables whichever zombie is being collided with
-    this.transformedGroup.remove(transformed);
-    var oldX = transformed.x;
-    var oldY = transformed.y;
-    transformed.destroy();
-    if (this.transformed['texture']['key'] == "normalGoth"){
-      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "gothZombie");
+      this.transformedGroup.remove(transformed);
+      var oldX = transformed.x;
+      var oldY = transformed.y;
+      transformed.destroy();
+      if (this.transformed['texture']['key'] == "normalGoth"){
+        this.newZomb = this.physics.add.sprite(oldX, oldY + 10, "gothZombie");
+      }
+      else if (this.transformed['texture']['key'] == "normalBusiness"){
+        this.newZomb = this.physics.add.sprite(oldX, oldY + 10, "businessZombie");
+      }
+      else if (this.transformed['texture']['key'] == "normalCheer"){
+        this.newZomb = this.physics.add.sprite(oldX, oldY + 10, "cheerZombie");
+      }
+      else if (this.transformed['texture']['key'] == "normalHipster"){
+        this.newZomb = this.physics.add.sprite(oldX, oldY + 10, "hipsterZombie");
+      }
+      this.newZomb.scale = .45;
+      this.newZomb.setSize(200, 300)
+      this.newZomb.setOffset(100, 100)
+      this.zombieGroup.add(this.newZomb);
+      window.zombieCount += 1;
+      window.transformedCount -=1;
+      this.zombieCount.setText("Zombies Transformed: " + window.transformedCount + "/" + window.maxZombies);
+      transformTimer = 0;
     }
-    else if (this.transformed['texture']['key'] == "normalBusiness"){
-      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "businessZombie");
-    }
-    else if (this.transformed['texture']['key'] == "normalCheer"){
-      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "cheerZombie");
-    }
-    else if (this.transformed['texture']['key'] == "normalHipster"){
-      this.newZomb = this.physics.add.sprite(oldX, oldY+100, "hipsterZombie");
-    }
-    this.newZomb.scale = .4;
-    this.zombieGroup.add(this.newZomb);
 
-  }
+
 
 
 /*  shadowHit(player, guy) {

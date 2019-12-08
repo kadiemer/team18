@@ -24,13 +24,22 @@ export default class WinScene extends Phaser.Scene {
     //Create the scene
 
     //tell user game is over and their score
-    var text = this.add.text( 650, 480, "Congrats! You Survived!", {
-      fontFamily: 'Optima', fontSize: 70, color: '#ffffff'});
+    var enterKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
-    var subText = this.add.text( 600, 580, "You turned all the zombies human again", {
-      fontFamily: 'Optima', fontSize: 50, color: '#ffffff'});
+    var text = this.add.text( 370, 250, "Congrats, You Survived!", {
+      fontFamily: 'League Gothic', fontSize: 200, color: '#e0dac3'});
+
+    var subText = this.add.text( 490, 600, "You turned all " + window.maxZombies + " zombies human again", {
+      fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'});
+
+    var play = this.add.text(665, 750, 'Press enter to play again', {
+      fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'}).setInteractive();
 
 
+      enterKey.on("down", function() {
+        this.scene.start('Difficulty');
+      }, this
+    );
 
   }
 }

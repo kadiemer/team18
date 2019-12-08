@@ -1,10 +1,14 @@
 /*global Phaser*/
 import * as ChangeScene from "./ChangeScene.js";
 
+var textTimer = 0;
+var tuText;
+
 export default class WorldScene2 extends Phaser.Scene {
   constructor () {
     super('WorldScene2');
   }
+
 
   init (data) {
     this.newSprite = data.newSprite
@@ -79,6 +83,8 @@ export default class WorldScene2 extends Phaser.Scene {
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
     this.centerY = this.cameras.main.height / 2;
+
+
   }
 
   create (data) {
@@ -98,13 +104,28 @@ export default class WorldScene2 extends Phaser.Scene {
     //Create the scene
     var background = this.add.image(1001.5,561.5,"danceBackground");
 
+    tuText = this.add
+      .text(380, 700/2, 'TEACH THE ZOMBIE TO DANCE TO TURN THEM HUMAN\n BUT BE CAREFUL! IF THEY REACH YOU, YOURE DEAD', {
+        fontFamily: "League Gothic",
+        fontSize: 70,
+        color: "#000000",
+        padding: { x: 100, y: 100 },
+        backgroundColor: "#e0dac3",
+        align: 'center'
+      })
+      .setScrollFactor(0)
+      .setDepth(200);
+
     this.player = this.physics.add
       .sprite(150, 850, "girl")
-      .setSize(350, 500)
-      .setOffset(400, 100)
+      .setSize(250, 1850)
+      .setOffset(300, 100)
     this.player.scale = .3;
 
-    this.zombie = this.physics.add.sprite(1850, 850, this.newSprite);
+    this.zombie = this.physics.add
+      .sprite(1850, 850, this.newSprite)
+      .setSize(100, 1850)
+      .setOffset(150, 100)
 
     this.zombie.scale = .67;
     this.zombie.stunnedTime = 0;
@@ -144,8 +165,9 @@ export default class WorldScene2 extends Phaser.Scene {
       //Makes it so letters start falling after click
       this.lastPicker = 0;
       this.buttonFunction = enterKey.on("down", function() {
+        tuText.setVisible(false);
         play.destroy();
-        this.started = true
+        this.started = true;
         this.track1.play('track1');
         this.time.addEvent({
         delay: this.bpm, //This is the amount of time in which each letter is delayed
@@ -221,25 +243,22 @@ export default class WorldScene2 extends Phaser.Scene {
       function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
       }
-      this.scoreText = this.add.text(50, 16, "Score : 0", {
-        fontFamily: "Optima",
-        fontSize: "60px",
-        fill: "#f7b600"
-        });
 
         //****************************
         // Variables for progressBar
         this.progressBar = this.add.graphics();
         this.progressBox = this.add.graphics();
         this.progressBox.fillStyle(0xDADCD6, 0.8);
-        this.progressBox.fillRect(1450, 100, 425, 50);
+        this.progressBox.fillRect(800, 125, 425, 50);
         this.widthTracker = 0;
         this.progressPercentage = 0;
 
-      this.progressText = this.add.text(1450, 16, "Progress: 0%", {
-                fontFamily: "Optima",
-                fontSize: "60px",
-              fill: "#f7b600"
+      this.progressText = this.add.text(810, 16, "Progress: 0%", {
+                fontFamily: "League Gothic",
+                fontSize: 90,
+                color: '#ab0000',
+                stroke: "#000000",
+                strokeThickness:5
                     });
         //*************************
 
@@ -247,13 +266,19 @@ export default class WorldScene2 extends Phaser.Scene {
 
   update(time, delta) {
 
+    textTimer += 1;
+
+    if(textTimer > 250) {
+      tuText.setVisible(false);
+    }
+
     if(this.stunnedText){
       this.stunnedText.destroy();
     }
 
     if(this.started){
       if (this.zombie.stunnedTime < 1){
-        this.zombie.x -= .8;
+        this.zombie.x -= window.miniGameSpeed;
         if(this.gameOver != true){
           if (this.zombie['texture']['key'] == "gothZombie"){
             this.zombie.anims.play("gothZombieWalk", true);
@@ -350,7 +375,6 @@ export default class WorldScene2 extends Phaser.Scene {
           }
         }
         dynamicKey.destroy();
-        this.scoreText.setText("Score: " + this.score);
       }
     }
     else if(staticKey['texture']['key'] == "2Key"){
@@ -378,7 +402,6 @@ export default class WorldScene2 extends Phaser.Scene {
           }
         }
         dynamicKey.destroy();
-        this.scoreText.setText("Score: " + this.score);
 
       }
     }
@@ -406,7 +429,6 @@ export default class WorldScene2 extends Phaser.Scene {
           }
         }
         dynamicKey.destroy();
-        this.scoreText.setText("Score: " + this.score);
 
       }
     }
@@ -434,14 +456,13 @@ export default class WorldScene2 extends Phaser.Scene {
           }
         }
         dynamicKey.destroy();
-        this.scoreText.setText("Score: " + this.score);
 
       }
     }
     if(this.score > 14.5){
+      window.totalMiniGames += 1;
       this.gameOver = true;
       this.progressText.setText("Percentage:100%");
-      this.scoreText.setText("You win");
       this.myGroup.clear(true);
       /*
       If the player wins the minigame, it takes
@@ -463,6 +484,7 @@ export default class WorldScene2 extends Phaser.Scene {
       else if (this.zombie['texture']['key'] == "gothZombie"){
         window.transformedSprite = "normalGoth";
           this.scene.wake('WorldScene1')
+
       }
 
       //this.scene.stop('WorldScene2');
@@ -475,7 +497,6 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   zombieHit (player, zombie){
-    this.scoreText.setText("You lose")
     this.scene.start('LoseScene');
     this.track1.destroy();
     this.buttonFunction.destroy();
@@ -576,7 +597,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
     this.progressPercentage = Phaser.Math.RoundTo(this.score/15 * 100,0);
     this.progressBar.fillStyle(0xFFFB04, 1);
-    this.progressBar.fillRect(1450, 100, this.widthTracker, 50);
+    this.progressBar.fillRect(800, 125, this.widthTracker, 50);
     if (this.progressPercentage < 0.5) {
       this.progressText.setText("Percentage: 0%");
       this.progressPercentage  = 0
