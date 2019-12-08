@@ -26,12 +26,16 @@ export default class LoseScene extends Phaser.Scene {
     //tell user game is over and their score
     var enterKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
-    var text = this.add.text( 700, 480, "Oh no, you died!", {
-      fontFamily: 'Optima', fontSize: 70, color: '#ffffff'});
-    var play = this.add.text(715, 580, 'Press Enter to try again',
-    {fontFamily: 'Optima', fontSize: 50, color: '#ffffff'}).setInteractive();
+    var text = this.add.text( 550, 250, "Oh no, you died!",
+    {fontFamily: 'League Gothic', fontSize: 200, color: '#e0dac3'});
+    var play = this.add.text(680, 750, 'Press enter to try again',
+    {fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'});
+    var score = this.add.text(560, 600,'You turned ' + window.transformedCount + '/' + window.maxZombies + ' zombies human',
+    {fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'});
+
+
     enterKey.on("down", function() {
-      this.scene.start('WorldScene1');
+      this.scene.start('Difficulty');
     }, this
   );
 

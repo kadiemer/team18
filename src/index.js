@@ -6,9 +6,7 @@ import WorldScene1 from './scenes/WorldScene1.js';
 import WorldScene2 from './scenes/WorldScene2.js';
 import LoseScene from './scenes/LoseScene.js';
 import WinScene from './scenes/WinScene.js';
-import TutorialScene1 from './scenes/TutorialScene1.js'
-import TutorialScene1Pt2 from './scenes/TutorialScene1Pt2.js'
-import TutorialScene2 from './scenes/TutorialScene2.js'
+import Difficulty from './scenes/Difficulty.js';
 
 
 
@@ -21,10 +19,7 @@ class Game extends Phaser.Game {
     this.scene.add('WorldScene2',WorldScene2);
     this.scene.add('LoseScene',LoseScene);
     this.scene.add('WinScene',WinScene);
-    this.scene.add('TutorialScene1,', TutorialScene1);
-    this.scene.add('TutorialScene1Pt2', TutorialScene1Pt2);
-    this.scene.add('TutorialScene2', TutorialScene2);
-
+    this.scene.add('Difficulty',Difficulty);
 
     this.scene.start('MenuScene');
   }

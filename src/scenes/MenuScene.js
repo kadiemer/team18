@@ -1,4 +1,5 @@
 /*global Phaser*/
+window.bgMusic;
 import * as ChangeScene from './ChangeScene.js';
 import WorldScene1 from './WorldScene1.js'
 export default class MenuScene extends Phaser.Scene {
@@ -12,6 +13,7 @@ export default class MenuScene extends Phaser.Scene {
 
   preload () {
     // Preload assets
+    this.load.audio('select','./assets/sounds/select1.m4a');
     this.load.image('titleScreen', './assets/images/titleScreen.png');
     this.load.image('enter', './assets/images/enter.png');
 
@@ -48,6 +50,7 @@ export default class MenuScene extends Phaser.Scene {
 
   create (data) {
     //Add change scene event listeners
+
     ChangeScene.addSceneEventListeners(this);
     //Create the scene
     var background = this.add.image(this.centerX, this.centerY, 'titleScreen');
@@ -122,10 +125,16 @@ export default class MenuScene extends Phaser.Scene {
   }
   update (time, delta) {
 
+    var music;
+    music = this.sound.add('select');
     var enterKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
     if(enterKey.isDown){
-      this.scene.start('WorldScene1')
+      music.play({
+        volume: .3,
+        loop: false
+      });
+      this.scene.start('Difficulty')
     };
 
   }
