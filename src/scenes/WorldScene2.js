@@ -607,14 +607,13 @@ export default class WorldScene2 extends Phaser.Scene {
 
     this.progressPercentage = Phaser.Math.RoundTo(this.score/15 * 100,0);
     this.progressBar.fillStyle(0xFFFB04, 1);
-    this.progressBar.fillRect(800, 125, this.widthTracker, 50);
-    if (this.progressPercentage < 0.5) {
-      this.progressText.setText("Percentage: 0%");
+    this.progressBar.fillRect(760, 125, this.widthTracker, 50);
+    if (this.progressPercentage < 0.1) {
+      this.progressText.setText("Progress: 0%");
       this.progressPercentage  = 0
     } else {
-    this.progressText.setText("Percentage: " + this.progressPercentage + "%");
+    this.progressText.setText("Progress: " + this.progressPercentage + "%");
   }
-  console.log(this.score);
 
 }
 }
