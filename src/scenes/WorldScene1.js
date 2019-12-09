@@ -316,7 +316,7 @@ export default class WorldScene1 extends Phaser.Scene {
     text = this.add
       .text(950/2, 700/2, 'THE WORLD HAS BEEN OVERRUN BY ZOMBIES\nYOU ARE THE ONLY ONE WHO CAN HELP', {
         fontFamily: "League Gothic",
-        fontSize: 70,
+        fontSize: 40,
         color: "#000000",
         padding: { x: 100, y: 100 },
         backgroundColor: "#e0dac3",
@@ -328,7 +328,7 @@ export default class WorldScene1 extends Phaser.Scene {
     text1 = this.add
           .text(720/2, 700/2, 'TEACH THEM TO DANCE TO FIND THEIR INNER HUMANITY\nUSE ARROW KEYS TO MOVE/COLLIDE WITH ZOMBIES', {
             fontFamily: "League Gothic",
-            fontSize: 70,
+            fontSize: 40,
             color: "#000000",
             padding: { x: 100, y: 100 },
             backgroundColor: "#e0dac3",
@@ -340,7 +340,7 @@ export default class WorldScene1 extends Phaser.Scene {
     text2 = this.add
           .text(950/2, 700/2, 'THE ZOMBIE TURNED BACK HUMAN, PROTECT THEM! \nTHEY CAN BE TURNED BACK IF THEY COLLIDE WITH A ZOMBIE', {
             fontFamily: "League Gothic",
-            fontSize: 70,
+            fontSize: 40,
             color: "#000000",
             padding: { x: 100, y: 100 },
             backgroundColor: "#e0dac3",
