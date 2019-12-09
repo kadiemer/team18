@@ -356,16 +356,16 @@ export default class WorldScene2 extends Phaser.Scene {
 
     if(staticKey['texture']['key'] == "1Key"){
       if(aKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 430){
           this.indicatorText = this.add.text(370, 550, 'E a r l y',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 345){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
         else{
@@ -386,16 +386,16 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 430){
           this.indicatorText = this.add.text(370, 550, 'E a r l y',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 345){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
         else{
@@ -417,16 +417,16 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 430){
           this.indicatorText = this.add.text(370, 550, 'E a r l y',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 345){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
         else{
@@ -447,16 +447,16 @@ export default class WorldScene2 extends Phaser.Scene {
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
-        if(dynamicKey.x > 420){
+        if(dynamicKey.x > 430){
           this.indicatorText = this.add.text(370, 550, 'E a r l y',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
-        else if(dynamicKey.x < 350){
+        else if(dynamicKey.x < 345){
           this.indicatorText = this.add.text(370, 550, 'L a t e',
           {fontFamily: 'League Gothic', fontSize: 30, color: '#FF0000'});
-          this.score-=1;
+          this.score+=.2;
           this.sound.play('Miss');
         }
         else{
