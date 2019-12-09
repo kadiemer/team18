@@ -162,6 +162,8 @@ export default class WorldScene2 extends Phaser.Scene {
       var play = this.add.text(800, 400, 'P r e s s    E n t e r',
       {fontFamily: 'League Gothic', fontSize: 70, color: '#f7b600'}).setInteractive();
 
+      this.callbackFunction;
+
       //Makes it so letters start falling after click
       this.lastPicker = 0;
       this.buttonFunction = enterKey.on("down", function() {
@@ -171,7 +173,7 @@ export default class WorldScene2 extends Phaser.Scene {
         this.track1.play('track1');
         this.time.addEvent({
         delay: this.bpm, //This is the amount of time in which each letter is delayed
-        callback: function(){
+        callback: this.callbackFunction = function(){
 
           //This is the function that picks a random letter and makes it fall
           this.picker = getRandomInt(4);
@@ -298,6 +300,7 @@ export default class WorldScene2 extends Phaser.Scene {
           this.track1.destroy();
           this.zombie.destroy();
           this.buttonFunction.destroy();
+          this.callbackFunction = null;
         }
       }
       else{
@@ -311,6 +314,7 @@ export default class WorldScene2 extends Phaser.Scene {
           this.track1.destroy();
           this.zombie.destroy();
           this.buttonFunction.destroy();
+          this.callbackFunction = null;
         }
       }
     }
@@ -380,9 +384,6 @@ export default class WorldScene2 extends Phaser.Scene {
 
         dynamicKey.destroy();
       }
-      else if (bKey.isDown ||  cKey.isDown || dKey.isDown) {
-        this.score -=1;
-      }
     }
     else if(staticKey['texture']['key'] == "2Key"){
       if(bKey.isDown){
@@ -411,9 +412,6 @@ export default class WorldScene2 extends Phaser.Scene {
         dynamicKey.destroy();
 
       }
-      else if (aKey.isDown ||  cKey.isDown || dKey.isDown) {
-        this.score -=1;
-      }
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
@@ -441,9 +439,6 @@ export default class WorldScene2 extends Phaser.Scene {
         dynamicKey.destroy();
 
       }
-      else if (aKey.isDown ||  bKey.isDown || dKey.isDown) {
-        this.score -=1;
-      }
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
@@ -470,9 +465,6 @@ export default class WorldScene2 extends Phaser.Scene {
         }
         dynamicKey.destroy();
 
-      }
-      else if (aKey.isDown ||  bKey.isDown || cKey.isDown) {
-        this.score -=1;
       }
     }
     if(this.score > 14.5){
@@ -516,6 +508,7 @@ export default class WorldScene2 extends Phaser.Scene {
     this.scene.start('LoseScene');
     this.track1.destroy();
     this.buttonFunction.destroy();
+    this.callbackFunction = null;
   }
 
   createDanceMove (){
