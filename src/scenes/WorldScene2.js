@@ -343,8 +343,11 @@ export default class WorldScene2 extends Phaser.Scene {
     if (this.score < 0.5) {
       this.progressText.setText("Percentage: 0%");
       this.progressPercentage = 0;
+      this.score = 0;
       this.progressBar.clear();
     }
+
+
     var aKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.ONE);
     var bKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.TWO);
     var cKey = this.input.keyboard﻿.addKey﻿(Phaser﻿.Input.Keyboard.KeyCodes.THREE);
