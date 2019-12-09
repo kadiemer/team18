@@ -1,5 +1,4 @@
 /*global Phaser*/
-
 window.bgMusic;
 import * as ChangeScene from './ChangeScene.js';
 import WorldScene1 from './WorldScene1.js'
@@ -50,7 +49,6 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   create (data) {
-
     //Add change scene event listeners
 
     ChangeScene.addSceneEventListeners(this);
@@ -125,7 +123,6 @@ export default class MenuScene extends Phaser.Scene {
     });
 
   }
-
   update (time, delta) {
 
     var music;
