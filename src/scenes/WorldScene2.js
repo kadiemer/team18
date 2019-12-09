@@ -107,7 +107,7 @@ export default class WorldScene2 extends Phaser.Scene {
     tuText = this.add
       .text(380, 700/2, 'TEACH THE ZOMBIE TO DANCE TO TURN THEM HUMAN\n BUT BE CAREFUL! IF THEY REACH YOU, YOURE DEAD', {
         fontFamily: "League Gothic",
-        fontSize: 40,
+        fontSize: 70,
         color: "#000000",
         padding: { x: 100, y: 100 },
         backgroundColor: "#e0dac3",

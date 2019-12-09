@@ -27,13 +27,13 @@ export default class WinScene extends Phaser.Scene {
     var enterKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
     var text = this.add.text( 320, 250, "Congrats, You Survived!", {
-      fontFamily: 'League Gothic', fontSize: 150, color: '#e0dac3'});
+      fontFamily: 'League Gothic', fontSize: 200, color: '#e0dac3'});
 
     var subText = this.add.text( 420, 600, "You turned all " + window.maxZombies + " zombies human again", {
-      fontFamily: 'League Gothic', fontSize: 75, color: '#ab0000'});
+      fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'});
 
     var play = this.add.text(625, 750, 'Press enter to play again', {
-      fontFamily: 'League Gothic', fontSize: 75, color: '#ab0000'}).setInteractive();
+      fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'}).setInteractive();
 
 
       enterKey.on("down", function() {

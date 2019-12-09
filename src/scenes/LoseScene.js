@@ -27,11 +27,11 @@ export default class LoseScene extends Phaser.Scene {
     var enterKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ENTER);
 
     var text = this.add.text( 450, 250, "Oh no, you died!",
-    {fontFamily: 'League Gothic', fontSize: 150, color: '#e0dac3'});
+    {fontFamily: 'League Gothic', fontSize: 200, color: '#e0dac3'});
     var play = this.add.text(580, 750, 'Press enter to try again',
-    {fontFamily: 'League Gothic', fontSize: 75, color: '#ab0000'});
+    {fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'});
     var score = this.add.text(460, 600,'You turned ' + window.transformedCount + '/' + window.maxZombies + ' zombies human',
-    {fontFamily: 'League Gothic', fontSize: 75, color: '#ab0000'});
+    {fontFamily: 'League Gothic', fontSize: 100, color: '#ab0000'});
 
 
     enterKey.on("down", function() {

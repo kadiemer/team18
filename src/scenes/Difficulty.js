@@ -46,7 +46,7 @@ export default class WinScene extends Phaser.Scene {
 
     var play = this.add.text(275, 150, 'CHOOSE DIFFICULTY', {
       fontFamily: 'League Gothic',
-      fontSize: 150,
+      fontSize: 275,
       color: '#e0dac3',
       stroke: "#000000",
       strokeThickness: 25
