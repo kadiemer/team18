@@ -344,7 +344,7 @@ export default class WorldScene2 extends Phaser.Scene {
 
   hitKey (staticKey, dynamicKey) {
 
-    if (this.score < 0.5) {
+    if (this.score < 0.1) {
       this.progressText.setText("Percentage: 0%");
       this.progressPercentage = 0;
       this.score = 0;
