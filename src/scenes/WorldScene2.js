@@ -377,7 +377,11 @@ export default class WorldScene2 extends Phaser.Scene {
             this.createDanceMove();
           }
         }
+
         dynamicKey.destroy();
+      }
+      else if (bKey.isDown ||  cKey.isDown || dKey.isDown) {
+        this.score -=1;
       }
     }
     else if(staticKey['texture']['key'] == "2Key"){
@@ -407,6 +411,9 @@ export default class WorldScene2 extends Phaser.Scene {
         dynamicKey.destroy();
 
       }
+      else if (aKey.isDown ||  cKey.isDown || dKey.isDown) {
+        this.score -=1;
+      }
     }
     else if(staticKey['texture']['key'] == "3Key"){
       if(cKey.isDown){
@@ -434,6 +441,9 @@ export default class WorldScene2 extends Phaser.Scene {
         dynamicKey.destroy();
 
       }
+      else if (aKey.isDown ||  bKey.isDown || dKey.isDown) {
+        this.score -=1;
+      }
     }
     else if(staticKey['texture']['key'] == "4Key"){
       if(dKey.isDown){
@@ -460,6 +470,9 @@ export default class WorldScene2 extends Phaser.Scene {
         }
         dynamicKey.destroy();
 
+      }
+      else if (aKey.isDown ||  bKey.isDown || cKey.isDown) {
+        this.score -=1;
       }
     }
     if(this.score > 14.5){
@@ -591,6 +604,7 @@ export default class WorldScene2 extends Phaser.Scene {
   }
 
   setProgressBar(){
+
     if (this.score > 0){
       this.widthTracker = this.score * 28.33;
     }
@@ -607,6 +621,7 @@ export default class WorldScene2 extends Phaser.Scene {
     } else {
     this.progressText.setText("Percentage: " + this.progressPercentage + "%");
   }
+  console.log(this.score);
 
 }
 }
