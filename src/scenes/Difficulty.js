@@ -30,7 +30,7 @@ export default class WinScene extends Phaser.Scene {
     // Event listener to change scenes
     ChangeScene.addSceneEventListeners(this);
     //Create the scene
-    this.add.image(this.centerX,this.centerY,"difficultyBG");
+    var bg = this.add.image(this.centerX,this.centerY,"difficultyBG");
 
     //tell user game is over and their score
     var oneKey = this.input.keyboard.addKey(Phaser﻿.Input.Keyboard.KeyCodes.ONE);
@@ -46,7 +46,7 @@ export default class WinScene extends Phaser.Scene {
 
     var play = this.add.text(275, 150, 'CHOOSE DIFFICULTY', {
       fontFamily: 'League Gothic',
-      fontSize: 275,
+      fontSize: 150,
       color: '#e0dac3',
       stroke: "#000000",
       strokeThickness: 25
