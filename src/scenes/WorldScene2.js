@@ -251,11 +251,11 @@ export default class WorldScene2 extends Phaser.Scene {
         this.progressBar = this.add.graphics();
         this.progressBox = this.add.graphics();
         this.progressBox.fillStyle(0xDADCD6, 0.8);
-        this.progressBox.fillRect(800, 125, 425, 50);
+        this.progressBox.fillRect(760, 125, 425, 50);
         this.widthTracker = 0;
         this.progressPercentage = 0;
 
-      this.progressText = this.add.text(810, 16, "Progress: 0%", {
+      this.progressText = this.add.text(760, 16, "Progress: 0%", {
                 fontFamily: "League Gothic",
                 fontSize: 90,
                 color: '#ab0000',
